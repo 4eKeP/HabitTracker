@@ -24,6 +24,16 @@ final class TrackerController: UIViewController {
         return lable
     }()
     
+    private lazy var datePicker: UIDatePicker = {
+        var datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .compact
+        return datePicker
+    }()
+    
+    var categories: [TrackerCategory] = []
+    var complitedTrackers: [TrackerRecord] = []
+    
         override func viewDidLoad() {
             super.viewDidLoad()
             self.view.backgroundColor = UIColor.white
@@ -34,6 +44,8 @@ final class TrackerController: UIViewController {
 
     func makeNavBar() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: nil)
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
     }
     
     private func showPlaceholder() {

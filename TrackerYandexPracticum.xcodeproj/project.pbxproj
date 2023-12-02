@@ -14,6 +14,7 @@
 		843615192B10465F003D1B6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 843615172B10465F003D1B6F /* LaunchScreen.storyboard */; };
 		847242B42B1231DA002B5ADF /* StatsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847242B32B1231DA002B5ADF /* StatsController.swift */; };
 		847242B62B12322D002B5ADF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847242B52B12322D002B5ADF /* TabBarController.swift */; };
+		84A240212B18D0CB00E6C059 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A240202B18D0CB00E6C059 /* Tracker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		8436151A2B10465F003D1B6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		847242B32B1231DA002B5ADF /* StatsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsController.swift; sourceTree = "<group>"; };
 		847242B52B12322D002B5ADF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		84A240202B18D0CB00E6C059 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,14 +62,31 @@
 			children = (
 				8436150C2B10465E003D1B6F /* AppDelegate.swift */,
 				8436150E2B10465F003D1B6F /* SceneDelegate.swift */,
-				843615102B10465F003D1B6F /* TrackerController.swift */,
-				847242B32B1231DA002B5ADF /* StatsController.swift */,
-				847242B52B12322D002B5ADF /* TabBarController.swift */,
+				84A2401F2B18D08A00E6C059 /* Model */,
+				84A2401E2B18D06C00E6C059 /* Controllers */,
 				843615152B10465F003D1B6F /* Assets.xcassets */,
 				843615172B10465F003D1B6F /* LaunchScreen.storyboard */,
 				8436151A2B10465F003D1B6F /* Info.plist */,
 			);
 			path = TrackerYandexPracticum;
+			sourceTree = "<group>";
+		};
+		84A2401E2B18D06C00E6C059 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				843615102B10465F003D1B6F /* TrackerController.swift */,
+				847242B32B1231DA002B5ADF /* StatsController.swift */,
+				847242B52B12322D002B5ADF /* TabBarController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		84A2401F2B18D08A00E6C059 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				84A240202B18D0CB00E6C059 /* Tracker.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,6 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A240212B18D0CB00E6C059 /* Tracker.swift in Sources */,
 				843615112B10465F003D1B6F /* TrackerController.swift in Sources */,
 				8436150D2B10465F003D1B6F /* AppDelegate.swift in Sources */,
 				8436150F2B10465F003D1B6F /* SceneDelegate.swift in Sources */,
