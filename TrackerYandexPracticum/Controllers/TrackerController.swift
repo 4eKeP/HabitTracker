@@ -31,8 +31,19 @@ final class TrackerController: UIViewController {
         return datePicker
     }()
     
+    private lazy var searchBar: UISearchController = {
+      $0.hidesNavigationBarDuringPresentation = false
+      $0.searchBar.placeholder = "Поиск"
+      $0.searchBar.setValue("Отменить", forKey: "cancelButtonText")
+      $0.searchBar.searchTextField.clearButtonMode = .never
+      return $0
+    }(UISearchController(searchResultsController: nil))
+    
     var categories: [TrackerCategory] = []
     var complitedTrackers: [TrackerRecord] = []
+    
+    
+    // MARK: - viewDidLoad
     
         override func viewDidLoad() {
             super.viewDidLoad()
@@ -40,12 +51,29 @@ final class TrackerController: UIViewController {
             makeNavBar()
             showPlaceholder()
             addConstrains()
+            searchBar.searchBar.delegate = self
         }
+   
+}
 
-    func makeNavBar() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: nil, action: nil)
+// MARK: - UISearchBarDelegate
+
+extension TrackerController: UISearchBarDelegate {
+    
+}
+
+// MARK: - UIConstruction
+extension TrackerController {
+    
+    private func makeNavBar() {
+        let plusButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
+        plusButton.tintColor = .ypBlack
+        
+        self.navigationItem.leftBarButtonItem = plusButton
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+        
+        self.navigationController?.navigationBar.topItem?.searchController = searchBar
     }
     
     private func showPlaceholder() {
