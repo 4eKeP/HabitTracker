@@ -89,7 +89,7 @@ final class TrackerCell: UICollectionViewCell {
         counterButton.backgroundColor = backgroundColor
         cardLabel.text = cardText
         emojiLabel.text = emoji
-        updateCounter(<#Int#>)
+        updateCounter(counter)
     }
     
     private func updateCounter(_ counter: Int){

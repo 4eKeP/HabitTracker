@@ -17,6 +17,9 @@
 		84A240212B18D0CB00E6C059 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A240202B18D0CB00E6C059 /* Tracker.swift */; };
 		84D557072B1E36CE00EBAE8D /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557062B1E36CE00EBAE8D /* TrackerCell.swift */; };
 		84D5570A2B1E371200EBAE8D /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557092B1E371200EBAE8D /* SectionHeader.swift */; };
+		84D5570D2B1E4F7500EBAE8D /* TrackersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5570C2B1E4F7500EBAE8D /* TrackersFactory.swift */; };
+		84D5570F2B1F632C00EBAE8D /* TrackerTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5570E2B1F632C00EBAE8D /* TrackerTypeController.swift */; };
+		84D557122B1F66B700EBAE8D /* TypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557112B1F66B700EBAE8D /* TypeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		84A240202B18D0CB00E6C059 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		84D557062B1E36CE00EBAE8D /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		84D557092B1E371200EBAE8D /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		84D5570C2B1E4F7500EBAE8D /* TrackersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersFactory.swift; sourceTree = "<group>"; };
+		84D5570E2B1F632C00EBAE8D /* TrackerTypeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeController.swift; sourceTree = "<group>"; };
+		84D557112B1F66B700EBAE8D /* TypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +72,7 @@
 			children = (
 				8436150C2B10465E003D1B6F /* AppDelegate.swift */,
 				8436150E2B10465F003D1B6F /* SceneDelegate.swift */,
+				84D5570B2B1E4F4A00EBAE8D /* Services */,
 				84D557052B1E36A400EBAE8D /* Views */,
 				84A2401F2B18D08A00E6C059 /* Model */,
 				84A2401E2B18D06C00E6C059 /* Controllers */,
@@ -82,6 +89,7 @@
 				843615102B10465F003D1B6F /* TrackerController.swift */,
 				847242B32B1231DA002B5ADF /* StatsController.swift */,
 				847242B52B12322D002B5ADF /* TabBarController.swift */,
+				84D5570E2B1F632C00EBAE8D /* TrackerTypeController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -99,8 +107,17 @@
 			children = (
 				84D557062B1E36CE00EBAE8D /* TrackerCell.swift */,
 				84D557092B1E371200EBAE8D /* SectionHeader.swift */,
+				84D557112B1F66B700EBAE8D /* TypeButton.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		84D5570B2B1E4F4A00EBAE8D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				84D5570C2B1E4F7500EBAE8D /* TrackersFactory.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,8 +194,11 @@
 				843615112B10465F003D1B6F /* TrackerController.swift in Sources */,
 				8436150D2B10465F003D1B6F /* AppDelegate.swift in Sources */,
 				84D557072B1E36CE00EBAE8D /* TrackerCell.swift in Sources */,
+				84D5570D2B1E4F7500EBAE8D /* TrackersFactory.swift in Sources */,
 				84D5570A2B1E371200EBAE8D /* SectionHeader.swift in Sources */,
+				84D5570F2B1F632C00EBAE8D /* TrackerTypeController.swift in Sources */,
 				8436150F2B10465F003D1B6F /* SceneDelegate.swift in Sources */,
+				84D557122B1F66B700EBAE8D /* TypeButton.swift in Sources */,
 				847242B62B12322D002B5ADF /* TabBarController.swift in Sources */,
 				847242B42B1231DA002B5ADF /* StatsController.swift in Sources */,
 			);

@@ -39,8 +39,9 @@ final class TrackerController: UIViewController {
       return $0
     }(UISearchController(searchResultsController: nil))
     
-    var categories: [TrackerCategory] = []
-    var complitedTrackers: [TrackerRecord] = []
+    private let factory = TrackersFactory.shared
+    
+    private var visibleCategories: [TrackerCategory] = []
     
     
     // MARK: - viewDidLoad
