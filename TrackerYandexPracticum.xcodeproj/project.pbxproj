@@ -20,6 +20,9 @@
 		84D5570D2B1E4F7500EBAE8D /* TrackersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5570C2B1E4F7500EBAE8D /* TrackersFactory.swift */; };
 		84D5570F2B1F632C00EBAE8D /* TrackerTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5570E2B1F632C00EBAE8D /* TrackerTypeController.swift */; };
 		84D557122B1F66B700EBAE8D /* TypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557112B1F66B700EBAE8D /* TypeButton.swift */; };
+		84D557142B1F8C0E00EBAE8D /* ConfigTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557132B1F8C0E00EBAE8D /* ConfigTypeController.swift */; };
+		84D557162B20167C00EBAE8D /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557152B20167C00EBAE8D /* SettingsButton.swift */; };
+		84D557182B20B74900EBAE8D /* Separators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557172B20B74900EBAE8D /* Separators.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,9 @@
 		84D5570C2B1E4F7500EBAE8D /* TrackersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersFactory.swift; sourceTree = "<group>"; };
 		84D5570E2B1F632C00EBAE8D /* TrackerTypeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeController.swift; sourceTree = "<group>"; };
 		84D557112B1F66B700EBAE8D /* TypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeButton.swift; sourceTree = "<group>"; };
+		84D557132B1F8C0E00EBAE8D /* ConfigTypeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigTypeController.swift; sourceTree = "<group>"; };
+		84D557152B20167C00EBAE8D /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
+		84D557172B20B74900EBAE8D /* Separators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Separators.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +96,7 @@
 				847242B32B1231DA002B5ADF /* StatsController.swift */,
 				847242B52B12322D002B5ADF /* TabBarController.swift */,
 				84D5570E2B1F632C00EBAE8D /* TrackerTypeController.swift */,
+				84D557132B1F8C0E00EBAE8D /* ConfigTypeController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -108,6 +115,8 @@
 				84D557062B1E36CE00EBAE8D /* TrackerCell.swift */,
 				84D557092B1E371200EBAE8D /* SectionHeader.swift */,
 				84D557112B1F66B700EBAE8D /* TypeButton.swift */,
+				84D557152B20167C00EBAE8D /* SettingsButton.swift */,
+				84D557172B20B74900EBAE8D /* Separators.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -195,7 +204,10 @@
 				8436150D2B10465F003D1B6F /* AppDelegate.swift in Sources */,
 				84D557072B1E36CE00EBAE8D /* TrackerCell.swift in Sources */,
 				84D5570D2B1E4F7500EBAE8D /* TrackersFactory.swift in Sources */,
+				84D557162B20167C00EBAE8D /* SettingsButton.swift in Sources */,
+				84D557142B1F8C0E00EBAE8D /* ConfigTypeController.swift in Sources */,
 				84D5570A2B1E371200EBAE8D /* SectionHeader.swift in Sources */,
+				84D557182B20B74900EBAE8D /* Separators.swift in Sources */,
 				84D5570F2B1F632C00EBAE8D /* TrackerTypeController.swift in Sources */,
 				8436150F2B10465F003D1B6F /* SceneDelegate.swift in Sources */,
 				84D557122B1F66B700EBAE8D /* TypeButton.swift in Sources */,
