@@ -64,9 +64,9 @@ extension TrackerController: UISearchBarDelegate {
 }
 
 // MARK: - UIConstruction
-extension TrackerController {
+private extension TrackerController {
     
-    private func makeNavBar() {
+     func makeNavBar() {
         let plusButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
         plusButton.tintColor = .ypBlack
         
@@ -77,7 +77,7 @@ extension TrackerController {
         self.navigationController?.navigationBar.topItem?.searchController = searchBar
     }
     
-    private func showPlaceholder() {
+     func showPlaceholder() {
         [placeholderImage,
          placeholderLable,
         ].forEach {
@@ -86,7 +86,7 @@ extension TrackerController {
         }
     }
     
-    private func addConstrains() {
+     func addConstrains() {
         NSLayoutConstraint.activate([
             placeholderImage.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             placeholderImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),

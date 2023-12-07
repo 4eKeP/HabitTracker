@@ -46,14 +46,14 @@ final class TrackerTypeController: UIViewController {
 
 // MARK: - View configuration
 
-extension TrackerTypeController {
+private extension TrackerTypeController {
     //MARK: Title configuration
-    private func stupTitle() {
+     func stupTitle() {
         view.addSubview(titleLabel)
         setTitleConstraints()
     }
     
-    private func setTitleConstraints() {
+     func setTitleConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 28),
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -62,27 +62,27 @@ extension TrackerTypeController {
     }
     //MARK: stackView configuration
     
-    private func setupStackView() {
+     func setupStackView() {
         view.addSubview(stackView)
         addEventButton()
         addHabitButton()
         addStackViewConstarints()
     }
     
-    private func addHabitButton() {
+     func addHabitButton() {
         let HabitButton = TypeButton()
         HabitButton.setTitle("Привычка", for: .normal)
         HabitButton.addTarget(self, action: #selector(habitButtonPressed), for: .touchUpInside)
         stackView.addArrangedSubview(HabitButton)
     }
     
-    private func addEventButton() {
+     func addEventButton() {
         let EventButton = TypeButton()
         EventButton.setTitle("Нерегулярное событие", for: .normal)
         EventButton.addTarget(self, action: #selector(eventButtonPressed), for: .touchUpInside)
     }
     
-    private func addStackViewConstarints() {
+     func addStackViewConstarints() {
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
           stackView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),

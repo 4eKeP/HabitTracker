@@ -7,22 +7,23 @@
 
 import Foundation
 
-struct Tracker {
+struct Tracker: Hashable {
     let id: UUID
     let name: String
-    let color: String
-    let emoji: String
-    let schedule: Date
+    let color: Int
+    let emoji: Int
+    let schedule: [Bool]
 }
 
-struct TrackerCategory {
+struct TrackerCategory: Hashable {
     let id: UUID
     let categoryName: String
     let trackers: [Tracker]
 }
 
-struct TrackerRecord {
+struct TrackerRecord: Hashable {
     let id: UUID
-    let isDone: Bool
-    let doneDate: Date
+    let tracker: Tracker
+    let dates: [Date]
+    let days: Int
 }

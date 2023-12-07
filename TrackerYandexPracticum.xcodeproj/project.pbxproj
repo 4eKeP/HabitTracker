@@ -23,6 +23,9 @@
 		84D557142B1F8C0E00EBAE8D /* ConfigTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557132B1F8C0E00EBAE8D /* ConfigTypeController.swift */; };
 		84D557162B20167C00EBAE8D /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557152B20167C00EBAE8D /* SettingsButton.swift */; };
 		84D557182B20B74900EBAE8D /* Separators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557172B20B74900EBAE8D /* Separators.swift */; };
+		84D5571A2B2209D000EBAE8D /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557192B2209D000EBAE8D /* EmptyView.swift */; };
+		84D5571D2B22189500EBAE8D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5571C2B22189500EBAE8D /* Date+Extensions.swift */; };
+		84D5571F2B221C0F00EBAE8D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5571E2B221C0F00EBAE8D /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +47,9 @@
 		84D557132B1F8C0E00EBAE8D /* ConfigTypeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigTypeController.swift; sourceTree = "<group>"; };
 		84D557152B20167C00EBAE8D /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		84D557172B20B74900EBAE8D /* Separators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Separators.swift; sourceTree = "<group>"; };
+		84D557192B2209D000EBAE8D /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		84D5571C2B22189500EBAE8D /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		84D5571E2B221C0F00EBAE8D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +82,7 @@
 		8436150B2B10465E003D1B6F /* TrackerYandexPracticum */ = {
 			isa = PBXGroup;
 			children = (
+				84D5571B2B22187400EBAE8D /* Extensions */,
 				8436150C2B10465E003D1B6F /* AppDelegate.swift */,
 				8436150E2B10465F003D1B6F /* SceneDelegate.swift */,
 				84D5570B2B1E4F4A00EBAE8D /* Services */,
@@ -83,6 +90,7 @@
 				84A2401F2B18D08A00E6C059 /* Model */,
 				84A2401E2B18D06C00E6C059 /* Controllers */,
 				843615152B10465F003D1B6F /* Assets.xcassets */,
+				84D5571E2B221C0F00EBAE8D /* Constants.swift */,
 				843615172B10465F003D1B6F /* LaunchScreen.storyboard */,
 				8436151A2B10465F003D1B6F /* Info.plist */,
 			);
@@ -117,6 +125,7 @@
 				84D557112B1F66B700EBAE8D /* TypeButton.swift */,
 				84D557152B20167C00EBAE8D /* SettingsButton.swift */,
 				84D557172B20B74900EBAE8D /* Separators.swift */,
+				84D557192B2209D000EBAE8D /* EmptyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -127,6 +136,14 @@
 				84D5570C2B1E4F7500EBAE8D /* TrackersFactory.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		84D5571B2B22187400EBAE8D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				84D5571C2B22189500EBAE8D /* Date+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +217,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				84A240212B18D0CB00E6C059 /* Tracker.swift in Sources */,
+				84D5571F2B221C0F00EBAE8D /* Constants.swift in Sources */,
+				84D5571A2B2209D000EBAE8D /* EmptyView.swift in Sources */,
 				843615112B10465F003D1B6F /* TrackerController.swift in Sources */,
 				8436150D2B10465F003D1B6F /* AppDelegate.swift in Sources */,
 				84D557072B1E36CE00EBAE8D /* TrackerCell.swift in Sources */,
@@ -207,6 +226,7 @@
 				84D557162B20167C00EBAE8D /* SettingsButton.swift in Sources */,
 				84D557142B1F8C0E00EBAE8D /* ConfigTypeController.swift in Sources */,
 				84D5570A2B1E371200EBAE8D /* SectionHeader.swift in Sources */,
+				84D5571D2B22189500EBAE8D /* Date+Extensions.swift in Sources */,
 				84D557182B20B74900EBAE8D /* Separators.swift in Sources */,
 				84D5570F2B1F632C00EBAE8D /* TrackerTypeController.swift in Sources */,
 				8436150F2B10465F003D1B6F /* SceneDelegate.swift in Sources */,

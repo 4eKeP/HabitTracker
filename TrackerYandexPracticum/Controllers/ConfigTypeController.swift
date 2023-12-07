@@ -164,14 +164,14 @@ final class ConfigTypeController: UIViewController {
 
 // MARK: - UI Configuration
 
-extension ConfigTypeController {
+private extension ConfigTypeController {
     
     // MARK: - Title Lable config
-   private func setTitle() {
+    func setTitle() {
         view.addSubview(titleLabel)
        setTitleConstraits()
     }
-    private func setTitleConstraits() {
+     func setTitleConstraits() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 28),
           titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -181,7 +181,7 @@ extension ConfigTypeController {
     
     // MARK: - textField config
     
-    private func setupTextField() {
+     func setupTextField() {
         view.addSubview(textFieldStackView)
         textFieldStackView.addArrangedSubview(titleTextField)
         textFieldStackView.addArrangedSubview(warningLabel)
@@ -190,7 +190,7 @@ extension ConfigTypeController {
         setTextFieldStackViewConstraints()
     }
     
-    private func setTitleTextFieldConstraints() {
+     func setTitleTextFieldConstraints() {
         NSLayoutConstraint.activate([
           titleTextField.topAnchor.constraint(equalTo: textFieldStackView.topAnchor),
           titleTextField.leadingAnchor.constraint(equalTo: textFieldStackView.leadingAnchor),
@@ -199,7 +199,7 @@ extension ConfigTypeController {
         ])
     }
     
-    private func setWarningLabelConstraints() {
+     func setWarningLabelConstraints() {
         NSLayoutConstraint.activate([
           warningLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
           warningLabel.leadingAnchor.constraint(equalTo: textFieldStackView.leadingAnchor),
@@ -208,7 +208,7 @@ extension ConfigTypeController {
         ])
     }
     
-    private func setTextFieldStackViewConstraints() {
+     func setTextFieldStackViewConstraints() {
         NSLayoutConstraint.activate([
             textFieldStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
           textFieldStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -220,7 +220,7 @@ extension ConfigTypeController {
     
    //MARK: - settings fields config
     
-    private func setupSettings() {
+     func setupSettings() {
         view.addSubview(settingsView)
         configSettingsConstraints()
         settingsView.addSubview(categoryButton)
@@ -231,7 +231,7 @@ extension ConfigTypeController {
         }
     }
     
-    private func configSettingsConstraints() {
+     func configSettingsConstraints() {
         NSLayoutConstraint.activate([
             settingsView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             settingsView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -240,9 +240,9 @@ extension ConfigTypeController {
         ])
     }
     
-    //MARK: - Buttons config
+    //MARK: - buttons config
     
-    private func setupButtons() {
+     func setupButtons() {
         view.addSubview(buttonsStackView)
         
         buttonsStackView.addArrangedSubview(cancelButton)
@@ -250,7 +250,7 @@ extension ConfigTypeController {
         configButtonsConstraints()
     }
     
-    private func configButtonsConstraints() {
+     func configButtonsConstraints() {
         NSLayoutConstraint.activate([
             buttonsStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
           buttonsStackView.widthAnchor.constraint(equalToConstant: buttonViewWidth),

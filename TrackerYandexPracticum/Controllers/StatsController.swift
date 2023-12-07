@@ -9,6 +9,8 @@ import UIKit
 
 final class StatsController: UIViewController {
 
+    private var isEmpty = true
+    
     private lazy var placeholderImage: UIImageView = {
         var view = UIImageView()
         let image = UIImage(named: "stats_placeholder")
@@ -24,30 +26,35 @@ final class StatsController: UIViewController {
         return lable
     }()
     
+    private lazy var emptyView = EmptyView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor.white
+        view.backgroundColor = .ypWhite
         
         showPlaceholder()
         addConstrains()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        emptyView.isHidden = !isEmpty
+    }
+    
     private func showPlaceholder() {
-        [placeholderImage,
-         placeholderLable,
-        ].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
-        }
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        emptyView.setEmptyView(title: "Анализировать пока нечего",
+                               image: UIImage(named: "stats_placeholder"))
+        view.addSubview(emptyView)
     }
     
     private func addConstrains() {
         NSLayoutConstraint.activate([
-            placeholderImage.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            placeholderImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            placeholderLable.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            placeholderLable.topAnchor.constraint(equalTo: placeholderImage.bottomAnchor, constant: 8)
+            emptyView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 56),
+            emptyView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            emptyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
