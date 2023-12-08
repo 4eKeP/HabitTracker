@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TrackerCellDelegate: AnyObject {
+  func counterButtonTapped(for cell: TrackerCell)
+}
+
 final class TrackerCell: UICollectionViewCell {
     
     // MARK: - properties
@@ -68,6 +72,8 @@ final class TrackerCell: UICollectionViewCell {
         return imageView
     }()
     
+    weak var delegate: TrackerCellDelegate?
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -84,7 +90,7 @@ final class TrackerCell: UICollectionViewCell {
     }
     // MARK: - Private methods
     
-    private func configCell(backgroundColor: UIColor, emoji: String, cardText: String, counter: Int) {
+     func configCell(backgroundColor: UIColor, emoji: String, cardText: String, counter: Int) {
         cardView.backgroundColor = backgroundColor
         counterButton.backgroundColor = backgroundColor
         cardLabel.text = cardText
@@ -92,7 +98,7 @@ final class TrackerCell: UICollectionViewCell {
         updateCounter(counter)
     }
     
-    private func updateCounter(_ counter: Int){
+     func updateCounter(_ counter: Int){
         switch counter {
         case _ where (1 == counter % 10) && !(10...19 ~= counter % 100):
             counterLabel.text = "\(counter) день"
@@ -104,8 +110,9 @@ final class TrackerCell: UICollectionViewCell {
     }
     
     @objc private func counterButtonTapped() {
-        
+        delegate?.counterButtonTapped(for: self)
     }
+    
     // MARK: - Public methods
     
     func isDone(_ isDone: Bool) {
@@ -114,9 +121,12 @@ final class TrackerCell: UICollectionViewCell {
     }
 }
 
+
+   
+
 // MARK: - UISetup
 
-extension TrackerCell {
+private extension TrackerCell {
     func setupCell() {
         addCellSubviews()
         addCellConstraints()

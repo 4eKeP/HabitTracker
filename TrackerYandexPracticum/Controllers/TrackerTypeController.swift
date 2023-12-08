@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TrackerTypeControllerDelegate: AnyObject {
+      func newTrackerController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: Int)
+}
+
 final class TrackerTypeController: UIViewController {
     
     private lazy var titleLabel = {
@@ -27,20 +31,31 @@ final class TrackerTypeController: UIViewController {
         return stackView
     }()
     
+    weak var delegate: TrackerTypeControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
-        stupTitle()
+        setupTitle()
         setupStackView()
     }
     
     @objc func habitButtonPressed() {
-        
+        let nextController = ConfigTypeController(isHabit: true)
+     //   nextController.delegate = self
+        present(nextController, animated: true)
     }
     
     @objc func eventButtonPressed() {
-        
+        let nextController = ConfigTypeController(isHabit: false)
+     //   nextController.delegate = self
+        present(nextController, animated: true)
+    }
+}
+
+extension TrackerTypeController: TrackerTypeControllerDelegate {
+    func newTrackerController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: Int) {
+        delegate?.newTrackerController(self, didFillTracker: tracker, for: categoryIndex)
     }
 }
 
@@ -48,7 +63,7 @@ final class TrackerTypeController: UIViewController {
 
 private extension TrackerTypeController {
     //MARK: Title configuration
-     func stupTitle() {
+     func setupTitle() {
         view.addSubview(titleLabel)
         setTitleConstraints()
     }
@@ -64,9 +79,9 @@ private extension TrackerTypeController {
     
      func setupStackView() {
         view.addSubview(stackView)
+         addStackViewConstarints()
+         addHabitButton()
         addEventButton()
-        addHabitButton()
-        addStackViewConstarints()
     }
     
      func addHabitButton() {
@@ -80,6 +95,7 @@ private extension TrackerTypeController {
         let EventButton = TypeButton()
         EventButton.setTitle("Нерегулярное событие", for: .normal)
         EventButton.addTarget(self, action: #selector(eventButtonPressed), for: .touchUpInside)
+         stackView.addArrangedSubview(EventButton)
     }
     
      func addStackViewConstarints() {

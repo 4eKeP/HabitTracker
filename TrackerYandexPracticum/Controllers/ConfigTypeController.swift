@@ -34,6 +34,9 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var titleTextField = {
         let textField = UITextField()
+        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 10))
+        textField.leftViewMode = .always
+        textField.leftView = spacer
         textField.backgroundColor = .ypBackground
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
@@ -130,6 +133,16 @@ final class ConfigTypeController: UIViewController {
         return button
     }()
     
+    private var schedule = [Bool](repeating: false, count: 7)
+    
+    private var formIsFulfilled = false {
+      didSet {
+        if formIsFulfilled {
+          updateCreateButtonState()
+        }
+      }
+    }
+    
     init(isHabit: Bool) {
         self.isHabit = isHabit
         super.init(nibName: nil, bundle: nil)
@@ -142,6 +155,15 @@ final class ConfigTypeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if !isHabit {
+            schedule = schedule.map { $0 || true }
+            
+        }
+        view.backgroundColor = .ypWhite
+        setupUI()
+        titleTextField.delegate = self
+        titleTextField.becomeFirstResponder()
     }
     
     @objc private func categoryButtonPressed() {
@@ -160,11 +182,31 @@ final class ConfigTypeController: UIViewController {
         
     }
     
+    func updateCreateButtonState() {
+        createButton.backgroundColor = formIsFulfilled ? .ypBlack : .ypGray
+        createButton.isEnabled = formIsFulfilled ? true : false
+    }
+    
+}
+
+// MARK: - UITextFieldDelegate
+
+extension ConfigTypeController: UITextFieldDelegate {
+    
 }
 
 // MARK: - UI Configuration
 
 private extension ConfigTypeController {
+    // MARK: - SetupUI
+    
+    func setupUI() {
+        setTitle()
+        setTitle()
+        setupTextField()
+        setupSettings()
+        setupButtons()
+    }
     
     // MARK: - Title Lable config
     func setTitle() {
