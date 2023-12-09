@@ -117,11 +117,9 @@ final class TrackerCell: UICollectionViewCell {
     
     func isDone(_ isDone: Bool) {
         counterImageView.image = isDone ? UIImage(systemName: "checkmark") : UIImage(systemName: "plus")
-        counterImageView.alpha = isDone ? 0.7 : 1
+        counterButton.alpha = isDone ? 0.7 : 1
     }
 }
-
-
    
 
 // MARK: - UISetup

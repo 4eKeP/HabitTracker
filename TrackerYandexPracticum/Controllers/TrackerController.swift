@@ -9,20 +9,6 @@ import UIKit
 
 final class TrackerController: UIViewController {
     
-    //    private lazy var placeholderImage: UIImageView = {
-    //        var view = UIImageView()
-    //        let image = UIImage(named: "tracker_placeholder")
-    //        view = UIImageView(image: image)
-    //        return view
-    //    }()
-    //
-    //    private lazy var placeholderLable: UILabel = {
-    //        var lable = UILabel()
-    //        lable.text = "Добавьте первый трекер"
-    //        lable.textColor = UIColor.black
-    //        lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-    //        return lable
-    //    }()
     private lazy var emptyView = {
         var view = EmptyView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -30,22 +16,12 @@ final class TrackerController: UIViewController {
     }()
     
     private lazy var collectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(TrackerCell.self,
                                 forCellWithReuseIdentifier: cellIdentifer)
         collectionView.register(SectionHeader.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: headerIdentifer)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.backgroundColor = .ypWhite
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        //        collectionView.scrollIndicatorInsets = UIEdgeInsets(
-        //          top: 4,
-        //          left: 4,
-        //          bottom: 4,
-        //          right: 4
-        //        )
         return collectionView
     }()
     
@@ -103,6 +79,11 @@ final class TrackerController: UIViewController {
         updateCollectionView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateCollectionView()
+    }
+    
     @objc func addButtonClicked() {
         let nextController = TrackerTypeController()
         nextController.modalPresentationStyle = .popover
@@ -124,14 +105,13 @@ final class TrackerController: UIViewController {
         func fetchTracker(from tracker: Tracker, forIndex Index: Int) {
             factory.addTracker(tracker, toCategory: Index)
             fetchVisibleCategoriesfromFactory()
-            
+            updateCollectionView()
         }
         func fetchVisibleCategoriesfromFactory() {
             clearVisibleCategories()
             for factoryCategory in factory.categories where !factoryCategory.trackers.isEmpty {
                 visibleCategories.append(factoryCategory)
             }
-            updateCollectionView()
         }
         
         func clearVisibleCategories() {
@@ -155,8 +135,10 @@ final class TrackerController: UIViewController {
                             currentTrackers.append(tracker)
                         }
                     case .day:
-                        let trackerHaveThisDay = tracker.schedule
-                        
+                        let trackerHaveThisDay = tracker.schedule[weekday - 1]
+                        if trackerHaveThisDay {
+                            currentTrackers.append(tracker)
+                        }
                     }
                 }
                 if !currentTrackers.isEmpty {
@@ -196,10 +178,10 @@ extension TrackerController: UISearchBarDelegate {
 // MARK: - TrackerTypeControllerDelegate
 
 extension TrackerController: TrackerTypeControllerDelegate {
-    func newTrackerController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: Int) {
+    func trackerTypeController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: Int) {
         dismiss(animated: true) {
             [weak self] in
-            guard let self else { return }
+            guard let self = self else { return }
             self.fetchTracker(from: tracker, forIndex: categoryIndex)
         }
     }
@@ -208,6 +190,7 @@ extension TrackerController: TrackerTypeControllerDelegate {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension TrackerController: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: (collectionView.bounds.width - 41) / trackersPerLine,
                height: 148)
@@ -238,7 +221,7 @@ extension TrackerController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        visibleCategories.isEmpty ? 0 : visibleCategories[section].trackers.count
+        return visibleCategories.isEmpty ? 0 : visibleCategories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -340,8 +323,17 @@ private extension TrackerController {
     //MARK: - collectionView
 
     func addCollectionView() {
+        configCollectionView()
         view.addSubview(collectionView)
         configCollectionViewConstraints()
+    }
+    
+    func configCollectionView() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.backgroundColor = .ypWhite
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
     }
     
     func configCollectionViewConstraints() {

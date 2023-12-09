@@ -27,6 +27,7 @@
 		84D5571D2B22189500EBAE8D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5571C2B22189500EBAE8D /* Date+Extensions.swift */; };
 		84D5571F2B221C0F00EBAE8D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5571E2B221C0F00EBAE8D /* Constants.swift */; };
 		84D557212B23635900EBAE8D /* Controller+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557202B23635900EBAE8D /* Controller+Extension.swift */; };
+		84D557262B241F7000EBAE8D /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557252B241F7000EBAE8D /* ScheduleController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		84D5571C2B22189500EBAE8D /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		84D5571E2B221C0F00EBAE8D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		84D557202B23635900EBAE8D /* Controller+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Controller+Extension.swift"; sourceTree = "<group>"; };
+		84D557252B241F7000EBAE8D /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				847242B52B12322D002B5ADF /* TabBarController.swift */,
 				84D5570E2B1F632C00EBAE8D /* TrackerTypeController.swift */,
 				84D557132B1F8C0E00EBAE8D /* ConfigTypeController.swift */,
+				84D557252B241F7000EBAE8D /* ScheduleController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 				84D557072B1E36CE00EBAE8D /* TrackerCell.swift in Sources */,
 				84D5570D2B1E4F7500EBAE8D /* TrackersFactory.swift in Sources */,
 				84D557162B20167C00EBAE8D /* SettingsButton.swift in Sources */,
+				84D557262B241F7000EBAE8D /* ScheduleController.swift in Sources */,
 				84D557142B1F8C0E00EBAE8D /* ConfigTypeController.swift in Sources */,
 				84D5570A2B1E371200EBAE8D /* SectionHeader.swift in Sources */,
 				84D5571D2B22189500EBAE8D /* Date+Extensions.swift in Sources */,

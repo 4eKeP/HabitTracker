@@ -15,6 +15,7 @@ final class TrackersFactory {
     
     static let shared = TrackersFactory()
     
+    
     func addTracker(_ tracker: Tracker, toCategory index: Int) {
         addNewTracker(tracker: tracker)
         addNewComplitedTracker(tracker: tracker)

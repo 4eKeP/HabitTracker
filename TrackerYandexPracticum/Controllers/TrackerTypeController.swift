@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TrackerTypeControllerDelegate: AnyObject {
-      func newTrackerController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: Int)
+      func trackerTypeController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: Int)
 }
 
 final class TrackerTypeController: UIViewController {
@@ -42,22 +42,23 @@ final class TrackerTypeController: UIViewController {
     
     @objc func habitButtonPressed() {
         let nextController = ConfigTypeController(isHabit: true)
-     //   nextController.delegate = self
+        nextController.delegate = self
         present(nextController, animated: true)
     }
     
     @objc func eventButtonPressed() {
         let nextController = ConfigTypeController(isHabit: false)
-     //   nextController.delegate = self
+        nextController.delegate = self
         present(nextController, animated: true)
     }
 }
 
-extension TrackerTypeController: TrackerTypeControllerDelegate {
-    func newTrackerController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: Int) {
-        delegate?.newTrackerController(self, didFillTracker: tracker, for: categoryIndex)
+extension TrackerTypeController: ConfigTypeControllerDelegate {
+    func configTypeControllerController(_ viewController: ConfigTypeController, didFilledTracker tracker: Tracker, for categoryIndex: Int) {
+        delegate?.trackerTypeController(self, didFillTracker: tracker, for: categoryIndex)
     }
 }
+    
 
 // MARK: - View configuration
 

@@ -7,20 +7,22 @@
 
 import UIKit
 
+protocol ConfigTypeControllerDelegate: AnyObject {
+    func configTypeControllerController(_ viewController: ConfigTypeController, didFilledTracker tracker: Tracker, for categoryIndex: Int)
+}
+
 final class ConfigTypeController: UIViewController {
     
-    var isHabit: Bool
-    
     private lazy var settingsViewWidth: CGFloat = {
-      view.frame.width - 32
+        view.frame.width - 32
     }()
-
+    
     private lazy var settingsViewHeight: CGFloat = {
-      return isHabit ? 150 : 75
+        return isHabit ? 150 : 75
     }()
     
     private lazy var buttonViewWidth: CGFloat = {
-      view.frame.width - 40
+        view.frame.width - 40
     }()
     
     private lazy var titleLabel = {
@@ -49,9 +51,11 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var warningLabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Ограничение 38 символов"
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         label.textAlignment = .center
+        label.textColor = .ypRed
         label.isHidden = true
         return label
     }()
@@ -72,10 +76,10 @@ final class ConfigTypeController: UIViewController {
         view.layer.masksToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.frame = CGRect(
-          x: 0,
-          y: 0,
-          width: settingsViewWidth,
-          height: settingsViewHeight
+            x: 0,
+            y: 0,
+            width: settingsViewWidth,
+            height: settingsViewHeight
         )
         return view
     }()
@@ -135,13 +139,50 @@ final class ConfigTypeController: UIViewController {
     
     private var schedule = [Bool](repeating: false, count: 7)
     
+    private let textFieldLimit = 38
+    
     private var formIsFulfilled = false {
-      didSet {
-        if formIsFulfilled {
-          updateCreateButtonState()
+        didSet {
+            if formIsFulfilled {
+                updateCreateButtonState()
+            }
         }
-      }
     }
+    
+    private var trackerNameIsFulfilled = false {
+        didSet {
+            chekConfigState()
+        }
+    }
+    
+    private var categoryIsSelected = false {
+        didSet {
+            chekConfigState()
+        }
+    }
+    
+    private var scheduleIsFulfilled = false {
+        didSet {
+            chekConfigState()
+        }
+    }
+    // выбераеться рандомно для проверки
+    private var emojiIsSelected = true
+    private var colorIsSelected = true
+    
+    private var isHabit: Bool
+    
+    private var selectedCategoryIndex = 0
+    
+    private var userInput = "" {
+        didSet {
+            trackerNameIsFulfilled = true
+        }
+    }
+    
+    private let factory = TrackersFactory.shared
+    
+    weak var delegate: ConfigTypeControllerDelegate?
     
     init(isHabit: Bool) {
         self.isHabit = isHabit
@@ -155,44 +196,116 @@ final class ConfigTypeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.hideKeyboardWhenTappedAround()
         if !isHabit {
             schedule = schedule.map { $0 || true }
-            
+            scheduleIsFulfilled = true
         }
         view.backgroundColor = .ypWhite
         setupUI()
         titleTextField.delegate = self
         titleTextField.becomeFirstResponder()
     }
-    
+    //
     @objc private func categoryButtonPressed() {
-        
+        //заглушка для категории
+        selectedCategoryIndex = Int.random(in: 0..<factory.categories.count)
+        let selectedCategory = factory.categories[selectedCategoryIndex]
+        categoryButton.setSecondaryLable(text: selectedCategory.categoryName)
+        categoryIsSelected = true
     }
     
     @objc private func scheduleButtonPressed() {
-        
+        let nextController = ScheduleController(with: schedule)
+        nextController.delegate = self
+        present(nextController, animated: true)
     }
     
     @objc private func cancelButtonPressed() {
-        
+        dismiss(animated: true)
     }
     
     @objc private func createButtonPressed() {
-        
+        let newTracker = Tracker(id: UUID(),
+                                 name: userInput,
+                                 // заглушка для цвета и эмоджи
+                                 color: Int.random(in: 0...17),
+                                 emoji: Int.random(in: 0...17),
+                                 schedule: schedule)
+        delegate?.configTypeControllerController(self, didFilledTracker: newTracker, for: selectedCategoryIndex)
     }
     
-    func updateCreateButtonState() {
+    private func updateCreateButtonState() {
         createButton.backgroundColor = formIsFulfilled ? .ypBlack : .ypGray
         createButton.isEnabled = formIsFulfilled ? true : false
     }
     
+    private func chekConfigState() {
+        formIsFulfilled = trackerNameIsFulfilled && categoryIsSelected && scheduleIsFulfilled
+        && emojiIsSelected && colorIsSelected
+    }
+    
+    private func fetchSchedule(from schedule: [Bool]) {
+        self.schedule = schedule
+        let days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+        let fullWeek = [true, true, true, true, true, true, true]
+        let workDays = [true, true, true, true, true, false, false]
+        let weekends = [false, false, false, false, false, true, true]
+        var finalSchadule: [String] = []
+        switch schedule {
+        case fullWeek:
+            scheduleButton.setSecondaryLable(text: "Каждый день")
+        case workDays:
+            scheduleButton.setSecondaryLable(text: "Будни")
+        case weekends:
+            scheduleButton.setSecondaryLable(text: "Выходные")
+        default:
+            for index in 0..<schedule.count where schedule[index] {
+                finalSchadule.append(days[index])
+            }
+            let finalSchaduleWithSeparation = finalSchadule.joined(separator: ", ")
+            scheduleButton.setSecondaryLable(text: finalSchaduleWithSeparation)
+        }
+        scheduleIsFulfilled = true
+    }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension ConfigTypeController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        userInput = textField.text ?? ""
+        let currentCharacterCount = textField.text?.count ?? 0
+        if range.length + range.location > currentCharacterCount {
+            return false
+        }
+        let newLength = currentCharacterCount + string.count - range.length
+        if newLength >= textFieldLimit {
+            warningLabel.isHidden = false
+        } else {
+            warningLabel.isHidden = true
+        }
+        return newLength <= textFieldLimit
+    }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        userInput = textField.text ?? ""
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        true
+    }
+}
+
+extension ConfigTypeController: ScheduleControllerDelegate {
+    func scheduleController(_ viewController: ScheduleController, didSelectSchedule schedule: [Bool]) {
+        dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.fetchSchedule(from: schedule)
+        }
+    }
 }
 
 // MARK: - UI Configuration
@@ -211,19 +324,19 @@ private extension ConfigTypeController {
     // MARK: - Title Lable config
     func setTitle() {
         view.addSubview(titleLabel)
-       setTitleConstraits()
+        setTitleConstraits()
     }
-     func setTitleConstraits() {
+    func setTitleConstraits() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 28),
-          titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-          titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
     
     // MARK: - textField config
     
-     func setupTextField() {
+    func setupTextField() {
         view.addSubview(textFieldStackView)
         textFieldStackView.addArrangedSubview(titleTextField)
         textFieldStackView.addArrangedSubview(warningLabel)
@@ -232,37 +345,37 @@ private extension ConfigTypeController {
         setTextFieldStackViewConstraints()
     }
     
-     func setTitleTextFieldConstraints() {
+    func setTitleTextFieldConstraints() {
         NSLayoutConstraint.activate([
-          titleTextField.topAnchor.constraint(equalTo: textFieldStackView.topAnchor),
-          titleTextField.leadingAnchor.constraint(equalTo: textFieldStackView.leadingAnchor),
-          titleTextField.trailingAnchor.constraint(equalTo: textFieldStackView.trailingAnchor),
-          titleTextField.heightAnchor.constraint(equalToConstant: 75)
+            titleTextField.topAnchor.constraint(equalTo: textFieldStackView.topAnchor),
+            titleTextField.leadingAnchor.constraint(equalTo: textFieldStackView.leadingAnchor),
+            titleTextField.trailingAnchor.constraint(equalTo: textFieldStackView.trailingAnchor),
+            titleTextField.heightAnchor.constraint(equalToConstant: 75)
         ])
     }
     
-     func setWarningLabelConstraints() {
+    func setWarningLabelConstraints() {
         NSLayoutConstraint.activate([
-          warningLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
-          warningLabel.leadingAnchor.constraint(equalTo: textFieldStackView.leadingAnchor),
-          warningLabel.trailingAnchor.constraint(equalTo: textFieldStackView.trailingAnchor),
-          warningLabel.heightAnchor.constraint(equalToConstant: 37.5)
+            warningLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
+            warningLabel.leadingAnchor.constraint(equalTo: textFieldStackView.leadingAnchor),
+            warningLabel.trailingAnchor.constraint(equalTo: textFieldStackView.trailingAnchor),
+            warningLabel.heightAnchor.constraint(equalToConstant: 37.5)
         ])
     }
     
-     func setTextFieldStackViewConstraints() {
+    func setTextFieldStackViewConstraints() {
         NSLayoutConstraint.activate([
             textFieldStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-          textFieldStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-          textFieldStackView.topAnchor.constraint(
-            equalTo: titleLabel.bottomAnchor,
-            constant: 24)
+            textFieldStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            textFieldStackView.topAnchor.constraint(
+                equalTo: titleLabel.bottomAnchor,
+                constant: 24)
         ])
     }
     
-   //MARK: - settings fields config
+    //MARK: - settings fields config
     
-     func setupSettings() {
+    func setupSettings() {
         view.addSubview(settingsView)
         configSettingsConstraints()
         settingsView.addSubview(categoryButton)
@@ -273,7 +386,7 @@ private extension ConfigTypeController {
         }
     }
     
-     func configSettingsConstraints() {
+    func configSettingsConstraints() {
         NSLayoutConstraint.activate([
             settingsView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             settingsView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -284,23 +397,23 @@ private extension ConfigTypeController {
     
     //MARK: - buttons config
     
-     func setupButtons() {
+    func setupButtons() {
         view.addSubview(buttonsStackView)
-        
+        updateCreateButtonState()
         buttonsStackView.addArrangedSubview(cancelButton)
         buttonsStackView.addArrangedSubview(createButton)
         configButtonsConstraints()
     }
     
-     func configButtonsConstraints() {
+    func configButtonsConstraints() {
         NSLayoutConstraint.activate([
             buttonsStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-          buttonsStackView.widthAnchor.constraint(equalToConstant: buttonViewWidth),
-          buttonsStackView.heightAnchor.constraint(equalToConstant: 60),
-          buttonsStackView.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-            constant: -16
-          )
+            buttonsStackView.widthAnchor.constraint(equalToConstant: buttonViewWidth),
+            buttonsStackView.heightAnchor.constraint(equalToConstant: 60),
+            buttonsStackView.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -16
+            )
         ])
     }
 }
