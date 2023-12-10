@@ -28,6 +28,8 @@ final class StatsController: UIViewController {
     
     private lazy var emptyView = EmptyView()
     
+    private let spacingFromTitle: CGFloat = 56
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -51,7 +53,7 @@ final class StatsController: UIViewController {
     
     private func addConstrains() {
         NSLayoutConstraint.activate([
-            emptyView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 56),
+            emptyView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: spacingFromTitle),
             emptyView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             emptyView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             emptyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)

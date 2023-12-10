@@ -18,10 +18,10 @@ final class TrackerController: UIViewController {
     private lazy var collectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(TrackerCell.self,
-                                forCellWithReuseIdentifier: cellIdentifer)
+                                forCellWithReuseIdentifier: TrackerCell.Identifer)
         collectionView.register(SectionHeader.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                withReuseIdentifier: headerIdentifer)
+                                withReuseIdentifier: SectionHeader.Identifer)
         return collectionView
     }()
     
@@ -31,7 +31,9 @@ final class TrackerController: UIViewController {
         datePicker.preferredDatePickerStyle = .compact
         datePicker.backgroundColor = .ypBackground
         datePicker.tintColor = .ypBlue
+        datePicker.locale = Locale(identifier: "ru_RU")
         datePicker.setDate(currentDate, animated: true)
+        datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         return datePicker
     }()
     
@@ -53,11 +55,15 @@ final class TrackerController: UIViewController {
         }
     }
     
-    private let cellIdentifer = "cell"
-    
-    private let headerIdentifer = "header"
-    
     private let trackersPerLine: CGFloat = 2
+    
+    private let smallSpacing: CGFloat = 9
+    
+    private let spacing: CGFloat = 16
+    
+    private let collectionHeight:CGFloat = 148
+    
+    private let sectionHeight: CGFloat = 46
     
     private let factory = TrackersFactory.shared
     
@@ -90,6 +96,12 @@ final class TrackerController: UIViewController {
         nextController.delegate = self
         navigationController?.present(nextController, animated: true)
     }
+    
+    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+      currentDate = sender.date
+        searchInTrackers(.day)
+      dismiss(animated: true)
+    }
 }
     // MARK: - private func
     private extension TrackerController {
@@ -112,6 +124,7 @@ final class TrackerController: UIViewController {
             for factoryCategory in factory.categories where !factoryCategory.trackers.isEmpty {
                 visibleCategories.append(factoryCategory)
             }
+            updateCollectionView()
         }
         
         func clearVisibleCategories() {
@@ -192,8 +205,8 @@ extension TrackerController: TrackerTypeControllerDelegate {
 extension TrackerController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: (collectionView.bounds.width - 41) / trackersPerLine,
-               height: 148)
+        CGSize(width: (collectionView.bounds.width - smallSpacing - 2 * spacing) / trackersPerLine,
+               height: collectionHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -204,11 +217,11 @@ extension TrackerController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        CGSize(width: collectionView.bounds.width, height: 46)
+        CGSize(width: collectionView.bounds.width, height: sectionHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: .zero, left: 16, bottom: .zero, right: 16)
+        UIEdgeInsets(top: .zero, left: spacing, bottom: .zero, right: spacing)
     }
 }
 
@@ -226,7 +239,7 @@ extension TrackerController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifer, for: indexPath) as? TrackerCell else { return UICollectionViewCell() }
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.Identifer, for: indexPath) as? TrackerCell else { return UICollectionViewCell() }
         
         let currentTracker = visibleCategories[indexPath.section].trackers[indexPath.row]
         let daysSettings = factory.getNumberOfDays(TrackerID: currentTracker.id, date: currentDate)
@@ -242,7 +255,7 @@ extension TrackerController: UICollectionViewDataSource {
         var id: String
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            id = headerIdentifer
+            id = SectionHeader.Identifer
         default:
             id = ""
         }

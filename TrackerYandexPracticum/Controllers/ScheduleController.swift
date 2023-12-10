@@ -65,6 +65,12 @@ final class ScheduleController: UIViewController {
     
     private let spacing: CGFloat = 16
     
+    private let titleSpacing: CGFloat = 28
+    
+    private let bottomSpacing: CGFloat = 24
+    
+    private let buttonHeight: CGFloat = 60
+    
     private let numberOfDays = 7
     private let daysName = [
         "Понедельник",
@@ -140,7 +146,7 @@ private extension ScheduleController {
     
     func configHeaderConstraints() {
         NSLayoutConstraint.activate([
-            headerLable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 28),
+            headerLable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: titleSpacing),
             headerLable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             headerLable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
@@ -191,7 +197,7 @@ private extension ScheduleController {
     
     func configScheduleViewConstraints() {
         NSLayoutConstraint.activate([
-            scheduleView.topAnchor.constraint(equalTo: headerLable.bottomAnchor, constant: 24),
+            scheduleView.topAnchor.constraint(equalTo: headerLable.bottomAnchor, constant: bottomSpacing),
             scheduleView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: spacing),
             scheduleView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -spacing),
             scheduleView.heightAnchor.constraint(equalToConstant: scheduleViewHeight)
@@ -211,7 +217,7 @@ private extension ScheduleController {
         NSLayoutConstraint.activate([
             doneButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             doneButton.widthAnchor.constraint(equalToConstant: buttonWidth),
-            doneButton.heightAnchor.constraint(equalToConstant: 60),
+            doneButton.heightAnchor.constraint(equalToConstant: buttonHeight),
             doneButton.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
                 constant: -spacing)

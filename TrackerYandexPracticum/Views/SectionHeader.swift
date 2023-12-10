@@ -9,6 +9,12 @@ import UIKit
 
 final class SectionHeader: UICollectionReusableView {
     
+    static let Identifer = "trackersCollectionHeaderIdentifer"
+    
+    private let spacing: CGFloat = 16
+    private let spacingToTracker: CGFloat = 12
+    private let leadingSection: CGFloat = 28
+    
     let sectionTitle: UILabel = {
         let lable = UILabel()
         lable.translatesAutoresizingMaskIntoConstraints = false
@@ -30,9 +36,9 @@ final class SectionHeader: UICollectionReusableView {
         addSubview(sectionTitle)
         
         NSLayoutConstraint.activate([
-            sectionTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
-            sectionTitle.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            sectionTitle.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
+            sectionTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: leadingSection),
+            sectionTitle.topAnchor.constraint(equalTo: topAnchor, constant: spacing),
+            sectionTitle.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -spacingToTracker)
         ])
     }
 }

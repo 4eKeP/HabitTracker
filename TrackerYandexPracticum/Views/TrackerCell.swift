@@ -13,6 +13,8 @@ protocol TrackerCellDelegate: AnyObject {
 
 final class TrackerCell: UICollectionViewCell {
     
+    static let Identifer = "TrackerCollectionCellIdentifer"
+    
     // MARK: - properties
     private lazy var cardView: UIView = {
         let view = UIView()

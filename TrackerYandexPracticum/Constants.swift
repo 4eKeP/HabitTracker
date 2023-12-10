@@ -17,12 +17,4 @@ enum Constants {
       .ypHabitColor07, .ypHabitColor08, .ypHabitColor09, .ypHabitColor10, .ypHabitColor11, .ypHabitColor12,
       .ypHabitColor13, .ypHabitColor14, .ypHabitColor15, .ypHabitColor16, .ypHabitColor17, .ypHabitColor18
     ]
-    
-    static let dateFormat = "dd.MM.YYYY"
-    
-    static let dateFormatter: DateFormatter = {
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = Constants.dateFormat
-      return dateFormatter
-    }()
 }

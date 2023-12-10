@@ -14,16 +14,28 @@ protocol ConfigTypeControllerDelegate: AnyObject {
 final class ConfigTypeController: UIViewController {
     
     private lazy var settingsViewWidth: CGFloat = {
-        view.frame.width - 32
+        view.frame.width - 2 * leadingSpacing
     }()
     
     private lazy var settingsViewHeight: CGFloat = {
-        return isHabit ? 150 : 75
+        return isHabit ? settingHeight * 2 : settingHeight
     }()
     
     private lazy var buttonViewWidth: CGFloat = {
-        view.frame.width - 40
+        view.frame.width - 2 * leadingButton
     }()
+    
+    private let leadingButton: CGFloat = 20
+    
+    private let leadingSpacing: CGFloat = 16
+    
+    private let settingHeight: CGFloat = 75
+    
+    private let titleSpacing: CGFloat = 28
+    
+    private let bottomSpacing: CGFloat = 24
+    
+    private let buttonHeight: CGFloat = 60
     
     private lazy var titleLabel = {
         let titleLable = UILabel()
@@ -91,7 +103,7 @@ final class ConfigTypeController: UIViewController {
         button.frame = CGRect(x: 0,
                               y: 0,
                               width: settingsViewWidth,
-                              height: 75
+                              height: settingHeight
         )
         return button
     }()
@@ -101,9 +113,9 @@ final class ConfigTypeController: UIViewController {
         button.setPrimaryLable(text: "Расписание")
         button.addTarget(self, action: #selector(scheduleButtonPressed), for: .touchUpInside)
         button.frame = CGRect(x: 0,
-                              y: 75,
+                              y: settingHeight,
                               width: settingsViewWidth,
-                              height: 75
+                              height: settingHeight
         )
         return button
     }()
@@ -170,6 +182,7 @@ final class ConfigTypeController: UIViewController {
     private var emojiIsSelected = true
     private var colorIsSelected = true
     
+    //MARK: На будущее сделать из isHabit энум что бы легче добавлять новые типы привычек
     private var isHabit: Bool
     
     private var selectedCategoryIndex = 0
@@ -328,7 +341,7 @@ private extension ConfigTypeController {
     }
     func setTitleConstraits() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 28),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: titleSpacing),
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
@@ -350,7 +363,7 @@ private extension ConfigTypeController {
             titleTextField.topAnchor.constraint(equalTo: textFieldStackView.topAnchor),
             titleTextField.leadingAnchor.constraint(equalTo: textFieldStackView.leadingAnchor),
             titleTextField.trailingAnchor.constraint(equalTo: textFieldStackView.trailingAnchor),
-            titleTextField.heightAnchor.constraint(equalToConstant: 75)
+            titleTextField.heightAnchor.constraint(equalToConstant: settingHeight)
         ])
     }
     
@@ -359,17 +372,17 @@ private extension ConfigTypeController {
             warningLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
             warningLabel.leadingAnchor.constraint(equalTo: textFieldStackView.leadingAnchor),
             warningLabel.trailingAnchor.constraint(equalTo: textFieldStackView.trailingAnchor),
-            warningLabel.heightAnchor.constraint(equalToConstant: 37.5)
+            warningLabel.heightAnchor.constraint(equalToConstant: settingHeight / 2)
         ])
     }
     
     func setTextFieldStackViewConstraints() {
         NSLayoutConstraint.activate([
-            textFieldStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            textFieldStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            textFieldStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: leadingSpacing),
+            textFieldStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -leadingSpacing),
             textFieldStackView.topAnchor.constraint(
                 equalTo: titleLabel.bottomAnchor,
-                constant: 24)
+                constant: bottomSpacing)
         ])
     }
     
@@ -381,17 +394,17 @@ private extension ConfigTypeController {
         settingsView.addSubview(categoryButton)
         if isHabit {
             let separator = Separators()
-            separator.addSeparators(for: settingsView, width: settingsViewWidth - 32, times: 1)
+            separator.addSeparators(for: settingsView, width: settingsViewWidth - leadingSpacing * 2, times: 1)
             settingsView.addSubview(scheduleButton)
         }
     }
     
     func configSettingsConstraints() {
         NSLayoutConstraint.activate([
-            settingsView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            settingsView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            settingsView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: leadingSpacing),
+            settingsView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -leadingSpacing),
             settingsView.heightAnchor.constraint(equalToConstant: settingsViewHeight),
-            settingsView.topAnchor.constraint(equalTo: textFieldStackView.bottomAnchor, constant: 24)
+            settingsView.topAnchor.constraint(equalTo: textFieldStackView.bottomAnchor, constant: bottomSpacing)
         ])
     }
     
@@ -409,10 +422,10 @@ private extension ConfigTypeController {
         NSLayoutConstraint.activate([
             buttonsStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             buttonsStackView.widthAnchor.constraint(equalToConstant: buttonViewWidth),
-            buttonsStackView.heightAnchor.constraint(equalToConstant: 60),
+            buttonsStackView.heightAnchor.constraint(equalToConstant: buttonHeight),
             buttonsStackView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -16
+                constant: -leadingSpacing
             )
         ])
     }
