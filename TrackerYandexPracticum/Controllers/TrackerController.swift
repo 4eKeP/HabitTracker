@@ -117,7 +117,7 @@ final class TrackerController: UIViewController {
         func fetchTracker(from tracker: Tracker, forIndex Index: Int) {
             factory.addTracker(tracker, toCategory: Index)
             fetchVisibleCategoriesfromFactory()
-            updateCollectionView()
+            searchInTrackers(.day)
         }
         func fetchVisibleCategoriesfromFactory() {
             clearVisibleCategories()
