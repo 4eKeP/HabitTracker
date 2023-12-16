@@ -8,17 +8,7 @@
 import Foundation
 
 extension Date {
-  func weekday() -> Int {
-    let systemWeekday = Calendar.current.component(.weekday, from: self)
-    if Calendar.current.firstWeekday == 1 {
-      switch systemWeekday {
-      case 2...7:
-        return systemWeekday - 1
-      default:
-        return 7
-      }
-    } else {
-      return systemWeekday
-    }
+  func weekdayFromMonday() -> Int {
+    [0,7,1,2,3,4,5,6][Calendar.current.component(.weekday, from: self)]
   }
 }

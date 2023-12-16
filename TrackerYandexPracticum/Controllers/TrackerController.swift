@@ -51,7 +51,7 @@ final class TrackerController: UIViewController {
     
     private var currentDate = Date() {
         didSet {
-            weekday = currentDate.weekday()
+            weekday = currentDate.weekdayFromMonday()
         }
     }
     
