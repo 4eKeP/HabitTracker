@@ -149,6 +149,20 @@ final class ConfigTypeController: UIViewController {
         return button
     }()
     
+    private lazy var emojiCollection = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.register(EmojiCell.self, forCellWithReuseIdentifier: EmojiCell.Identifer)
+        collection.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.Identifer)
+        return collection
+    }()
+    
+    private lazy var colorCollection = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.register(ColorCell.self, forCellWithReuseIdentifier: ColorCell.Identifer)
+        collection.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.Identifer)
+        return collection
+    }()
+    
     private var schedule = [Bool](repeating: false, count: 7)
     
     private let textFieldLimit = 38
