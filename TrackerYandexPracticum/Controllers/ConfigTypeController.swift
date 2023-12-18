@@ -45,7 +45,8 @@ final class ConfigTypeController: UIViewController {
     
     private let configHeight: CGFloat = 20
     
-    private lazy var scrollViewHeight: CGFloat = 663
+    private lazy var scrollViewHeight: CGFloat = 841
+    //663
     
     private lazy var titleLabel = {
         let titleLable = UILabel()
@@ -174,19 +175,19 @@ final class ConfigTypeController: UIViewController {
     }()
     
     private lazy var contentScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentSize = CGSize(width: view.frame.width,
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.contentSize = CGSize(width: view.frame.width,
                                   height: scrollViewHeight)
-        return view
+        return scrollView
     }()
     
     private lazy var contentStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .vertical
-        view.spacing = bottomSpacing
-        return view
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = bottomSpacing
+        return stackView
     }()
     
     private var schedule = [Bool](repeating: false, count: 7)
@@ -542,7 +543,7 @@ private extension ConfigTypeController {
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentStackView)
         configScrollViewConstraints()
-        configStackViewConstraints()
+    //    configStackViewConstraints()
     }
     
     func configScrollViewConstraints() {
@@ -594,10 +595,10 @@ private extension ConfigTypeController {
     
     func setTextFieldStackViewConstraints() {
         NSLayoutConstraint.activate([
-            textFieldStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: leadingSpacing),
-            textFieldStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -leadingSpacing),
+            textFieldStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingSpacing),
+            textFieldStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingSpacing),
             textFieldStackView.topAnchor.constraint(
-                equalTo: titleLabel.bottomAnchor,
+                equalTo: contentStackView.topAnchor,
                 constant: bottomSpacing)
         ])
     }
@@ -617,8 +618,8 @@ private extension ConfigTypeController {
     
     func configSettingsConstraints() {
         NSLayoutConstraint.activate([
-            settingsView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: leadingSpacing),
-            settingsView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -leadingSpacing),
+            settingsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingSpacing),
+            settingsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingSpacing),
             settingsView.heightAnchor.constraint(equalToConstant: settingsViewHeight),
        //     settingsView.topAnchor.constraint(equalTo: textFieldStackView.bottomAnchor, constant: bottomSpacing)
         ])
@@ -685,11 +686,11 @@ private extension ConfigTypeController {
     
     func configButtonsConstraints() {
         NSLayoutConstraint.activate([
-            buttonsStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            buttonsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonsStackView.widthAnchor.constraint(equalToConstant: buttonViewWidth),
             buttonsStackView.heightAnchor.constraint(equalToConstant: buttonHeight),
             buttonsStackView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                equalTo: contentStackView.bottomAnchor,
                 constant: -leadingSpacing
             )
         ])
