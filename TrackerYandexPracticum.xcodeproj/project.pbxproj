@@ -17,6 +17,7 @@
 		849C162C2B2F2AE6009D3E87 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C162B2B2F2AE6009D3E87 /* EmojiCell.swift */; };
 		849C162E2B2F2DE0009D3E87 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C162D2B2F2DE0009D3E87 /* ColorCell.swift */; };
 		849C16302B2F6054009D3E87 /* ConfigHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C162F2B2F6054009D3E87 /* ConfigHeader.swift */; };
+		849D20B12B36AD07005F4576 /* TrackerCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 849D20AF2B36AD07005F4576 /* TrackerCoreData.xcdatamodeld */; };
 		84A240212B18D0CB00E6C059 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A240202B18D0CB00E6C059 /* Tracker.swift */; };
 		84D557072B1E36CE00EBAE8D /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557062B1E36CE00EBAE8D /* TrackerCell.swift */; };
 		84D5570A2B1E371200EBAE8D /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557092B1E371200EBAE8D /* SectionHeader.swift */; };
@@ -46,6 +47,7 @@
 		849C162B2B2F2AE6009D3E87 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		849C162D2B2F2DE0009D3E87 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		849C162F2B2F6054009D3E87 /* ConfigHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigHeader.swift; sourceTree = "<group>"; };
+		849D20B02B36AD07005F4576 /* TrackerCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerCoreData.xcdatamodel; sourceTree = "<group>"; };
 		84A240202B18D0CB00E6C059 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		84D557062B1E36CE00EBAE8D /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		84D557092B1E371200EBAE8D /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				84A240202B18D0CB00E6C059 /* Tracker.swift */,
+				849D20AF2B36AD07005F4576 /* TrackerCoreData.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 			files = (
 				84A240212B18D0CB00E6C059 /* Tracker.swift in Sources */,
 				84D5571F2B221C0F00EBAE8D /* Constants.swift in Sources */,
+				849D20B12B36AD07005F4576 /* TrackerCoreData.xcdatamodeld in Sources */,
 				849C16302B2F6054009D3E87 /* ConfigHeader.swift in Sources */,
 				849C162E2B2F2DE0009D3E87 /* ColorCell.swift in Sources */,
 				849C162C2B2F2AE6009D3E87 /* EmojiCell.swift in Sources */,
@@ -469,6 +473,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		849D20AF2B36AD07005F4576 /* TrackerCoreData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				849D20B02B36AD07005F4576 /* TrackerCoreData.xcdatamodel */,
+			);
+			currentVersion = 849D20B02B36AD07005F4576 /* TrackerCoreData.xcdatamodel */;
+			path = TrackerCoreData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 843615012B10465E003D1B6F /* Project object */;
 }
