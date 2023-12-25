@@ -65,7 +65,7 @@ final class TrackerController: UIViewController {
     
     private let sectionHeight: CGFloat = 46
     
-    private let factory = TrackersFactory.shared
+    private let factory = TrackersFactoryCD.shared
     
     private var visibleCategories: [TrackerCategory] = []
     

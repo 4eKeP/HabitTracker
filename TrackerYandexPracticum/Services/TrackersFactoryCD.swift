@@ -8,12 +8,12 @@
 import Foundation
 
 
-final class TrackersFactory {
+final class TrackersFactoryCD {
     private (set) var trackers: [Tracker] = []
     private (set) var categories: [TrackerCategory] = []
     private (set) var complitedTrackers: [TrackerRecord] = []
     
-    static let shared = TrackersFactory()
+    static let shared = TrackersFactoryCD()
     
     private init() {}
     
@@ -77,7 +77,7 @@ final class TrackersFactory {
     
 }
 
-private extension TrackersFactory {
+private extension TrackersFactoryCD {
     func addNewTracker(tracker: Tracker) {
         trackers.append(tracker)
     }

@@ -258,7 +258,7 @@ final class ConfigTypeController: UIViewController {
         }
     }
     
-    private let factory = TrackersFactory.shared
+    private let factory = TrackersFactoryCD.shared
     
     weak var delegate: ConfigTypeControllerDelegate?
     
