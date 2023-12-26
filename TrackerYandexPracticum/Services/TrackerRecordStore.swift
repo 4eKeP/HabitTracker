@@ -20,7 +20,7 @@ final class TrackerRecordStore {
         self.init(context: context)
     }
     
-    init(context: NSManagedObjectContext) {
+    private init(context: NSManagedObjectContext) {
         self.context = context
     }
     
@@ -67,7 +67,7 @@ private extension TrackerRecordStore {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                assertionFailure("не удалось сохронить context в TrackerRecordStore с ошибкой \(nserror), \(nserror.userInfo)")
+                assertionFailure("не удалось сохранить context в TrackerRecordStore с ошибкой \(nserror), \(nserror.userInfo)")
             }
         }
     }

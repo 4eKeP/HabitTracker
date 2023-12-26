@@ -9,7 +9,10 @@ import Foundation
 
 extension Date {
   func weekdayFromMonday() -> Int {
-    [0,7,1,2,3,4,5,6][Calendar.current.component(.weekday, from: self)]
+      let day = [0,7,1,2,3,4,5,6][Calendar.current.component(.weekday, from: self)]
+      print(day)
+      return day
+  //
   }
     
     func sameDay(_ date: Date) -> Bool {

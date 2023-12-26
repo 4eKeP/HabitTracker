@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                assertionFailure("не удалось сохронить context с ошибкой \(nserror), \(nserror.userInfo)")
+                assertionFailure("не удалось сохранить context с ошибкой \(nserror), \(nserror.userInfo)")
             }
         }
     }
