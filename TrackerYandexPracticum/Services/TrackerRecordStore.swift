@@ -24,7 +24,7 @@ final class TrackerRecordStore {
         self.context = context
     }
     
-    func addNew(recordDate date: Date, toTracker tracker: TrackerCD) {
+    func addNew(recordDate date: Date, toTracker tracker: TrackerCD) throws {
         let TrackerRecordInCD = TrackerRecordCD(context: context)
         TrackerRecordInCD.date = date
         TrackerRecordInCD.tracker = tracker

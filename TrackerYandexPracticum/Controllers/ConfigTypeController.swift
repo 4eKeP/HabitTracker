@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+//изменить для кордаты
 protocol ConfigTypeControllerDelegate: AnyObject {
     func configTypeControllerController(_ viewController: ConfigTypeController, didFilledTracker tracker: Tracker, for categoryIndex: Int)
 }
@@ -287,9 +287,8 @@ final class ConfigTypeController: UIViewController {
     //
     @objc private func categoryButtonPressed() {
         //заглушка для категории
-        selectedCategoryIndex = Int.random(in: 0..<factory.categories.count)
-        let selectedCategory = factory.categories[selectedCategoryIndex]
-        categoryButton.setSecondaryLable(text: selectedCategory.categoryName)
+        selectedCategoryIndex = Int.random(in: 0..<factory.countCategories())
+        categoryButton.setSecondaryLable(text: factory.fetchCategoryName(by: selectedCategoryIndex))
         categoryIsSelected = true
     }
     

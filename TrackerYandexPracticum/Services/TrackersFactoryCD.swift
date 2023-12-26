@@ -9,95 +9,85 @@ import Foundation
 
 
 final class TrackersFactoryCD {
-    private (set) var trackers: [Tracker] = []
-    private (set) var categories: [TrackerCategory] = []
-    private (set) var complitedTrackers: [TrackerRecord] = []
+    
+    private let trackerStore = TrackerStore()
+    private let trackerCategoryStore = TrackerCategoryStore.shared
+    private let trackerRecordStore = TrackerRecordStore()
+    private var currentWeekDay = 0
     
     static let shared = TrackersFactoryCD()
     
-    private init() {}
-    
-    func addTracker(_ tracker: Tracker, toCategory index: Int) {
-        addNewTracker(tracker: tracker)
-        addNewComplitedTracker(tracker: tracker)
-        var currentCtegories = categories
-        let currentCategory = currentCtegories[index]
-        var categoryTrackers = currentCategory.trackers
-        categoryTrackers.append(tracker)
-        let updatedCategory = TrackerCategory(id: currentCategory.id,
-                                              categoryName: currentCategory.categoryName,
-                                              trackers: categoryTrackers)
-        currentCtegories.remove(at: index)
-        currentCtegories.append(updatedCategory)
-        categories = currentCtegories
+    var visibleCategoriesForWeekDay: [TrackerCategory] {
+        let currentCategories = trackerCategoryStore.allCategories
+        var newCategories: [TrackerCategory] = []
+        currentCategories.forEach { category in
+            newCategories.append(TrackerCategory(id: category.id,
+                                                 categoryName: category.categoryName,
+                                                 trackers: category.trackers.filter {$0.schedule[currentWeekDay]}
+                                                )
+            )
+        }
+        return newCategories.filter { !$0.trackers.isEmpty }
     }
     
-    func addNew(category: TrackerCategory) {
-        categories.append(category)
+    var visibleCategoriesForSearch: [TrackerCategory] {
+        trackerCategoryStore.allCategories
     }
     
-    func setTrackerDone(TrackerID id: UUID, date: Date) -> (Int, Bool) {
+    private init() {
+         // clearDataInCD() //раскомментировать для стирания данных в приложении
+    }
+    
+    func countCategories() -> Int {
+        return trackerCategoryStore.countCategories()
+    }
+    
+    func fetchCategoryName(by thisIndex: Int) -> String {
+        trackerCategoryStore.fetchCategoryName(by: thisIndex)
+    }
+    
+    func saveNew(tracker: Tracker, toCategory categoryIndex: Int) {
+        if let category = trackerCategoryStore.fetchCategory(by: categoryIndex) {
+            try? trackerStore.addNew(tracker: tracker, to: category)
+        }
+    }
+    
+    func setTrackerDone(with id: UUID, on date: Date) -> Bool {
         var isCompleted = false
-        var currentComplitedTrackers = complitedTrackers
-        let index = findCompletedTrackerIndex(id: id)
-        let currentCompletedTracker = currentComplitedTrackers[index]
-        var newDates = currentCompletedTracker.dates
-        // проверка наличия переданной даты в массиве newDates. Если дата уже присутствует в массиве, она удаляется. В противном случае, дата добавляется в массив newDates
-        if let newDatesIndex = newDates.firstIndex(where:
-                                                    { Calendar.current.compare($0,
-                                                                               to: date,
-                                                                               toGranularity: .day) == .orderedSame})
-        {
-            newDates.remove(at: newDatesIndex)
+        if isTrackerDone(with: id, on: date) {
+            trackerRecordStore.removeRecord(on: date, toTracker: fetchTracker(byID: id))
         } else {
-            newDates.append(date)
-            isCompleted = true
+            try? trackerRecordStore.addNew(recordDate: date, toTracker: fetchTracker(byID: id))
+            isCompleted.toggle()
         }
-        let updateCopletedTracker = TrackerRecord(id: currentCompletedTracker.id,
-                                                  tracker: currentCompletedTracker.tracker,
-                                                  dates: newDates,
-                                                  days: newDates.count)
-        currentComplitedTrackers.remove(at: index)
-        currentComplitedTrackers.append(updateCopletedTracker)
-        complitedTrackers = currentComplitedTrackers
-        return (newDates.count, isCompleted)
+        return isCompleted
     }
     
-    func getNumberOfDays(TrackerID id: UUID, date: Date) -> (Int, Bool) {
-        let tracker = complitedTrackers[findCompletedTrackerIndex(id: id)]
-        guard tracker.dates.firstIndex(where: {
-            Calendar.current.compare($0,
-                                     to: date,
-                                     toGranularity: .day) == .orderedSame
-        }) != nil else {
-            return (tracker.days, false)
-        }
-        return (tracker.days, true)
+    func isTrackerDone(with id: UUID, on date: Date) -> Bool {
+        !trackerRecordStore.fetchRecords(for: fetchTracker(byID: id)).filter { $0.sameDay(date) }.isEmpty
     }
+    
+    func getRecordsCounter(with id: UUID) -> Int {
+        trackerRecordStore.countRecords(for: fetchTracker(byID: id))
+    }
+    
+    func setCurrentWeekDay(to date: Date) {
+        currentWeekDay = date.weekdayFromMonday() - 1
+    }
+    
     
 }
-
 private extension TrackersFactoryCD {
-    func addNewTracker(tracker: Tracker) {
-        trackers.append(tracker)
+    func clearDataInCD() {
+        trackerRecordStore.deleteTrackerRecordFromCD()
+        trackerStore.deleteTrackersFromCD()
+        trackerCategoryStore.deleteCategoriesFromCD()
     }
     
-    func addNewComplitedTracker(tracker: Tracker) {
-        complitedTrackers.append(TrackerRecord(id: UUID(), tracker: tracker, dates: [], days: [].count))
-    }
-    
-    func findTrackerIndex(id: UUID) -> Int {
-        guard let index = trackers.firstIndex(where: {$0.id == id}) else {
-            preconditionFailure("не получилось получить индекс")
+    func fetchTracker(byID id: UUID) -> TrackerCD {
+        guard let tracker = trackerStore.fetchTrackers(byID: id) else {
+            preconditionFailure("не удалось получить tracker с ID - \(id)")
         }
-        return index
-    }
-    
-    func findCompletedTrackerIndex(id: UUID) -> Int {
-        let tracker = trackers[findTrackerIndex(id: id)]
-        guard let index = complitedTrackers.firstIndex(where: { $0.tracker == tracker }) else {
-            preconditionFailure("не получилось получить индекс")
-        }
-        return index
+        return tracker
     }
 }

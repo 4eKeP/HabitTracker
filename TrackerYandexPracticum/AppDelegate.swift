@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //MARK: - CoreData
     
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Tracker")
+        let container = NSPersistentContainer(name: "TrackerCoreData")
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {
                 assertionFailure("не удалось загрузить PersistentStores с ошибкой \(error), \(error.userInfo)")

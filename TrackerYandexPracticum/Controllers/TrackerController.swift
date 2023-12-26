@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+//изменить для кордаты
 final class TrackerController: UIViewController {
     
     private lazy var emptyView = {
@@ -51,7 +51,8 @@ final class TrackerController: UIViewController {
     
     private var currentDate = Date() {
         didSet {
-            weekday = currentDate.weekdayFromMonday()
+            weekday = currentDate.weekdayFromMonday() - 1
+            factory.setCurrentWeekDay(to: currentDate)
         }
     }
     
@@ -67,44 +68,63 @@ final class TrackerController: UIViewController {
     
     private let factory = TrackersFactoryCD.shared
     
+    private let trackerCategoryStore = TrackerCategoryStore.shared
+    
+    private let trackerStore = TrackerStore()
+    
     private var visibleCategories: [TrackerCategory] = []
     
-    private enum Search {
-        case text
-        case day
+    private var isVisibleCategoriesEmpty: Bool {
+        return visibleCategories.filter { !$0.trackers.isEmpty }.isEmpty
     }
+    
+//    private enum Search {
+//        case text
+//        case day
+//    }
     // MARK: - viewDidLoad
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .ypWhite
-        setupUI()
+        hideKeyboardWhenTappedAround()
+        view.backgroundColor = .ypWhite
         searchBar.searchBar.delegate = self
+        trackerStore.delegate = self
         currentDate = Date()
-        setupMockCategories()
-        updateCollectionView()
+        setupUI()
+        fetchVisibleCategoriesFromFactory()
+    //    setupMockCategories()
+    //    updateCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateCollectionView()
     }
-    
-    @objc func addButtonClicked() {
-        let nextController = TrackerTypeController()
-        nextController.modalPresentationStyle = .popover
-        nextController.delegate = self
-        navigationController?.present(nextController, animated: true)
-    }
-    
-    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-      currentDate = sender.date
-        searchInTrackers(.day)
-      dismiss(animated: true)
-    }
 }
     // MARK: - private func
     private extension TrackerController {
+        
+        @objc func addButtonClicked() {
+            let nextController = TrackerTypeController()
+            nextController.modalPresentationStyle = .popover
+            nextController.delegate = self
+            navigationController?.present(nextController, animated: true)
+        }
+        
+        @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+          currentDate = sender.date
+          //  searchInTrackers(.day)
+            fetchVisibleCategoriesfromFactory()
+          dismiss(animated: true)
+        }
+        
+        func fetchVisibleCategoriesFromFactory() {
+            clearVisibleCategories()
+            visibleCategories = factory.visibleCategoriesForWeekDay
+            updateCollectionView()
+        }
         
         func updateCollectionView() {
             collectionView.reloadData()
@@ -115,15 +135,18 @@ final class TrackerController: UIViewController {
         }
         
         func fetchTracker(from tracker: Tracker, forIndex Index: Int) {
-            factory.addTracker(tracker, toCategory: Index)
+            factory.saveNew(tracker: tracker, toCategory: Index)
+            setDayForTracker()
             fetchVisibleCategoriesfromFactory()
-            searchInTrackers(.day)
         }
+        
+        func setDayForTracker() {
+            datePicker.setDate(currentDate, animated: true)
+        }
+        
         func fetchVisibleCategoriesfromFactory() {
             clearVisibleCategories()
-            for factoryCategory in factory.categories where !factoryCategory.trackers.isEmpty {
-                visibleCategories.append(factoryCategory)
-            }
+            visibleCategories = factory.visibleCategoriesForWeekDay
             updateCollectionView()
         }
         
@@ -131,41 +154,46 @@ final class TrackerController: UIViewController {
             visibleCategories = []
         }
         
-        private func searchInTrackers(_ type: Search) {
-            
-            let currentCategories = factory.categories
+        private func searchInTrackers() {
+            let currentCategory = factory.visibleCategoriesForSearch
             var newCategories: [TrackerCategory] = []
-            clearVisibleCategories()
-            for currentCategory in currentCategories {
-                var currentTrackers: [Tracker] = []
-                let trackers = currentCategory.trackers.count
-                for index in 0..<trackers {
-                    let tracker = currentCategory.trackers[index]
-                    switch type {
-                    case .text:
-                        let tracker = currentCategory.trackers[index]
-                        if tracker.name.lowercased().contains(searchBarUserInput.lowercased()) {
-                            currentTrackers.append(tracker)
-                        }
-                    case .day:
-                        let trackerHaveThisDay = tracker.schedule[weekday - 1]
-                        if trackerHaveThisDay {
-                            currentTrackers.append(tracker)
-                        }
-                    }
-                }
-                if !currentTrackers.isEmpty {
-                    newCategories.append(TrackerCategory(id: currentCategory.id,
-                                                         categoryName: currentCategory.categoryName,
-                                                         trackers: currentTrackers))
-                }
+            currentCategory.forEach { category in
+                newCategories.append(TrackerCategory(id: category.id,
+                                                     categoryName: category.categoryName,
+                                                     trackers: category.trackers.filter { $0.name.lowercased().contains(searchBarUserInput.lowercased()) }
+                                                    )
+                )
             }
-            visibleCategories = newCategories
-            if !visibleCategories.isEmpty {
-                makeEmptyViewForSearchBar()
-            }
+            visibleCategories = newCategories.filter { !$0.trackers.isEmpty }
             updateCollectionView()
         }
+        
+}
+
+// MARK: - TrackerStoreDelegate
+
+extension TrackerController: TrackerStoreDelegate {
+    func trackerStore(didUpdate update: TrackerStoreUpdate) {
+        visibleCategories = factory.visibleCategoriesForWeekDay
+        collectionView.performBatchUpdates {
+            collectionView.reloadItems(at: update.updatedIndexes)
+            collectionView.insertItems(at: update.insertedIndexes)
+            collectionView.deleteItems(at: update.deletedIndexes)
+        }
+    }
+}
+
+// MARK: - TrackerCategoryStoreDelegate
+
+extension TrackerController: TrackerCategoryStoreDelegate {
+    func trackerCategoryStore(didUpdate update: TrackerCategoryStoreUpdate) {
+        visibleCategories = factory.visibleCategoriesForWeekDay
+        collectionView.performBatchUpdates {
+            collectionView.reloadSections(update.updatedSectionIndexes)
+            collectionView.insertSections(update.insertedSectionIndexes)
+            collectionView.deleteSections(update.deletedSectionIndexes)
+        }
+    }
 }
 
 
@@ -176,7 +204,7 @@ extension TrackerController: UISearchBarDelegate {
         searchBarUserInput = searchText
         if searchBarUserInput.count > 1 {
             makeEmptyViewForSearchBar()
-            searchInTrackers(.text)
+            searchInTrackers()
         }
     }
     
@@ -234,7 +262,7 @@ extension TrackerController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return visibleCategories.isEmpty ? 0 : visibleCategories[section].trackers.count
+        return isVisibleCategoriesEmpty ? 0 : visibleCategories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -242,12 +270,12 @@ extension TrackerController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.Identifer, for: indexPath) as? TrackerCell else { return UICollectionViewCell() }
         
         let currentTracker = visibleCategories[indexPath.section].trackers[indexPath.row]
-        let daysSettings = factory.getNumberOfDays(TrackerID: currentTracker.id, date: currentDate)
-        let totalDays = daysSettings.0
-        let isCompleted = daysSettings.1
         cell.delegate = self
-        cell.configCell(backgroundColor: Constants.colors[currentTracker.color], emoji: Constants.emojis[currentTracker.emoji], cardText: currentTracker.name, counter: totalDays)
-        cell.isDone(isCompleted)
+        cell.configCell(backgroundColor: Constants.colors[currentTracker.color],
+                        emoji: Constants.emojis[currentTracker.emoji],
+                        cardText: currentTracker.name,
+                        counter: factory.getRecordsCounter(with: currentTracker.id))
+        cell.isDone(factory.isTrackerDone(with: currentTracker.id, on: currentDate))
         return cell
     }
     
@@ -270,16 +298,23 @@ extension TrackerController: UICollectionViewDataSource {
 
 extension TrackerController: TrackerCellDelegate {
     func counterButtonTapped(for cell: TrackerCell) {
-        guard
-            Calendar.current.compare(currentDate, to: Date(), toGranularity: .day) == .orderedAscending
-                || Calendar.current.compare(currentDate, to: Date(), toGranularity: .day) == .orderedSame
-        else { return }
+        
+        guard currentDate.sameDay(Date()) || currentDate.beforeDay(Date()) else { return }
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
-        guard tracker.schedule[weekday - 1] else { return }
-        let daysSettings = factory.setTrackerDone(TrackerID: tracker.id, date: currentDate)
-        cell.updateCounter(daysSettings.0)
-        cell.isDone(daysSettings.1)
+        guard tracker.schedule[weekday] else { return }
+        cell.isDone(factory.setTrackerDone(with: tracker.id, on: currentDate))
+        cell.updateCounter(factory.getRecordsCounter(with: tracker.id))
+//        guard
+//            Calendar.current.compare(currentDate, to: Date(), toGranularity: .day) == .orderedAscending
+//                || Calendar.current.compare(currentDate, to: Date(), toGranularity: .day) == .orderedSame
+//        else { return }
+//        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+//        let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
+//        guard tracker.schedule[weekday - 1] else { return }
+//        let daysSettings = factory.setTrackerDone(TrackerID: tracker.id, date: currentDate)
+//        cell.updateCounter(daysSettings.0)
+//        cell.isDone(daysSettings.1)
     }
 }
 
@@ -361,9 +396,9 @@ private extension TrackerController {
 }
 
 //MARK: Mock Categories
-private extension TrackerController {
-  func setupMockCategories() {
-      factory.addNew(category: TrackerCategory(id: UUID(), categoryName: "Важное", trackers: []))
-      factory.addNew(category: TrackerCategory(id: UUID(), categoryName: "Домашний уют", trackers: []))
-  }
-}
+//private extension TrackerController {
+//  func setupMockCategories() {
+//      factory.addNew(category: TrackerCategory(id: UUID(), categoryName: "Важное", trackers: []))
+//      factory.addNew(category: TrackerCategory(id: UUID(), categoryName: "Домашний уют", trackers: []))
+//  }
+//}
