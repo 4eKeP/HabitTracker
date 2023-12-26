@@ -6,7 +6,7 @@
 //
 
 import UIKit
-//изменить для кордаты
+
 final class TrackerController: UIViewController {
     
     private lazy var emptyView = {
@@ -78,10 +78,6 @@ final class TrackerController: UIViewController {
         return visibleCategories.filter { !$0.trackers.isEmpty }.isEmpty
     }
     
-//    private enum Search {
-//        case text
-//        case day
-//    }
     // MARK: - viewDidLoad
     
     
@@ -94,8 +90,6 @@ final class TrackerController: UIViewController {
         currentDate = Date()
         setupUI()
         fetchVisibleCategoriesFromFactory()
-    //    setupMockCategories()
-    //    updateCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,7 +109,6 @@ final class TrackerController: UIViewController {
         
         @objc func datePickerValueChanged(_ sender: UIDatePicker) {
           currentDate = sender.date
-          //  searchInTrackers(.day)
             fetchVisibleCategoriesfromFactory()
           dismiss(animated: true)
         }
@@ -305,16 +298,6 @@ extension TrackerController: TrackerCellDelegate {
         guard tracker.schedule[weekday] else { return }
         cell.isDone(factory.setTrackerDone(with: tracker.id, on: currentDate))
         cell.updateCounter(factory.getRecordsCounter(with: tracker.id))
-//        guard
-//            Calendar.current.compare(currentDate, to: Date(), toGranularity: .day) == .orderedAscending
-//                || Calendar.current.compare(currentDate, to: Date(), toGranularity: .day) == .orderedSame
-//        else { return }
-//        guard let indexPath = collectionView.indexPath(for: cell) else { return }
-//        let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
-//        guard tracker.schedule[weekday - 1] else { return }
-//        let daysSettings = factory.setTrackerDone(TrackerID: tracker.id, date: currentDate)
-//        cell.updateCounter(daysSettings.0)
-//        cell.isDone(daysSettings.1)
     }
 }
 
@@ -394,11 +377,3 @@ private extension TrackerController {
     }
     
 }
-
-//MARK: Mock Categories
-//private extension TrackerController {
-//  func setupMockCategories() {
-//      factory.addNew(category: TrackerCategory(id: UUID(), categoryName: "Важное", trackers: []))
-//      factory.addNew(category: TrackerCategory(id: UUID(), categoryName: "Домашний уют", trackers: []))
-//  }
-//}

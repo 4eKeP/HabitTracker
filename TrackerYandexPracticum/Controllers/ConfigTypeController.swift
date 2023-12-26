@@ -6,7 +6,7 @@
 //
 
 import UIKit
-//изменить для кордаты
+
 protocol ConfigTypeControllerDelegate: AnyObject {
     func configTypeControllerController(_ viewController: ConfigTypeController, didFilledTracker tracker: Tracker, for categoryIndex: Int)
 }
@@ -46,7 +46,6 @@ final class ConfigTypeController: UIViewController {
     private let configHeight: CGFloat = 20
     
     private lazy var scrollViewHeight: CGFloat = 841
-    //663
     
     private lazy var titleLabel = {
         let titleLable = UILabel()
@@ -620,7 +619,6 @@ private extension ConfigTypeController {
             settingsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingSpacing),
             settingsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingSpacing),
             settingsView.heightAnchor.constraint(equalToConstant: settingsViewHeight),
-       //     settingsView.topAnchor.constraint(equalTo: textFieldStackView.bottomAnchor, constant: bottomSpacing)
         ])
     }
     
