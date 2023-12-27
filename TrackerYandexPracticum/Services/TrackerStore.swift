@@ -17,11 +17,11 @@ final class TrackerStore: NSObject {
     
     private let context: NSManagedObjectContext
     private var fetchedResultsController: NSFetchedResultsController<TrackerCD>
-
+    
     private var insertedIndexes: [IndexPath]?
     private var deletedIndexes: [IndexPath]?
     private var updatedIndexes: [IndexPath]?
-  
+    
     weak var delegate: TrackerStoreDelegate?
     
     //MARK: - Init
@@ -58,13 +58,13 @@ final class TrackerStore: NSObject {
         trackerInCD.color = Int32(tracker.color)
         trackerInCD.emoji = Int32(tracker.emoji)
         trackerInCD.category = category
-        trackerInCD.monday = tracker.schedule[1]
-        trackerInCD.tuesday = tracker.schedule[2]
-        trackerInCD.wednesday = tracker.schedule[3]
-        trackerInCD.thursday = tracker.schedule[4]
-        trackerInCD.friday = tracker.schedule[5]
-        trackerInCD.satuday = tracker.schedule[6]
-        trackerInCD.sunday = tracker.schedule[0]
+        trackerInCD.monday = tracker.schedule[0]
+        trackerInCD.tuesday = tracker.schedule[1]
+        trackerInCD.wednesday = tracker.schedule[2]
+        trackerInCD.thursday = tracker.schedule[3]
+        trackerInCD.friday = tracker.schedule[4]
+        trackerInCD.satuday = tracker.schedule[5]
+        trackerInCD.sunday = tracker.schedule[6]
         saveContext()
     }
     

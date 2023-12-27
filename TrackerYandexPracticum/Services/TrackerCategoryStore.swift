@@ -20,7 +20,7 @@ enum TrackerCategoryStoreError: Error {
 
 
 protocol TrackerCategoryStoreDelegate: AnyObject {
-  func trackerCategoryStore(didUpdate update: TrackerCategoryStoreUpdate)
+    func trackerCategoryStore(didUpdate update: TrackerCategoryStoreUpdate)
 }
 
 final class TrackerCategoryStore: NSObject {
@@ -40,14 +40,6 @@ final class TrackerCategoryStore: NSObject {
         guard let objects = self.fetchedResultsController.fetchedObjects,
               let categories = try? objects.map({try self.trackerCategory(from: $0)}) else { return [] }
         return categories.filter { !$0.trackers.isEmpty }
-        
-        //            guard let fetchedObjects = self.fetchedResultsController.fetchedObjects else { return [] }
-        //
-        //            let categories = fetchedObjects.compactMap { object -> TrackerCategory? in
-        //                guard let category = try? self.trackerCategory(from: object), !category.trackers.isEmpty else { return nil }
-        //                return category
-        //            }
-        //            return categories
     }
     
     var numberOfSections: Int {
@@ -184,7 +176,7 @@ private extension TrackerCategoryStore {
         return TrackerCategory(id: id,
                                categoryName: categoryName,
                                trackers: trackers.sorted { $0.name < $1.name } )
-                
+        
         
     }
     
@@ -207,7 +199,7 @@ private extension TrackerCategoryStore {
                         trackerFromCD.friday,
                         trackerFromCD.satuday,
                         trackerFromCD.sunday
-                                 ]
+                       ]
         )
     }
 }

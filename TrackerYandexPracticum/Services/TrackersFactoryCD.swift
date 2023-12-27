@@ -35,7 +35,7 @@ final class TrackersFactoryCD {
     }
     
     private init() {
-         // clearDataInCD() //раскомментировать для стирания данных в приложении
+        // clearDataInCD() //раскомментировать для стирания данных в приложении
     }
     
     func countCategories() -> Int {

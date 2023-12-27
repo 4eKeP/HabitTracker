@@ -31,7 +31,7 @@ final class TrackerController: UIViewController {
         datePicker.preferredDatePickerStyle = .compact
         datePicker.backgroundColor = .ypBackground
         datePicker.tintColor = .ypBlue
-        datePicker.locale = Locale(identifier: "ru_RU")
+        datePicker.calendar.firstWeekday = 2
         datePicker.setDate(currentDate, animated: true)
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         return datePicker
@@ -56,15 +56,15 @@ final class TrackerController: UIViewController {
         }
     }
     
-    private let trackersPerLine: CGFloat = 2
+    private let trackersPerLine: CGFloat = Constants.TrackerControllerConstants.trackersPerLine
     
-    private let smallSpacing: CGFloat = 9
+    private let smallSpacing: CGFloat = Constants.TrackerControllerConstants.smallSpacing
     
-    private let spacing: CGFloat = 16
+    private let spacing: CGFloat = Constants.TrackerControllerConstants.spacing
     
-    private let collectionHeight:CGFloat = 148
+    private let collectionHeight:CGFloat = Constants.TrackerControllerConstants.collectionHeight
     
-    private let sectionHeight: CGFloat = 46
+    private let sectionHeight: CGFloat = Constants.TrackerControllerConstants.sectionHeight
     
     private let factory = TrackersFactoryCD.shared
     
@@ -97,70 +97,70 @@ final class TrackerController: UIViewController {
         updateCollectionView()
     }
 }
-    // MARK: - private func
-    private extension TrackerController {
-        
-        @objc func addButtonClicked() {
-            let nextController = TrackerTypeController()
-            nextController.modalPresentationStyle = .popover
-            nextController.delegate = self
-            navigationController?.present(nextController, animated: true)
+// MARK: - private func
+private extension TrackerController {
+    
+    @objc func addButtonClicked() {
+        let nextController = TrackerTypeController()
+        nextController.modalPresentationStyle = .popover
+        nextController.delegate = self
+        navigationController?.present(nextController, animated: true)
+    }
+    
+    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+        currentDate = sender.date
+        fetchVisibleCategoriesfromFactory()
+        dismiss(animated: true)
+    }
+    
+    func fetchVisibleCategoriesFromFactory() {
+        clearVisibleCategories()
+        visibleCategories = factory.visibleCategoriesForWeekDay
+        updateCollectionView()
+    }
+    
+    func updateCollectionView() {
+        collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.layoutSubviews()
+        collectionView.isHidden = visibleCategories.isEmpty
+        emptyView.isHidden = !collectionView.isHidden
+    }
+    
+    func fetchTracker(from tracker: Tracker, forIndex Index: Int) {
+        factory.saveNew(tracker: tracker, toCategory: Index)
+        setDayForTracker()
+        fetchVisibleCategoriesfromFactory()
+    }
+    
+    func setDayForTracker() {
+        datePicker.setDate(currentDate, animated: true)
+    }
+    
+    func fetchVisibleCategoriesfromFactory() {
+        clearVisibleCategories()
+        visibleCategories = factory.visibleCategoriesForWeekDay
+        updateCollectionView()
+    }
+    
+    func clearVisibleCategories() {
+        visibleCategories = []
+    }
+    
+    private func searchInTrackers() {
+        let currentCategory = factory.visibleCategoriesForSearch
+        var newCategories: [TrackerCategory] = []
+        currentCategory.forEach { category in
+            newCategories.append(TrackerCategory(id: category.id,
+                                                 categoryName: category.categoryName,
+                                                 trackers: category.trackers.filter { $0.name.lowercased().contains(searchBarUserInput.lowercased()) }
+                                                )
+            )
         }
-        
-        @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-          currentDate = sender.date
-            fetchVisibleCategoriesfromFactory()
-          dismiss(animated: true)
-        }
-        
-        func fetchVisibleCategoriesFromFactory() {
-            clearVisibleCategories()
-            visibleCategories = factory.visibleCategoriesForWeekDay
-            updateCollectionView()
-        }
-        
-        func updateCollectionView() {
-            collectionView.reloadData()
-            collectionView.collectionViewLayout.invalidateLayout()
-            collectionView.layoutSubviews()
-            collectionView.isHidden = visibleCategories.isEmpty
-            emptyView.isHidden = !collectionView.isHidden
-        }
-        
-        func fetchTracker(from tracker: Tracker, forIndex Index: Int) {
-            factory.saveNew(tracker: tracker, toCategory: Index)
-            setDayForTracker()
-            fetchVisibleCategoriesfromFactory()
-        }
-        
-        func setDayForTracker() {
-            datePicker.setDate(currentDate, animated: true)
-        }
-        
-        func fetchVisibleCategoriesfromFactory() {
-            clearVisibleCategories()
-            visibleCategories = factory.visibleCategoriesForWeekDay
-            updateCollectionView()
-        }
-        
-        func clearVisibleCategories() {
-            visibleCategories = []
-        }
-        
-        private func searchInTrackers() {
-            let currentCategory = factory.visibleCategoriesForSearch
-            var newCategories: [TrackerCategory] = []
-            currentCategory.forEach { category in
-                newCategories.append(TrackerCategory(id: category.id,
-                                                     categoryName: category.categoryName,
-                                                     trackers: category.trackers.filter { $0.name.lowercased().contains(searchBarUserInput.lowercased()) }
-                                                    )
-                )
-            }
-            visibleCategories = newCategories.filter { !$0.trackers.isEmpty }
-            updateCollectionView()
-        }
-        
+        visibleCategories = newCategories.filter { !$0.trackers.isEmpty }
+        updateCollectionView()
+    }
+    
 }
 
 // MARK: - TrackerStoreDelegate
@@ -304,15 +304,15 @@ extension TrackerController: TrackerCellDelegate {
 // MARK: - UIConstruction
 
 private extension TrackerController {
-     func setupUI() {
+    func setupUI() {
         makeNavBar()
         makeEmptyView()
         addCollectionView()
     }
     
     //MARK: - NavBar
-      func makeNavBar() {
-          let plusButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonClicked))
+    func makeNavBar() {
+        let plusButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonClicked))
         plusButton.tintColor = .ypBlack
         
         self.navigationItem.leftBarButtonItem = plusButton
@@ -323,20 +323,20 @@ private extension TrackerController {
     }
     
     //MARK: - EmptyView
-     func makeEmptyView() {
-         emptyView.setEmptyView(
-           title: "Что будем отслеживать?",
-           image: UIImage(named: "tracker_placeholder")
-         )
-         view.addSubview(emptyView)
-         addEmptyViewConstrains()
+    func makeEmptyView() {
+        emptyView.setEmptyView(
+            title: "Что будем отслеживать?",
+            image: UIImage(named: "tracker_placeholder")
+        )
+        view.addSubview(emptyView)
+        addEmptyViewConstrains()
     }
     
     func makeEmptyViewForTrackers() {
-      emptyView.setEmptyView(title: "Что будем отслеживать?",
-                             image: UIImage(named: "tracker_placeholder"))
+        emptyView.setEmptyView(title: "Что будем отслеживать?",
+                               image: UIImage(named: "tracker_placeholder"))
     }
-
+    
     func makeEmptyViewForSearchBar() {
         emptyView.setEmptyView(title: "Ничего не найдено",
                                image: UIImage(named: "search_placeholder"))
@@ -345,14 +345,14 @@ private extension TrackerController {
     func addEmptyViewConstrains() {
         NSLayoutConstraint.activate([
             emptyView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -88),
-          emptyView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-          emptyView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-          emptyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            emptyView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            emptyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
     //MARK: - collectionView
-
+    
     func addCollectionView() {
         configCollectionView()
         view.addSubview(collectionView)
@@ -370,9 +370,9 @@ private extension TrackerController {
     func configCollectionViewConstraints() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-          collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-          collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-          collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
     

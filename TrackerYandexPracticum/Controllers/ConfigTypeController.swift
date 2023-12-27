@@ -25,27 +25,27 @@ final class ConfigTypeController: UIViewController {
         view.frame.width - 2 * leadingButton
     }()
     
-    private let leadingButton: CGFloat = 20
+    private let leadingButton: CGFloat = Constants.ConfigTypeConstants.leadingButton
     
-    private let leadingSpacing: CGFloat = 16
+    private let leadingSpacing: CGFloat = Constants.ConfigTypeConstants.leadingSpacing
     
-    private let settingHeight: CGFloat = 75
+    private let settingHeight: CGFloat = Constants.ConfigTypeConstants.settingHeight
     
-    private let titleSpacing: CGFloat = 28
+    private let titleSpacing: CGFloat = Constants.ConfigTypeConstants.titleSpacing
     
-    private let bottomSpacing: CGFloat = 24
+    private let bottomSpacing: CGFloat = Constants.ConfigTypeConstants.bottomSpacing
     
-    private let buttonHeight: CGFloat = 60
+    private let buttonHeight: CGFloat = Constants.ConfigTypeConstants.buttonHeight
     
-    private let settingsSectionHeight: CGFloat = 204
+    private let settingsSectionHeight: CGFloat = Constants.ConfigTypeConstants.settingsSectionHeight
     
-    private let configCollectionCellHeight: CGFloat = 52
+    private let configCollectionCellHeight: CGFloat = Constants.ConfigTypeConstants.configCollectionCellHeight
     
-    private let configCellsPerLine: CGFloat = 6
+    private let configCellsPerLine: CGFloat = Constants.ConfigTypeConstants.configCellsPerLine
     
-    private let configHeight: CGFloat = 20
+    private let configHeight: CGFloat = Constants.ConfigTypeConstants.configHeight
     
-    private lazy var scrollViewHeight: CGFloat = 841
+    private lazy var scrollViewHeight: CGFloat = Constants.ConfigTypeConstants.scrollViewHeight
     
     private lazy var titleLabel = {
         let titleLable = UILabel()
@@ -158,7 +158,7 @@ final class ConfigTypeController: UIViewController {
         button.addTarget(self, action: #selector(createButtonPressed), for: .touchUpInside)
         return button
     }()
-    //MARK: переделать секции 
+    //MARK: переделать секции
     private lazy var emojiCollection = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collection.register(EmojiCell.self, forCellWithReuseIdentifier: EmojiCell.Identifer)
@@ -177,7 +177,7 @@ final class ConfigTypeController: UIViewController {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.contentSize = CGSize(width: view.frame.width,
-                                  height: scrollViewHeight)
+                                        height: scrollViewHeight)
         return scrollView
     }()
     
@@ -304,7 +304,6 @@ final class ConfigTypeController: UIViewController {
     @objc private func createButtonPressed() {
         let newTracker = Tracker(id: UUID(),
                                  name: userInput,
-                                 // заглушка для цвета и эмоджи
                                  color: colorIndex,
                                  emoji: emojiIndex,
                                  schedule: schedule)
@@ -386,11 +385,17 @@ extension ConfigTypeController: ScheduleControllerDelegate {
 
 // MARK: - UICollection Data Source
 extension ConfigTypeController: UICollectionViewDataSource {
+    
+    private enum CollectionType {
+        static let emoji = 0
+        static let color = 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView.tag {
-        case 0:
+        case CollectionType.emoji:
             return Constants.emojis.count
-        case 1:
+        case CollectionType.color:
             return Constants.colors.count
         default:
             return .zero
@@ -399,7 +404,7 @@ extension ConfigTypeController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView.tag {
-        case 0:
+        case CollectionType.emoji:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCell.Identifer, for: indexPath) as? EmojiCell else {
                 assertionFailure("не удалось получить EmojiCell")
                 return UICollectionViewCell()
@@ -409,7 +414,7 @@ extension ConfigTypeController: UICollectionViewDataSource {
             cell.layer.masksToBounds = true
             cell.configEmojiCell(emoji: Constants.emojis[indexPath.row])
             return cell
-        case 1:
+        case CollectionType.color:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.Identifer, for: indexPath) as? ColorCell else {
                 assertionFailure("не удалось получить ColorCell")
                 return UICollectionViewCell()
@@ -438,9 +443,9 @@ extension ConfigTypeController: UICollectionViewDataSource {
             return ConfigHeader()
         }
         switch collectionView.tag {
-        case 0:
+        case CollectionType.emoji:
             view.config(header: "Emoji")
-        case 1:
+        case CollectionType.color:
             view.config(header: "Цвет")
         default:
             break
@@ -454,10 +459,10 @@ extension ConfigTypeController: UICollectionViewDataSource {
 extension ConfigTypeController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch collectionView.tag {
-        case 0:
+        case CollectionType.emoji:
             emojiIndex = indexPath.row
             collectionView.cellForItem(at: indexPath)?.backgroundColor = .ypLightGray
-        case 1:
+        case CollectionType.color:
             colorIndex = indexPath.row
             collectionView.cellForItem(at: indexPath)?.backgroundColor = Constants.colors[colorIndex].withAlphaComponent(0.3)
         default:
@@ -541,24 +546,23 @@ private extension ConfigTypeController {
         view.addSubview(contentScrollView)
         contentScrollView.addSubview(contentStackView)
         configScrollViewConstraints()
-    //    configStackViewConstraints()
     }
     
     func configScrollViewConstraints() {
         NSLayoutConstraint.activate([
-          contentScrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-          contentScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-          contentScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-          contentScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            contentScrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            contentScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            contentScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
     func configStackViewConstraints() {
         NSLayoutConstraint.activate([
-          contentStackView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
-          contentStackView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
-          contentStackView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
-          contentStackView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor)
+            contentStackView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor)
         ])
     }
     
@@ -639,9 +643,9 @@ private extension ConfigTypeController {
     
     func configEmojiCollectionConstraints() {
         NSLayoutConstraint.activate([
-          emojiCollection.heightAnchor.constraint(equalToConstant: settingsSectionHeight),
-          emojiCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-          emojiCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            emojiCollection.heightAnchor.constraint(equalToConstant: settingsSectionHeight),
+            emojiCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emojiCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
     
