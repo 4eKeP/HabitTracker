@@ -31,11 +31,11 @@ final class TrackerTypeController: UIViewController {
         return stackView
     }()
     
-    private let leadingButton: CGFloat = 20
+    private let leadingButton: CGFloat = Constants.TrackerTypeConstants.leadingButton
     
-    private let buttonHeight: CGFloat = 60
+    private let buttonHeight: CGFloat = Constants.TrackerTypeConstants.buttonHeight
     
-    private let buttonSpacing: CGFloat = 16
+    private let buttonSpacing: CGFloat = Constants.TrackerTypeConstants.buttonSpacing
     
     weak var delegate: TrackerTypeControllerDelegate?
     
@@ -109,9 +109,7 @@ private extension TrackerTypeController {
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
           stackView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            //40 оступы от краев до кнопок с 2х сторон
             stackView.widthAnchor.constraint(equalToConstant: view.frame.width - 2 * leadingButton),
-            //136 это высота 2х кнопок и отступа между ними
           stackView.heightAnchor.constraint(equalToConstant: 2 * buttonHeight + buttonSpacing)
         ])
     }

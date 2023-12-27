@@ -25,17 +25,27 @@ final class ConfigTypeController: UIViewController {
         view.frame.width - 2 * leadingButton
     }()
     
-    private let leadingButton: CGFloat = 20
+    private let leadingButton: CGFloat = Constants.ConfigTypeConstants.leadingButton
     
-    private let leadingSpacing: CGFloat = 16
+    private let leadingSpacing: CGFloat = Constants.ConfigTypeConstants.leadingSpacing
     
-    private let settingHeight: CGFloat = 75
+    private let settingHeight: CGFloat = Constants.ConfigTypeConstants.settingHeight
     
-    private let titleSpacing: CGFloat = 28
+    private let titleSpacing: CGFloat = Constants.ConfigTypeConstants.titleSpacing
     
-    private let bottomSpacing: CGFloat = 24
+    private let bottomSpacing: CGFloat = Constants.ConfigTypeConstants.bottomSpacing
     
-    private let buttonHeight: CGFloat = 60
+    private let buttonHeight: CGFloat = Constants.ConfigTypeConstants.buttonHeight
+    
+    private let settingsSectionHeight: CGFloat = Constants.ConfigTypeConstants.settingsSectionHeight
+    
+    private let configCollectionCellHeight: CGFloat = Constants.ConfigTypeConstants.configCollectionCellHeight
+    
+    private let configCellsPerLine: CGFloat = Constants.ConfigTypeConstants.configCellsPerLine
+    
+    private let configHeight: CGFloat = Constants.ConfigTypeConstants.configHeight
+    
+    private lazy var scrollViewHeight: CGFloat = Constants.ConfigTypeConstants.scrollViewHeight
     
     private lazy var titleLabel = {
         let titleLable = UILabel()
@@ -148,6 +158,36 @@ final class ConfigTypeController: UIViewController {
         button.addTarget(self, action: #selector(createButtonPressed), for: .touchUpInside)
         return button
     }()
+    //MARK: переделать секции
+    private lazy var emojiCollection = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.register(EmojiCell.self, forCellWithReuseIdentifier: EmojiCell.Identifer)
+        collection.register(ConfigHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ConfigHeader.Identifer)
+        return collection
+    }()
+    
+    private lazy var colorCollection = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.register(ColorCell.self, forCellWithReuseIdentifier: ColorCell.Identifer)
+        collection.register(ConfigHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ConfigHeader.Identifer)
+        return collection
+    }()
+    
+    private lazy var contentScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.contentSize = CGSize(width: view.frame.width,
+                                        height: scrollViewHeight)
+        return scrollView
+    }()
+    
+    private lazy var contentStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = bottomSpacing
+        return stackView
+    }()
     
     private var schedule = [Bool](repeating: false, count: 7)
     
@@ -179,13 +219,37 @@ final class ConfigTypeController: UIViewController {
         }
     }
     // выбераеться рандомно для проверки
-    private var emojiIsSelected = true
-    private var colorIsSelected = true
+    private var emojiIsSelected = false {
+        didSet {
+            chekConfigState()
+        }
+    }
+    private var colorIsSelected = false {
+        didSet {
+            chekConfigState()
+        }
+    }
     
     //MARK: На будущее сделать из isHabit энум что бы легче добавлять новые типы привычек
     private var isHabit: Bool
     
-    private var selectedCategoryIndex = 0
+    private var selectedCategoryIndex = 0 {
+        didSet {
+            trackerNameIsFulfilled = true
+        }
+    }
+    
+    private var emojiIndex = 0 {
+        didSet {
+            emojiIsSelected = true
+        }
+    }
+    
+    private var colorIndex = 0 {
+        didSet {
+            colorIsSelected = true
+        }
+    }
     
     private var userInput = "" {
         didSet {
@@ -193,7 +257,7 @@ final class ConfigTypeController: UIViewController {
         }
     }
     
-    private let factory = TrackersFactory.shared
+    private let factory = TrackersFactoryCD.shared
     
     weak var delegate: ConfigTypeControllerDelegate?
     
@@ -222,9 +286,8 @@ final class ConfigTypeController: UIViewController {
     //
     @objc private func categoryButtonPressed() {
         //заглушка для категории
-        selectedCategoryIndex = Int.random(in: 0..<factory.categories.count)
-        let selectedCategory = factory.categories[selectedCategoryIndex]
-        categoryButton.setSecondaryLable(text: selectedCategory.categoryName)
+        selectedCategoryIndex = Int.random(in: 0..<factory.countCategories())
+        categoryButton.setSecondaryLable(text: factory.fetchCategoryName(by: selectedCategoryIndex))
         categoryIsSelected = true
     }
     
@@ -241,9 +304,8 @@ final class ConfigTypeController: UIViewController {
     @objc private func createButtonPressed() {
         let newTracker = Tracker(id: UUID(),
                                  name: userInput,
-                                 // заглушка для цвета и эмоджи
-                                 color: Int.random(in: 0...17),
-                                 emoji: Int.random(in: 0...17),
+                                 color: colorIndex,
+                                 emoji: emojiIndex,
                                  schedule: schedule)
         delegate?.configTypeControllerController(self, didFilledTracker: newTracker, for: selectedCategoryIndex)
     }
@@ -321,16 +383,147 @@ extension ConfigTypeController: ScheduleControllerDelegate {
     }
 }
 
+// MARK: - UICollection Data Source
+extension ConfigTypeController: UICollectionViewDataSource {
+    
+    private enum CollectionType {
+        static let emoji = 0
+        static let color = 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch collectionView.tag {
+        case CollectionType.emoji:
+            return Constants.emojis.count
+        case CollectionType.color:
+            return Constants.colors.count
+        default:
+            return .zero
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch collectionView.tag {
+        case CollectionType.emoji:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCell.Identifer, for: indexPath) as? EmojiCell else {
+                assertionFailure("не удалось получить EmojiCell")
+                return UICollectionViewCell()
+            }
+            cell.backgroundColor = .ypWhite
+            cell.layer.cornerRadius = 16
+            cell.layer.masksToBounds = true
+            cell.configEmojiCell(emoji: Constants.emojis[indexPath.row])
+            return cell
+        case CollectionType.color:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.Identifer, for: indexPath) as? ColorCell else {
+                assertionFailure("не удалось получить ColorCell")
+                return UICollectionViewCell()
+            }
+            cell.backgroundColor = .ypWhite
+            cell.layer.cornerRadius = 8
+            cell.layer.masksToBounds = true
+            cell.configColorCell(color: Constants.colors[indexPath.row])
+            return cell
+        default:
+            assertionFailure("не удалось получить tag ячейки")
+            return UICollectionViewCell()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        var id: String
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            id = ConfigHeader.Identifer
+        default:
+            id = ""
+        }
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? ConfigHeader else {
+            assertionFailure("не удалось получить ConfigHeader")
+            return ConfigHeader()
+        }
+        switch collectionView.tag {
+        case CollectionType.emoji:
+            view.config(header: "Emoji")
+        case CollectionType.color:
+            view.config(header: "Цвет")
+        default:
+            break
+        }
+        return view
+    }
+}
+
+// MARK: - UICollection Delegate
+
+extension ConfigTypeController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch collectionView.tag {
+        case CollectionType.emoji:
+            emojiIndex = indexPath.row
+            collectionView.cellForItem(at: indexPath)?.backgroundColor = .ypLightGray
+        case CollectionType.color:
+            colorIndex = indexPath.row
+            collectionView.cellForItem(at: indexPath)?.backgroundColor = Constants.colors[colorIndex].withAlphaComponent(0.3)
+        default:
+            break
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        collectionView.cellForItem(at: indexPath)?.backgroundColor = .ypWhite
+    }
+}
+
+// MARK: - UICollection FlowLayout
+
+extension ConfigTypeController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: configCollectionCellHeight,
+               height: configCollectionCellHeight)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        let cellsPerLine = configCellsPerLine
+        let totalCellsWidth = configCellsPerLine * configCollectionCellHeight
+        return (collectionView.frame.width - 2 * leadingSpacing - totalCellsWidth) / (cellsPerLine - 1)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        switch collectionView.tag {
+        case 1:
+            return 5
+        default:
+            return .zero
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        CGSize(width: collectionView.bounds.width,
+               height: configHeight)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        UIEdgeInsets(top: leadingSpacing,
+                     left: leadingSpacing,
+                     bottom: leadingSpacing,
+                     right: leadingSpacing)
+    }
+}
+
 // MARK: - UI Configuration
 
 private extension ConfigTypeController {
     // MARK: - SetupUI
-    
+    // MARK: разобраться с порядком констрейнтов
     func setupUI() {
         setTitle()
-        setTitle()
+        setupScrollView()
         setupTextField()
         setupSettings()
+        setupEmojiCollection()
+        setupColorCollection()
         setupButtons()
     }
     
@@ -347,10 +540,36 @@ private extension ConfigTypeController {
         ])
     }
     
+    // MARK: - contentView config
+    
+    func setupScrollView() {
+        view.addSubview(contentScrollView)
+        contentScrollView.addSubview(contentStackView)
+        configScrollViewConstraints()
+    }
+    
+    func configScrollViewConstraints() {
+        NSLayoutConstraint.activate([
+            contentScrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            contentScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            contentScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            contentScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    func configStackViewConstraints() {
+        NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: contentScrollView.topAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: contentScrollView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: contentScrollView.trailingAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: contentScrollView.bottomAnchor)
+        ])
+    }
+    
     // MARK: - textField config
     
     func setupTextField() {
-        view.addSubview(textFieldStackView)
+        contentStackView.addArrangedSubview(textFieldStackView)
         textFieldStackView.addArrangedSubview(titleTextField)
         textFieldStackView.addArrangedSubview(warningLabel)
         setTitleTextFieldConstraints()
@@ -378,10 +597,10 @@ private extension ConfigTypeController {
     
     func setTextFieldStackViewConstraints() {
         NSLayoutConstraint.activate([
-            textFieldStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: leadingSpacing),
-            textFieldStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -leadingSpacing),
+            textFieldStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingSpacing),
+            textFieldStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingSpacing),
             textFieldStackView.topAnchor.constraint(
-                equalTo: titleLabel.bottomAnchor,
+                equalTo: contentStackView.topAnchor,
                 constant: bottomSpacing)
         ])
     }
@@ -389,7 +608,7 @@ private extension ConfigTypeController {
     //MARK: - settings fields config
     
     func setupSettings() {
-        view.addSubview(settingsView)
+        contentStackView.addArrangedSubview(settingsView)
         configSettingsConstraints()
         settingsView.addSubview(categoryButton)
         if isHabit {
@@ -401,17 +620,65 @@ private extension ConfigTypeController {
     
     func configSettingsConstraints() {
         NSLayoutConstraint.activate([
-            settingsView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: leadingSpacing),
-            settingsView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -leadingSpacing),
+            settingsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingSpacing),
+            settingsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingSpacing),
             settingsView.heightAnchor.constraint(equalToConstant: settingsViewHeight),
-            settingsView.topAnchor.constraint(equalTo: textFieldStackView.bottomAnchor, constant: bottomSpacing)
         ])
     }
+    
+    //MARK: - emoji config
+    func setupEmojiCollection() {
+        configEmojiCollection()
+        contentStackView.addArrangedSubview(emojiCollection)
+        configEmojiCollectionConstraints()
+    }
+    
+    func configEmojiCollection() {
+        emojiCollection.dataSource = self
+        emojiCollection.delegate = self
+        emojiCollection.tag = 0
+        emojiCollection.isScrollEnabled = false
+        emojiCollection.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func configEmojiCollectionConstraints() {
+        NSLayoutConstraint.activate([
+            emojiCollection.heightAnchor.constraint(equalToConstant: settingsSectionHeight),
+            emojiCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emojiCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
+    
+    //MARK: - color config
+    
+    func setupColorCollection() {
+        configColorCollection()
+        contentStackView.addArrangedSubview(colorCollection)
+        configColorCollectionConstraints()
+    }
+    
+    func configColorCollection() {
+        colorCollection.dataSource = self
+        colorCollection.delegate = self
+        colorCollection.tag = 1
+        colorCollection.isScrollEnabled = false
+        colorCollection.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func configColorCollectionConstraints() {
+        NSLayoutConstraint.activate([
+            colorCollection.heightAnchor.constraint(equalToConstant: settingsSectionHeight),
+            colorCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            colorCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
     
     //MARK: - buttons config
     
     func setupButtons() {
-        view.addSubview(buttonsStackView)
+        contentStackView.addArrangedSubview(buttonsStackView)
         updateCreateButtonState()
         buttonsStackView.addArrangedSubview(cancelButton)
         buttonsStackView.addArrangedSubview(createButton)
@@ -420,11 +687,11 @@ private extension ConfigTypeController {
     
     func configButtonsConstraints() {
         NSLayoutConstraint.activate([
-            buttonsStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            buttonsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonsStackView.widthAnchor.constraint(equalToConstant: buttonViewWidth),
             buttonsStackView.heightAnchor.constraint(equalToConstant: buttonHeight),
             buttonsStackView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                equalTo: contentStackView.bottomAnchor,
                 constant: -leadingSpacing
             )
         ])

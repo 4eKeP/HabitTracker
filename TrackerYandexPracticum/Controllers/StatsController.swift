@@ -28,7 +28,7 @@ final class StatsController: UIViewController {
     
     private lazy var emptyView = EmptyView()
     
-    private let spacingFromTitle: CGFloat = 56
+    private let spacingFromTitle: CGFloat = Constants.StatsConstants.spacingFromTitle
     
     override func viewDidLoad() {
         super.viewDidLoad()
