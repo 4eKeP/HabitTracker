@@ -89,4 +89,28 @@ enum Constants {
         
         static let sectionHeight: CGFloat = 46
     }
+    
+    enum CategoryCellConstants {
+        static let categoryButtonLeading: CGFloat = 20
+        
+        static let leadingOffset: CGFloat = 16
+        
+        static let categoryLabelHeight: CGFloat = 24
+        
+        static let doneButtonSize: CGFloat = 20
+    }
+    
+    enum CategoryViewControllerConstants {
+        
+        static let categoryOffset: CGFloat = 24
+        
+        static let titleSpacing: CGFloat = 28
+        
+        static let titleHeight: CGFloat = 42
+        
+        static let buttonHeight: CGFloat = 60
+        
+        static let categoryFieldHeight: CGFloat = 75
+        
+    }
 }

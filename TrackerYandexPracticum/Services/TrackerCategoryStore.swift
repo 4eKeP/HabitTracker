@@ -71,9 +71,6 @@ final class TrackerCategoryStore: NSObject {
         super.init()
         controller.delegate = self
         try? controller.performFetch()
-        if isCategoryCoreDataEmpty() {
-            setupCategoryCDWithMockData()
-        }
     }
     
     //MARK: - public method
@@ -112,14 +109,21 @@ final class TrackerCategoryStore: NSObject {
         return categoryName
     }
     
-    func fetchCategory(by thisIndex: Int) -> TrackerCategoryCD? {
+    func fetchCategory(by thisIndex: UUID) -> TrackerCategoryCD? {
         let request = TrackerCategoryCD.fetchRequest()
         request.returnsObjectsAsFaults = false
         guard let categories = try? context.fetch(request) else { return nil }
-        for (index, category) in categories.enumerated() where index == thisIndex {
+        for category in categories where category.id == thisIndex {
             return category
         }
         return nil
+    }
+    
+    func addNew(category: TrackerCategory) throws {
+        let categoryInCD = TrackerCategoryCD(context: context)
+        categoryInCD.categoryName = category.categoryName
+        categoryInCD.id = category.id
+        saveContext()
     }
 }
 
@@ -135,21 +139,6 @@ private extension TrackerCategoryStore {
             return false
         }
         return true
-    }
-    
-    func setupCategoryCDWithMockData() {
-        Constants.categories.forEach { try? addNew(category: TrackerCategory(id: UUID(),
-                                                                             categoryName: $0,
-                                                                             trackers: []
-                                                                            ))
-        }
-    }
-    
-    func addNew(category: TrackerCategory) throws {
-        let categoryInCD = TrackerCategoryCD(context: context)
-        categoryInCD.categoryName = category.categoryName
-        categoryInCD.id = category.id
-        saveContext()
     }
     
     func trackerCategory(from trackerCategoryCD: TrackerCategoryCD) throws -> TrackerCategory {

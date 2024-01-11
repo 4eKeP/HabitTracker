@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ConfigTypeControllerDelegate: AnyObject {
-    func configTypeControllerController(_ viewController: ConfigTypeController, didFilledTracker tracker: Tracker, for categoryIndex: Int)
+    func configTypeControllerController(_ viewController: ConfigTypeController, didFilledTracker tracker: Tracker, for categoryIndex: UUID)
 }
 
 final class ConfigTypeController: UIViewController {
@@ -233,7 +233,7 @@ final class ConfigTypeController: UIViewController {
     //MARK: На будущее сделать из isHabit энум что бы легче добавлять новые типы привычек
     private var isHabit: Bool
     
-    private var selectedCategoryIndex = 0 {
+    private var selectedCategoryIndex = UUID() {
         didSet {
             trackerNameIsFulfilled = true
         }
@@ -283,12 +283,10 @@ final class ConfigTypeController: UIViewController {
         titleTextField.delegate = self
         titleTextField.becomeFirstResponder()
     }
-    //
     @objc private func categoryButtonPressed() {
-        //заглушка для категории
-        selectedCategoryIndex = Int.random(in: 0..<factory.countCategories())
-        categoryButton.setSecondaryLable(text: factory.fetchCategoryName(by: selectedCategoryIndex))
-        categoryIsSelected = true
+        let nextController = CategoryViewController(selectedCategoryID: selectedCategoryIndex)
+        nextController.delegate = self
+        present(nextController, animated: true)
     }
     
     @objc private func scheduleButtonPressed() {
@@ -345,6 +343,19 @@ final class ConfigTypeController: UIViewController {
     }
 }
 
+//MARK: - CategoryViewControllerDelegate
+
+extension ConfigTypeController: CategoryViewControllerDelegate {
+    func categoryViewController(_ viewController: CategoryViewController, select category: TrackerCategory) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+            self.selectedCategoryIndex = category.id
+            self.categoryButton.setSecondaryLable(text: category.categoryName)
+        }
+    }
+}
+
 // MARK: - UITextFieldDelegate
 
 extension ConfigTypeController: UITextFieldDelegate {
@@ -373,6 +384,8 @@ extension ConfigTypeController: UITextFieldDelegate {
         true
     }
 }
+
+//MARK: - ScheduleControllerDelegate
 
 extension ConfigTypeController: ScheduleControllerDelegate {
     func scheduleController(_ viewController: ScheduleController, didSelectSchedule schedule: [Bool]) {

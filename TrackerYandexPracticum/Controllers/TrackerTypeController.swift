@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TrackerTypeControllerDelegate: AnyObject {
-      func trackerTypeController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: Int)
+      func trackerTypeController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: UUID)
 }
 
 final class TrackerTypeController: UIViewController {
@@ -60,7 +60,7 @@ final class TrackerTypeController: UIViewController {
 }
 
 extension TrackerTypeController: ConfigTypeControllerDelegate {
-    func configTypeControllerController(_ viewController: ConfigTypeController, didFilledTracker tracker: Tracker, for categoryIndex: Int) {
+    func configTypeControllerController(_ viewController: ConfigTypeController, didFilledTracker tracker: Tracker, for categoryIndex: UUID) {
         delegate?.trackerTypeController(self, didFillTracker: tracker, for: categoryIndex)
     }
 }

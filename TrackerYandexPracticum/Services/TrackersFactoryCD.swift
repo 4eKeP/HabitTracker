@@ -46,7 +46,7 @@ final class TrackersFactoryCD {
         trackerCategoryStore.fetchCategoryName(by: thisIndex)
     }
     
-    func saveNew(tracker: Tracker, toCategory categoryIndex: Int) {
+    func saveNew(tracker: Tracker, toCategory categoryIndex: UUID) {
         if let category = trackerCategoryStore.fetchCategory(by: categoryIndex) {
             try? trackerStore.addNew(tracker: tracker, to: category)
         }

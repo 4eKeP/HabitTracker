@@ -127,7 +127,7 @@ private extension TrackerController {
         emptyView.isHidden = !collectionView.isHidden
     }
     
-    func fetchTracker(from tracker: Tracker, forIndex Index: Int) {
+    func fetchTracker(from tracker: Tracker, forIndex Index: UUID) {
         factory.saveNew(tracker: tracker, toCategory: Index)
         setDayForTracker()
         fetchVisibleCategoriesfromFactory()
@@ -212,7 +212,7 @@ extension TrackerController: UISearchBarDelegate {
 // MARK: - TrackerTypeControllerDelegate
 
 extension TrackerController: TrackerTypeControllerDelegate {
-    func trackerTypeController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: Int) {
+    func trackerTypeController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: UUID) {
         dismiss(animated: true) {
             [weak self] in
             guard let self = self else { return }
