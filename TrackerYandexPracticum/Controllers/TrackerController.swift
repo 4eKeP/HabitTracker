@@ -178,16 +178,16 @@ extension TrackerController: TrackerStoreDelegate {
 
 // MARK: - TrackerCategoryStoreDelegate
 
-extension TrackerController: TrackerCategoryStoreDelegate {
-    func trackerCategoryStore(didUpdate update: TrackerCategoryStoreUpdate) {
-        visibleCategories = factory.visibleCategoriesForWeekDay
-        collectionView.performBatchUpdates {
-            collectionView.reloadSections(update.updatedSectionIndexes)
-            collectionView.insertSections(update.insertedSectionIndexes)
-            collectionView.deleteSections(update.deletedSectionIndexes)
-        }
-    }
-}
+//extension TrackerController: TrackerCategoryStoreDelegate {
+//    func trackerCategoryStore(didUpdate update: TrackerCategoryStoreUpdate) {
+//        visibleCategories = factory.visibleCategoriesForWeekDay
+//        collectionView.performBatchUpdates {
+//            collectionView.reloadSections(update.updatedSectionIndexes)
+//            collectionView.insertSections(update.insertedSectionIndexes)
+//            collectionView.deleteSections(update.deletedSectionIndexes)
+//        }
+//    }
+//}
 
 
 // MARK: - UISearchBarDelegate

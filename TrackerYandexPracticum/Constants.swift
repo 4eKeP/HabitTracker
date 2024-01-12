@@ -113,4 +113,17 @@ enum Constants {
         static let categoryFieldHeight: CGFloat = 75
         
     }
+    
+    enum AddCategoryViewControllerConstants {
+        
+        static let addcategoryOffset: CGFloat = 24
+        
+        static let titleHeight: CGFloat = 42
+        
+        static let titleSpacing: CGFloat = 28
+        
+        static let addCategoryFieldHeight: CGFloat = 75
+        
+        static let buttonHeight: CGFloat = 60
+    }
 }

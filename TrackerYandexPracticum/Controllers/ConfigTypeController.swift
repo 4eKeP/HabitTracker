@@ -235,7 +235,7 @@ final class ConfigTypeController: UIViewController {
     
     private var selectedCategoryIndex = UUID() {
         didSet {
-            trackerNameIsFulfilled = true
+            categoryIsSelected = true
         }
     }
     

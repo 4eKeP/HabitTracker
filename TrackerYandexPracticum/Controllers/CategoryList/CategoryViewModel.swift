@@ -21,6 +21,7 @@ final class CategoryViewModel {
     
     init() {
         trackerCategoryStore.delegate = self
+        fetchCategoriesFromCD()
     }
     
     func fetchCategoriesFromCD() {
@@ -33,7 +34,7 @@ final class CategoryViewModel {
 }
 
 extension CategoryViewModel: TrackerCategoryStoreDelegate {
-    func trackerCategoryStore(didUpdate update: TrackerCategoryStoreUpdate) {
+    func trackerCategoryStore(didUpdate update: TrackerCategoryStore) {
         fetchCategoriesFromCD()
     }
 }
