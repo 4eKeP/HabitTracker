@@ -126,4 +126,15 @@ enum Constants {
         
         static let buttonHeight: CGFloat = 60
     }
+    
+    enum OnBoardingControllerConstants {
+        
+        static let leadingOnBoardingPage: CGFloat = 20
+        
+        static let centerOffsetOrButtonHeight: CGFloat = 60
+        
+        static let bottomSpacing: CGFloat = 84
+        
+        static let bottomPageControllOffset: CGFloat = 134
+    }
 }
