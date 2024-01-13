@@ -12,6 +12,7 @@
 		841D61772B5040B900147736 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D61762B5040B900147736 /* CategoryViewModel.swift */; };
 		841D61792B5040C700147736 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D61782B5040C700147736 /* CategoryViewController.swift */; };
 		841D617B2B5043EA00147736 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D617A2B5043EA00147736 /* AddCategoryViewController.swift */; };
+		841D617D2B52FC4E00147736 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D617C2B52FC4E00147736 /* OnBoardingViewController.swift */; };
 		8436150D2B10465F003D1B6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8436150C2B10465E003D1B6F /* AppDelegate.swift */; };
 		8436150F2B10465F003D1B6F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8436150E2B10465F003D1B6F /* SceneDelegate.swift */; };
 		843615112B10465F003D1B6F /* TrackerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843615102B10465F003D1B6F /* TrackerController.swift */; };
@@ -49,6 +50,7 @@
 		841D61762B5040B900147736 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		841D61782B5040C700147736 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		841D617A2B5043EA00147736 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
+		841D617C2B52FC4E00147736 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 		843615092B10465E003D1B6F /* TrackerYandexPracticum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackerYandexPracticum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8436150C2B10465E003D1B6F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8436150E2B10465F003D1B6F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				84D5570E2B1F632C00EBAE8D /* TrackerTypeController.swift */,
 				84D557132B1F8C0E00EBAE8D /* ConfigTypeController.swift */,
 				84D557252B241F7000EBAE8D /* ScheduleController.swift */,
+				841D617C2B52FC4E00147736 /* OnBoardingViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				84D5570A2B1E371200EBAE8D /* SectionHeader.swift in Sources */,
 				84D5571D2B22189500EBAE8D /* Date+Extensions.swift in Sources */,
 				84D557182B20B74900EBAE8D /* Separators.swift in Sources */,
+				841D617D2B52FC4E00147736 /* OnBoardingViewController.swift in Sources */,
 				84D5570F2B1F632C00EBAE8D /* TrackerTypeController.swift in Sources */,
 				8436150F2B10465F003D1B6F /* SceneDelegate.swift in Sources */,
 				841D61792B5040C700147736 /* CategoryViewController.swift in Sources */,
