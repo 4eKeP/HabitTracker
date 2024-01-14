@@ -20,7 +20,7 @@ enum TrackerCategoryStoreError: Error {
 
 
 protocol TrackerCategoryStoreDelegate: AnyObject {
-    func trackerCategoryStore(didUpdate update: TrackerCategoryStoreUpdate)
+    func trackerCategoryStore(didUpdate update: TrackerCategoryStore)
 }
 
 final class TrackerCategoryStore: NSObject {
@@ -39,7 +39,8 @@ final class TrackerCategoryStore: NSObject {
     var allCategories: [TrackerCategory] {
         guard let objects = self.fetchedResultsController.fetchedObjects,
               let categories = try? objects.map({try self.trackerCategory(from: $0)}) else { return [] }
-        return categories.filter { !$0.trackers.isEmpty }
+        return categories
+     //   return categories.filter { !$0.trackers.isEmpty }
     }
     
     var numberOfSections: Int {
@@ -193,35 +194,12 @@ private extension TrackerCategoryStore {
     }
 }
 
+//MARK: - NSFetchedResultsControllerDelegate
+
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch type {
-        case .insert:
-            insertedSectionIndexes?.insert(sectionIndex)
-        case .delete:
-            deletedSectionIndexes?.insert(sectionIndex)
-        case .update:
-            updatedSectionIndexes?.insert(sectionIndex)
-        default:
-            break
-        }
-    }
-    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard
-            let insertedFinalIndexes = insertedSectionIndexes,
-            let deletedFinalIndexes = deletedSectionIndexes,
-            let updatedFinalIndexes = updatedSectionIndexes
-        else { return }
-        delegate?.trackerCategoryStore(didUpdate: TrackerCategoryStoreUpdate(
-            insertedSectionIndexes: insertedFinalIndexes,
-            deletedSectionIndexes: deletedFinalIndexes,
-            updatedSectionIndexes: updatedFinalIndexes))
-        
-        insertedSectionIndexes = nil
-        deletedSectionIndexes = nil
-        updatedSectionIndexes = nil
+            delegate?.trackerCategoryStore(didUpdate: self)
     }
 }
 

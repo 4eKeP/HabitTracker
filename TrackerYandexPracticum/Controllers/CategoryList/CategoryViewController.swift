@@ -39,6 +39,7 @@ final class CategoryViewController: UIViewController {
     
     private lazy var tableView = {
         let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.layer.cornerRadius = 16
         tableView.isScrollEnabled = true
         tableView.allowsSelection = true
@@ -46,16 +47,13 @@ final class CategoryViewController: UIViewController {
         return tableView
     }()
     
-    private var selectedCategoryID: UUID?
-    private var viewModel = CategoryViewModel()
-    
-    weak var delegate: CategoryViewControllerDelegate?
+    private var viewModel: CategoryViewModelProtocol
     
     //MARK: - init
     
-    init(selectedCategoryID: UUID) {
+    init(viewModel: CategoryViewModelProtocol) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.selectedCategoryID = selectedCategoryID
     }
     
     required init?(coder: NSCoder) {
@@ -90,8 +88,9 @@ private extension CategoryViewController {
     }
     
     @objc func addButtonPressed() {
-        let nextController = AddCategoryViewController()
-        nextController.delegate = self
+        let viewModel = AddCategoryViewModel()
+        let nextController = AddCategoryViewController(viewModel: viewModel)
+        viewModel.delegate = self
         present(nextController, animated: true)
     }
 }
@@ -99,7 +98,7 @@ private extension CategoryViewController {
 //MARK: - AddCategoryViewControllerDelegate
 
 extension CategoryViewController: AddCategoryViewControllerDelegate {
-    func AddCategoryViewController(_ viewController: CategoryViewController, didAddCategory category: TrackerCategory) {
+    func addCategoryViewController(_ viewController: AddCategoryViewController, didAddCategory category: TrackerCategory) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.viewModel.addCategory(category)
@@ -107,11 +106,12 @@ extension CategoryViewController: AddCategoryViewControllerDelegate {
     }
 }
 
+//MARK: - UITableViewDelegate
+
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        selectedCategoryID = viewModel.categories[indexPath.row].id
-        delegate?.categoryViewController(self, select: viewModel.categories[indexPath.row])
+        viewModel.categorySelected(at: indexPath, with: self)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -119,18 +119,16 @@ extension CategoryViewController: UITableViewDelegate {
     }
 }
 
+//MARK: - UITableViewDataSource
+
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.categories.count
+        return viewModel.categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.Identifer, for: indexPath) as? CategoryCell else { return UITableViewCell() }
-        let currentCategory = viewModel.categories[indexPath.row]
-        cell.configureCell(for: CategoryCellViewModel(categoryName: currentCategory.categoryName,
-                                                      isFirst: indexPath.row == 0,
-                                                      isLast: indexPath.row == viewModel.categories.count - 1,
-                                                      isSelected: currentCategory.id == selectedCategoryID))
+        cell.configureCell(for: viewModel.makeViewModel(ForRowAt: indexPath))
         return cell
     }
 }
@@ -151,11 +149,11 @@ private extension CategoryViewController {
     func addConstraints() {
         
         let safeArea = view.safeAreaLayoutGuide
-        let categoryOffset = Constants.CategoryViewControllerConstants.titleSpacing
+        let categoryOffset = Constants.CategoryViewControllerConstants.categoryOffset
         
         NSLayoutConstraint.activate([
         
-            titleLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: categoryOffset),
+            titleLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Constants.CategoryViewControllerConstants.titleSpacing),
             titleLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: Constants.CategoryViewControllerConstants.titleHeight),
@@ -163,7 +161,7 @@ private extension CategoryViewController {
             tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: categoryOffset),
             tableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -categoryOffset),
             tableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: categoryOffset),
-            tableView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -categoryOffset),
+            tableView.bottomAnchor.constraint(lessThanOrEqualTo: addButton.topAnchor, constant: -categoryOffset),
             
             emptyView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: categoryOffset),
             emptyView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),

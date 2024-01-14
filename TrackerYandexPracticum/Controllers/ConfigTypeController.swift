@@ -235,7 +235,7 @@ final class ConfigTypeController: UIViewController {
     
     private var selectedCategoryIndex = UUID() {
         didSet {
-            trackerNameIsFulfilled = true
+            categoryIsSelected = true
         }
     }
     
@@ -284,8 +284,9 @@ final class ConfigTypeController: UIViewController {
         titleTextField.becomeFirstResponder()
     }
     @objc private func categoryButtonPressed() {
-        let nextController = CategoryViewController(selectedCategoryID: selectedCategoryIndex)
-        nextController.delegate = self
+        let viewModel = CategoryViewModel(selectedCategoryID: selectedCategoryIndex)
+        let nextController = CategoryViewController(viewModel: viewModel)
+        viewModel.delegate = self
         present(nextController, animated: true)
     }
     

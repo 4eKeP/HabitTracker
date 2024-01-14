@@ -82,6 +82,7 @@ private extension TrackersFactoryCD {
         trackerRecordStore.deleteTrackerRecordFromCD()
         trackerStore.deleteTrackersFromCD()
         trackerCategoryStore.deleteCategoriesFromCD()
+        UserDefaults.standard.isOnBoarded = false
     }
     
     func fetchTracker(byID id: UUID) -> TrackerCD {
