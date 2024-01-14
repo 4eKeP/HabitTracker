@@ -60,9 +60,8 @@ final class AddCategoryViewController: UIViewController {
         }
     }
     
-    private var viewModel: AddCategoryViewModelProtocol
+    private let viewModel: AddCategoryViewModelProtocol
     
-   // weak var delegate: AddCategoryViewControllerDelegate?
     
     init(viewModel: AddCategoryViewModelProtocol) {
         self.viewModel = viewModel

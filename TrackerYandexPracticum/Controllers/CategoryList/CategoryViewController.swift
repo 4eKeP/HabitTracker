@@ -127,7 +127,9 @@ extension CategoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return viewModel.makeCell(in: tableView, ForRowAt: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.Identifer, for: indexPath) as? CategoryCell else { return UITableViewCell() }
+        cell.configureCell(for: viewModel.makeViewModel(ForRowAt: indexPath))
+        return cell
     }
 }
 

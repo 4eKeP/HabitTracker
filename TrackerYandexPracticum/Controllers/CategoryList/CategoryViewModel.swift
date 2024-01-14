@@ -20,7 +20,7 @@ protocol CategoryViewModelProtocol {
     
     func categorySelected(at indexPath: IndexPath, with controller: CategoryViewController)
     
-    func makeCell(in tableView: UITableView, ForRowAt indexPath: IndexPath) -> UITableViewCell
+    func makeViewModel(ForRowAt indexPath: IndexPath) -> CategoryCellViewModel
 }
 
 final class CategoryViewModel: CategoryViewModelProtocol {
@@ -58,15 +58,14 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         delegate?.categoryViewController(controller, select: categories[indexPath.row])
     }
     
-    func makeCell(in tableView: UITableView, ForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.Identifer, for: indexPath) as? CategoryCell else { return UITableViewCell() }
+    func makeViewModel(ForRowAt indexPath: IndexPath) -> CategoryCellViewModel {
         
         let currentCategory = categories[indexPath.row]
-        cell.configureCell(for: CategoryCellViewModel(categoryName: currentCategory.categoryName,
+        let currentViewModel = CategoryCellViewModel(categoryName: currentCategory.categoryName,
                                                       isFirst: indexPath.row == 0,
                                                       isLast: indexPath.row == categories.count - 1,
-                                                      isSelected: currentCategory.id == selectedCategoryID))
-        return cell
+                                                      isSelected: currentCategory.id == selectedCategoryID)
+        return currentViewModel
     }
 }
 
