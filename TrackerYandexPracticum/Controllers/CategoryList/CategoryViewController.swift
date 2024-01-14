@@ -47,16 +47,13 @@ final class CategoryViewController: UIViewController {
         return tableView
     }()
     
-    private var selectedCategoryID: UUID?
-    private var viewModel = CategoryViewModel()
-    
-    weak var delegate: CategoryViewControllerDelegate?
+    private var viewModel: CategoryViewModelProtocol
     
     //MARK: - init
     
-    init(selectedCategoryID: UUID) {
+    init(viewModel: CategoryViewModelProtocol) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.selectedCategoryID = selectedCategoryID
     }
     
     required init?(coder: NSCoder) {
@@ -91,8 +88,9 @@ private extension CategoryViewController {
     }
     
     @objc func addButtonPressed() {
-        let nextController = AddCategoryViewController()
-        nextController.delegate = self
+        let viewModel = AddCategoryViewModel()
+        let nextController = AddCategoryViewController(viewModel: viewModel)
+        viewModel.delegate = self
         present(nextController, animated: true)
     }
 }
@@ -103,7 +101,6 @@ extension CategoryViewController: AddCategoryViewControllerDelegate {
     func addCategoryViewController(_ viewController: AddCategoryViewController, didAddCategory category: TrackerCategory) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
-            print(category)
             self.viewModel.addCategory(category)
         }
     }
@@ -114,8 +111,7 @@ extension CategoryViewController: AddCategoryViewControllerDelegate {
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        selectedCategoryID = viewModel.categories[indexPath.row].id
-        delegate?.categoryViewController(self, select: viewModel.categories[indexPath.row])
+        viewModel.categorySelected(at: indexPath, with: self)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -127,21 +123,11 @@ extension CategoryViewController: UITableViewDelegate {
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(viewModel.categories.count)
         return viewModel.categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("ячейка зполнена контентом")
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.Identifer, for: indexPath) as? CategoryCell else { return UITableViewCell() }
-        
-        let currentCategory = viewModel.categories[indexPath.row]
-        print(currentCategory)
-        cell.configureCell(for: CategoryCellViewModel(categoryName: currentCategory.categoryName,
-                                                      isFirst: indexPath.row == 0,
-                                                      isLast: indexPath.row == viewModel.categories.count - 1,
-                                                      isSelected: currentCategory.id == selectedCategoryID))
-        return cell
+        return viewModel.makeCell(in: tableView, ForRowAt: indexPath)
     }
 }
 

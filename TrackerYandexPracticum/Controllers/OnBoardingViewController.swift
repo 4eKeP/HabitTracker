@@ -55,7 +55,6 @@ final class OnBoardingController: UIPageViewController {
         setupPageControl()
     }
     
-    
     @objc private func buttonPressed() {
         let scenes = UIApplication.shared.connectedScenes
         guard let windowsScenes = scenes.first as? UIWindowScene,

@@ -30,6 +30,7 @@
 		849D20DD2B3707D1005F4576 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849D20DC2B3707D1005F4576 /* TrackerStore.swift */; };
 		849D20E82B39B978005F4576 /* TrckerStoreUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849D20E72B39B978005F4576 /* TrckerStoreUpdate.swift */; };
 		84A240212B18D0CB00E6C059 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A240202B18D0CB00E6C059 /* Tracker.swift */; };
+		84C35ABB2B5416FD0071B4B2 /* AddCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C35ABA2B5416FD0071B4B2 /* AddCategoryViewModel.swift */; };
 		84D557072B1E36CE00EBAE8D /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557062B1E36CE00EBAE8D /* TrackerCell.swift */; };
 		84D5570A2B1E371200EBAE8D /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557092B1E371200EBAE8D /* SectionHeader.swift */; };
 		84D5570D2B1E4F7500EBAE8D /* TrackersFactoryCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5570C2B1E4F7500EBAE8D /* TrackersFactoryCD.swift */; };
@@ -71,6 +72,7 @@
 		849D20DC2B3707D1005F4576 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		849D20E72B39B978005F4576 /* TrckerStoreUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrckerStoreUpdate.swift; sourceTree = "<group>"; };
 		84A240202B18D0CB00E6C059 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
+		84C35ABA2B5416FD0071B4B2 /* AddCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewModel.swift; sourceTree = "<group>"; };
 		84D557062B1E36CE00EBAE8D /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		84D557092B1E371200EBAE8D /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		84D5570C2B1E4F7500EBAE8D /* TrackersFactoryCD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersFactoryCD.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				841D61762B5040B900147736 /* CategoryViewModel.swift */,
 				841D61782B5040C700147736 /* CategoryViewController.swift */,
 				841D617A2B5043EA00147736 /* AddCategoryViewController.swift */,
+				84C35ABA2B5416FD0071B4B2 /* AddCategoryViewModel.swift */,
 			);
 			path = CategoryList;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				841D61732B502D3A00147736 /* CategoryCell.swift in Sources */,
 				849C16302B2F6054009D3E87 /* ConfigHeader.swift in Sources */,
 				849C162E2B2F2DE0009D3E87 /* ColorCell.swift in Sources */,
+				84C35ABB2B5416FD0071B4B2 /* AddCategoryViewModel.swift in Sources */,
 				849C162C2B2F2AE6009D3E87 /* EmojiCell.swift in Sources */,
 				84D5571A2B2209D000EBAE8D /* EmptyView.swift in Sources */,
 				84D557212B23635900EBAE8D /* Controller+Extension.swift in Sources */,

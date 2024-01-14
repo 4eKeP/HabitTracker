@@ -195,7 +195,7 @@ extension TrackerController: TrackerStoreDelegate {
 extension TrackerController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchBarUserInput = searchText
-        if searchBarUserInput.count > 1 {
+        if searchBarUserInput.count > 0 {
             makeEmptyViewForSearchBar()
             searchInTrackers()
         }

@@ -60,7 +60,18 @@ final class AddCategoryViewController: UIViewController {
         }
     }
     
-    weak var delegate: AddCategoryViewControllerDelegate?
+    private var viewModel: AddCategoryViewModelProtocol
+    
+   // weak var delegate: AddCategoryViewControllerDelegate?
+    
+    init(viewModel: AddCategoryViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,9 +94,7 @@ final class AddCategoryViewController: UIViewController {
 private extension AddCategoryViewController {
     
     @objc func addButtonPressed() {
-        let newCategory = TrackerCategory(id: UUID(), categoryName: userInput, trackers: [])
-        print(newCategory)
-        delegate?.addCategoryViewController(self, didAddCategory: newCategory)
+        viewModel.addNewCategoryButtonPressed(withName: userInput, with: self)
     }
     
     func updateAddButtonState() {
