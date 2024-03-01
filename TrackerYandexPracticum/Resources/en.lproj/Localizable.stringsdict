@@ -5,25 +5,17 @@
 	<key>StringKey</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
+		<string>%#@days@</string>
+		<key>days</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
-			<string></string>
-			<key>zero</key>
-			<string></string>
+			<string>d</string>
 			<key>one</key>
-			<string></string>
-			<key>two</key>
-			<string></string>
-			<key>few</key>
-			<string></string>
+			<string>%d day</string>
 			<key>many</key>
-			<string></string>
-			<key>other</key>
-			<string></string>
+			<string>%d days</string>
 		</dict>
 	</dict>
 </dict>

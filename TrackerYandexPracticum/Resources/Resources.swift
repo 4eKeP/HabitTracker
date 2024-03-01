@@ -1,5 +1,5 @@
 //
-//  Constants.swift
+//  Resources.swift
 //  TrackerYandexPracticum
 //
 //  Created by admin on 07.12.2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum Constants {
+enum Resources {
     static let emojis = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶", "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝️", "😪"
     ]

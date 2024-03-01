@@ -9,10 +9,10 @@ import UIKit
 
 final class OnBoardingController: UIPageViewController {
     
-    private let leadingOnBoardingPage = Constants.OnBoardingControllerConstants.leadingOnBoardingPage
-    private let centerOffsetOrButtonHeight = Constants.OnBoardingControllerConstants.centerOffsetOrButtonHeight
-    private let bottomSpacing = Constants.OnBoardingControllerConstants.bottomSpacing
-    private let bottomPageControllOffset = Constants.OnBoardingControllerConstants.bottomPageControllOffset
+    private let leadingOnBoardingPage = Resources.OnBoardingControllerConstants.leadingOnBoardingPage
+    private let centerOffsetOrButtonHeight = Resources.OnBoardingControllerConstants.centerOffsetOrButtonHeight
+    private let bottomSpacing = Resources.OnBoardingControllerConstants.bottomSpacing
+    private let bottomPageControllOffset = Resources.OnBoardingControllerConstants.bottomPageControllOffset
     
     private let bluePageController = UIViewController()
     private let redPageController = UIViewController()

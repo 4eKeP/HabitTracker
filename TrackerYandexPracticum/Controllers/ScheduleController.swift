@@ -55,21 +55,21 @@ final class ScheduleController: UIViewController {
         view.frame.width - 40
     }()
     
-    private let switchWidth: CGFloat = Constants.ScheduleConstants.switchWidth
+    private let switchWidth: CGFloat = Resources.ScheduleConstants.switchWidth
     
-    private let switchHeight: CGFloat = Constants.ScheduleConstants.switchHeight
+    private let switchHeight: CGFloat = Resources.ScheduleConstants.switchHeight
     
-    private let leadingSpacing: CGFloat = Constants.ScheduleConstants.leadingSpacing
+    private let leadingSpacing: CGFloat = Resources.ScheduleConstants.leadingSpacing
     
-    private let switchFieldHeight: CGFloat = Constants.ScheduleConstants.switchFieldHeight
+    private let switchFieldHeight: CGFloat = Resources.ScheduleConstants.switchFieldHeight
     
-    private let spacing: CGFloat = Constants.ScheduleConstants.spacing
+    private let spacing: CGFloat = Resources.ScheduleConstants.spacing
     
-    private let titleSpacing: CGFloat = Constants.ScheduleConstants.titleSpacing
+    private let titleSpacing: CGFloat = Resources.ScheduleConstants.titleSpacing
     
-    private let bottomSpacing: CGFloat = Constants.ScheduleConstants.bottomSpacing
+    private let bottomSpacing: CGFloat = Resources.ScheduleConstants.bottomSpacing
     
-    private let buttonHeight: CGFloat = Constants.ScheduleConstants.buttonHeight
+    private let buttonHeight: CGFloat = Resources.ScheduleConstants.buttonHeight
     
     private let numberOfDays = 7
     private let daysName = [

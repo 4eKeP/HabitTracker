@@ -6,3 +6,59 @@
   
 */
 
+"labels.newTracker" = "إنشاء جهاز تعقب";
+"labels.newEvent" = "حدث جديد";
+"labels.newHabit" = "عادة جديدة";
+"labels.editHabit" = "تحرير العادة";
+"labels.newCategory" = "فئة جديدة";
+"labels.addCategory" = "إضافة فئة";
+"labels.editCategory" = "تحرير الفئة";
+"labels.habit" = "عادة";
+"labels.event" = "حدث";
+"labels.category" = "فئة";
+"labels.schedule" = "جدول";
+"labels.statistic" = "إحصائيات";
+"labels.trackers" = "بتتبع";
+"labels.searchBar" = "يبحث";
+"labels.cancel" = "يلغي";
+"labels.create" = "يخلق";
+"labels.save" = "يحفظ";
+"labels.textFieldPlaceholder" = "أدخل اسم المتتبع هنا";
+"labels.categoryNamePlaceholder" = "أدخل اسم الفئة هنا";
+"labels.textFieldRestriction" = "لا يزيد عن ٣٨ حرفا";
+"labels.done" = "منتهي";
+"labels.emoji" = "الرموز التعبيرية";
+"labels.color" = "لون";
+"labels.filters" = "المرشحات";
+"labels.emptyStatistic" = "لا يوجد شيء لتحليله بعد";
+"labels.emptyTracker" = "ماذا سنتتبع؟";
+"labels.emptySearch" = "لم يتم العثور على شيء";
+"labels.emptyCategory" = "العادات والأحداث\nيمكن الجمع بينها بالمعنى";
+"labels.oneDay" = "يوم";
+"labels.fewDays" = "يوم";
+"labels.manyDays" = "أيام";
+"labels.everyDays" = "كل يوم";
+"labels.weekDays" = "أيام الأسبوع";
+"labels.weekEnds" = "عطلة نهاية الاسبوع";
+"labels.onboardingPage1" = "تتبع فقط ما تريد";
+"labels.onboardingPage2" = "حتى لو لم يكن الأمر يتعلق باليوغا \n ولتر من الماء";
+"labels.onboardingButton" = "تلك هي التقنيات!";
+"labels.pinCategoryName" = "مثبت";
+"labels.confirmTrackerDelete" = "هل أنت متأكد أنك تريد حذف المتتبع؟";
+"labels.confirmCategoryDelete" = "هل أنت متأكد من أن هذه الفئة ليست هناك حاجة؟";
+"labels.cancelCategoryDelete" = "من المستحيل حذف - هذه الفئة مع أجهزة التتبع";
+
+"labels.context.0" = "دبوس";
+"labels.context.1" = "يحرر";
+"labels.context.2" = "يمسح";
+"labels.context.3" = "نزع الدبوس";
+
+"labels.filter.0" = "جميع أجهزة التتبع";
+"labels.filter.1" = "متابعون لهذا اليوم";
+"labels.filter.2" = "مكتمل";
+"labels.filter.3" = "غير مكتمل";
+
+"labels.stat.0" = "أفضل فترة";
+"labels.stat.1" = "الأيام المثالية";
+"labels.stat.2" = "اكتملت أجهزة التتبع";
+"labels.stat.3" = "متوسط";

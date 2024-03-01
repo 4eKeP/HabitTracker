@@ -56,15 +56,15 @@ final class TrackerController: UIViewController {
         }
     }
     
-    private let trackersPerLine: CGFloat = Constants.TrackerControllerConstants.trackersPerLine
+    private let trackersPerLine: CGFloat = Resources.TrackerControllerConstants.trackersPerLine
     
-    private let smallSpacing: CGFloat = Constants.TrackerControllerConstants.smallSpacing
+    private let smallSpacing: CGFloat = Resources.TrackerControllerConstants.smallSpacing
     
-    private let spacing: CGFloat = Constants.TrackerControllerConstants.spacing
+    private let spacing: CGFloat = Resources.TrackerControllerConstants.spacing
     
-    private let collectionHeight:CGFloat = Constants.TrackerControllerConstants.collectionHeight
+    private let collectionHeight:CGFloat = Resources.TrackerControllerConstants.collectionHeight
     
-    private let sectionHeight: CGFloat = Constants.TrackerControllerConstants.sectionHeight
+    private let sectionHeight: CGFloat = Resources.TrackerControllerConstants.sectionHeight
     
     private let factory = TrackersFactoryCD.shared
     
@@ -264,8 +264,8 @@ extension TrackerController: UICollectionViewDataSource {
         
         let currentTracker = visibleCategories[indexPath.section].trackers[indexPath.row]
         cell.delegate = self
-        cell.configCell(backgroundColor: Constants.colors[currentTracker.color],
-                        emoji: Constants.emojis[currentTracker.emoji],
+        cell.configCell(backgroundColor: Resources.colors[currentTracker.color],
+                        emoji: Resources.emojis[currentTracker.emoji],
                         cardText: currentTracker.name,
                         counter: factory.getRecordsCounter(with: currentTracker.id))
         cell.isDone(factory.isTrackerDone(with: currentTracker.id, on: currentDate))

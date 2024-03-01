@@ -31,11 +31,11 @@ final class TrackerTypeController: UIViewController {
         return stackView
     }()
     
-    private let leadingButton: CGFloat = Constants.TrackerTypeConstants.leadingButton
+    private let leadingButton: CGFloat = Resources.TrackerTypeConstants.leadingButton
     
-    private let buttonHeight: CGFloat = Constants.TrackerTypeConstants.buttonHeight
+    private let buttonHeight: CGFloat = Resources.TrackerTypeConstants.buttonHeight
     
-    private let buttonSpacing: CGFloat = Constants.TrackerTypeConstants.buttonSpacing
+    private let buttonSpacing: CGFloat = Resources.TrackerTypeConstants.buttonSpacing
     
     weak var delegate: TrackerTypeControllerDelegate?
     

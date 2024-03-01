@@ -135,23 +135,23 @@ private extension AddCategoryViewController {
     func setupConstraints() {
         
         let safeArea = view.safeAreaLayoutGuide
-        let offSet = Constants.AddCategoryViewControllerConstants.addcategoryOffset
+        let offSet = Resources.AddCategoryViewControllerConstants.addcategoryOffset
         
         NSLayoutConstraint.activate([
         
-            titleLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Constants.AddCategoryViewControllerConstants.titleSpacing),
+            titleLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Resources.AddCategoryViewControllerConstants.titleSpacing),
             titleLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: Constants.AddCategoryViewControllerConstants.titleHeight),
+            titleLabel.heightAnchor.constraint(equalToConstant: Resources.AddCategoryViewControllerConstants.titleHeight),
 
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: offSet),
             textField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: offSet),
             textField.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -offSet),
-            textField.heightAnchor.constraint(equalToConstant: Constants.AddCategoryViewControllerConstants.addCategoryFieldHeight),
+            textField.heightAnchor.constraint(equalToConstant: Resources.AddCategoryViewControllerConstants.addCategoryFieldHeight),
 
             addButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: offSet),
             addButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -offSet),
-            addButton.heightAnchor.constraint(equalToConstant: Constants.AddCategoryViewControllerConstants.buttonHeight),
+            addButton.heightAnchor.constraint(equalToConstant: Resources.AddCategoryViewControllerConstants.buttonHeight),
             addButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -offSet)
         
         ])

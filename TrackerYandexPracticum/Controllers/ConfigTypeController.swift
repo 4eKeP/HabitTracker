@@ -25,27 +25,27 @@ final class ConfigTypeController: UIViewController {
         view.frame.width - 2 * leadingButton
     }()
     
-    private let leadingButton: CGFloat = Constants.ConfigTypeConstants.leadingButton
+    private let leadingButton: CGFloat = Resources.ConfigTypeConstants.leadingButton
     
-    private let leadingSpacing: CGFloat = Constants.ConfigTypeConstants.leadingSpacing
+    private let leadingSpacing: CGFloat = Resources.ConfigTypeConstants.leadingSpacing
     
-    private let settingHeight: CGFloat = Constants.ConfigTypeConstants.settingHeight
+    private let settingHeight: CGFloat = Resources.ConfigTypeConstants.settingHeight
     
-    private let titleSpacing: CGFloat = Constants.ConfigTypeConstants.titleSpacing
+    private let titleSpacing: CGFloat = Resources.ConfigTypeConstants.titleSpacing
     
-    private let bottomSpacing: CGFloat = Constants.ConfigTypeConstants.bottomSpacing
+    private let bottomSpacing: CGFloat = Resources.ConfigTypeConstants.bottomSpacing
     
-    private let buttonHeight: CGFloat = Constants.ConfigTypeConstants.buttonHeight
+    private let buttonHeight: CGFloat = Resources.ConfigTypeConstants.buttonHeight
     
-    private let settingsSectionHeight: CGFloat = Constants.ConfigTypeConstants.settingsSectionHeight
+    private let settingsSectionHeight: CGFloat = Resources.ConfigTypeConstants.settingsSectionHeight
     
-    private let configCollectionCellHeight: CGFloat = Constants.ConfigTypeConstants.configCollectionCellHeight
+    private let configCollectionCellHeight: CGFloat = Resources.ConfigTypeConstants.configCollectionCellHeight
     
-    private let configCellsPerLine: CGFloat = Constants.ConfigTypeConstants.configCellsPerLine
+    private let configCellsPerLine: CGFloat = Resources.ConfigTypeConstants.configCellsPerLine
     
-    private let configHeight: CGFloat = Constants.ConfigTypeConstants.configHeight
+    private let configHeight: CGFloat = Resources.ConfigTypeConstants.configHeight
     
-    private lazy var scrollViewHeight: CGFloat = Constants.ConfigTypeConstants.scrollViewHeight
+    private lazy var scrollViewHeight: CGFloat = Resources.ConfigTypeConstants.scrollViewHeight
     
     private lazy var titleLabel = {
         let titleLable = UILabel()
@@ -408,9 +408,9 @@ extension ConfigTypeController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView.tag {
         case CollectionType.emoji:
-            return Constants.emojis.count
+            return Resources.emojis.count
         case CollectionType.color:
-            return Constants.colors.count
+            return Resources.colors.count
         default:
             return .zero
         }
@@ -426,7 +426,7 @@ extension ConfigTypeController: UICollectionViewDataSource {
             cell.backgroundColor = .ypWhite
             cell.layer.cornerRadius = 16
             cell.layer.masksToBounds = true
-            cell.configEmojiCell(emoji: Constants.emojis[indexPath.row])
+            cell.configEmojiCell(emoji: Resources.emojis[indexPath.row])
             return cell
         case CollectionType.color:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.Identifer, for: indexPath) as? ColorCell else {
@@ -436,7 +436,7 @@ extension ConfigTypeController: UICollectionViewDataSource {
             cell.backgroundColor = .ypWhite
             cell.layer.cornerRadius = 8
             cell.layer.masksToBounds = true
-            cell.configColorCell(color: Constants.colors[indexPath.row])
+            cell.configColorCell(color: Resources.colors[indexPath.row])
             return cell
         default:
             assertionFailure("не удалось получить tag ячейки")
@@ -478,7 +478,7 @@ extension ConfigTypeController: UICollectionViewDelegate {
             collectionView.cellForItem(at: indexPath)?.backgroundColor = .ypLightGray
         case CollectionType.color:
             colorIndex = indexPath.row
-            collectionView.cellForItem(at: indexPath)?.backgroundColor = Constants.colors[colorIndex].withAlphaComponent(0.3)
+            collectionView.cellForItem(at: indexPath)?.backgroundColor = Resources.colors[colorIndex].withAlphaComponent(0.3)
         default:
             break
         }

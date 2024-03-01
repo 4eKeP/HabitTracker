@@ -44,7 +44,7 @@
 		84D557182B20B74900EBAE8D /* Separators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557172B20B74900EBAE8D /* Separators.swift */; };
 		84D5571A2B2209D000EBAE8D /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557192B2209D000EBAE8D /* EmptyView.swift */; };
 		84D5571D2B22189500EBAE8D /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5571C2B22189500EBAE8D /* Date+Extensions.swift */; };
-		84D5571F2B221C0F00EBAE8D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5571E2B221C0F00EBAE8D /* Constants.swift */; };
+		84D5571F2B221C0F00EBAE8D /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5571E2B221C0F00EBAE8D /* Resources.swift */; };
 		84D557212B23635900EBAE8D /* Controller+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557202B23635900EBAE8D /* Controller+Extension.swift */; };
 		84D557262B241F7000EBAE8D /* ScheduleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D557252B241F7000EBAE8D /* ScheduleController.swift */; };
 /* End PBXBuildFile section */
@@ -98,7 +98,7 @@
 		84D557172B20B74900EBAE8D /* Separators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Separators.swift; sourceTree = "<group>"; };
 		84D557192B2209D000EBAE8D /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		84D5571C2B22189500EBAE8D /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
-		84D5571E2B221C0F00EBAE8D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		84D5571E2B221C0F00EBAE8D /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		84D557202B23635900EBAE8D /* Controller+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Controller+Extension.swift"; sourceTree = "<group>"; };
 		84D557252B241F7000EBAE8D /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,7 +188,7 @@
 		84D366592B87193C00BA186C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				84D5571E2B221C0F00EBAE8D /* Constants.swift */,
+				84D5571E2B221C0F00EBAE8D /* Resources.swift */,
 				84D366632B871C9500BA186C /* Localizable.strings */,
 				84D3666E2B871EF600BA186C /* Localizable.stringsdict */,
 				84D366602B871C8F00BA186C /* InfoPlist.strings */,
@@ -311,7 +311,7 @@
 			files = (
 				841D617B2B5043EA00147736 /* AddCategoryViewController.swift in Sources */,
 				84A240212B18D0CB00E6C059 /* Tracker.swift in Sources */,
-				84D5571F2B221C0F00EBAE8D /* Constants.swift in Sources */,
+				84D5571F2B221C0F00EBAE8D /* Resources.swift in Sources */,
 				84D366732B8721BB00BA186C /* Array+Extension.swift in Sources */,
 				849D20B12B36AD07005F4576 /* TrackerCoreData.xcdatamodeld in Sources */,
 				841D617F2B52FD2200147736 /* UserDefaults+Extension.swift in Sources */,
