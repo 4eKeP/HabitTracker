@@ -9,6 +9,14 @@ import UIKit
 
 final class TrackerController: UIViewController {
     
+    private let searchBarPlaceHolderText = Resources.TrackerControllerConstants.Labels.searchBarPlaceHolderText
+    
+    private let cancelButtonText = Resources.TrackerControllerConstants.Labels.cancelButtonText
+    
+    private let emptyViewText = Resources.TrackerControllerConstants.Labels.emptyViewText
+    
+    private let emptyViewSearchText = Resources.TrackerControllerConstants.Labels.emptyViewSearchText
+    
     private lazy var emptyView = {
         var view = EmptyView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -39,8 +47,8 @@ final class TrackerController: UIViewController {
     
     private lazy var searchBar: UISearchController = {
         $0.hidesNavigationBarDuringPresentation = false
-        $0.searchBar.placeholder = "Поиск"
-        $0.searchBar.setValue("Отменить", forKey: "cancelButtonText")
+        $0.searchBar.placeholder = searchBarPlaceHolderText
+        $0.searchBar.setValue(cancelButtonText, forKey: "cancelButtonText")
         $0.searchBar.searchTextField.clearButtonMode = .never
         return $0
     }(UISearchController(searchResultsController: nil))
@@ -325,7 +333,7 @@ private extension TrackerController {
     //MARK: - EmptyView
     func makeEmptyView() {
         emptyView.setEmptyView(
-            title: "Что будем отслеживать?",
+            title: emptyViewText,
             image: UIImage(named: "tracker_placeholder")
         )
         view.addSubview(emptyView)
@@ -333,12 +341,12 @@ private extension TrackerController {
     }
     
     func makeEmptyViewForTrackers() {
-        emptyView.setEmptyView(title: "Что будем отслеживать?",
+        emptyView.setEmptyView(title: emptyViewText,
                                image: UIImage(named: "tracker_placeholder"))
     }
     
     func makeEmptyViewForSearchBar() {
-        emptyView.setEmptyView(title: "Ничего не найдено",
+        emptyView.setEmptyView(title: emptyViewSearchText,
                                image: UIImage(named: "search_placeholder"))
     }
     
@@ -375,5 +383,4 @@ private extension TrackerController {
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
-    
 }

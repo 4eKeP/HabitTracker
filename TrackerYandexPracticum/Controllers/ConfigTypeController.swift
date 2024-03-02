@@ -13,6 +13,34 @@ protocol ConfigTypeControllerDelegate: AnyObject {
 
 final class ConfigTypeController: UIViewController {
     
+    private let titleLabelTextNewHabit = Resources.ConfigTypeConstants.Labels.titleLabelTextNewHabit
+    
+    private let titleLabelTextNewEvent = Resources.ConfigTypeConstants.Labels.titleLabelTextNewEvent
+    
+    private let titleTextFieldPlaceholder = Resources.ConfigTypeConstants.Labels.titleTextFieldPlaceholder
+    
+    private let warningLabelText = Resources.ConfigTypeConstants.Labels.warningLabelText
+    
+    private let categoryButtonText = Resources.ConfigTypeConstants.Labels.categoryButtonText
+    
+    private let scheduleButtonText = Resources.ConfigTypeConstants.Labels.scheduleButtonText
+    
+    private let cancelButtonText = Resources.ConfigTypeConstants.Labels.cancelButtonText
+    
+    private let createButtonText = Resources.ConfigTypeConstants.Labels.createButtonText
+    
+    private let fullWeekText = Resources.ConfigTypeConstants.Labels.fullWeekText
+    
+    private let workDaysText = Resources.ConfigTypeConstants.Labels.workDaysText
+    
+    private let weekendsText = Resources.ConfigTypeConstants.Labels.weekendsText
+    
+    private let collectionTypeEmojiText = Resources.ConfigTypeConstants.Labels.collectionTypeEmojiText
+    
+    private let collectionTypeColorText = Resources.ConfigTypeConstants.Labels.collectionTypeColorText
+    
+    private let shortWeekDays = Resources.ConfigTypeConstants.Labels.shortWeekDays
+    
     private lazy var settingsViewWidth: CGFloat = {
         view.frame.width - 2 * leadingSpacing
     }()
@@ -47,9 +75,11 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var scrollViewHeight: CGFloat = Resources.ConfigTypeConstants.scrollViewHeight
     
+    private lazy var isRTL = UIView.userInterfaceLayoutDirection(for: titleLabel.semanticContentAttribute) == .rightToLeft
+    
     private lazy var titleLabel = {
         let titleLable = UILabel()
-        titleLable.text = isHabit ? "Новая привычка" : "Новое нерегулярное событие"
+        titleLable.text = isHabit ? titleLabelTextNewHabit : titleLabelTextNewEvent
         titleLable.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         titleLable.textAlignment = .center
         titleLable.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +94,7 @@ final class ConfigTypeController: UIViewController {
         textField.backgroundColor = .ypBackground
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = titleTextFieldPlaceholder
         textField.clearButtonMode = .whileEditing
         textField.textColor = .ypBlack
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +104,7 @@ final class ConfigTypeController: UIViewController {
     private lazy var warningLabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Ограничение 38 символов"
+        label.text = warningLabelText
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         label.textAlignment = .center
         label.textColor = .ypRed
@@ -108,7 +138,7 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var categoryButton = {
         let button = SettingsButton()
-        button.setPrimaryLable(text: "Категория")
+        button.setPrimaryLable(text: categoryButtonText)
         button.addTarget(self, action: #selector(categoryButtonPressed), for: .touchUpInside)
         button.frame = CGRect(x: 0,
                               y: 0,
@@ -120,7 +150,7 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var scheduleButton = {
         let button = SettingsButton()
-        button.setPrimaryLable(text: "Расписание")
+        button.setPrimaryLable(text: scheduleButtonText)
         button.addTarget(self, action: #selector(scheduleButtonPressed), for: .touchUpInside)
         button.frame = CGRect(x: 0,
                               y: settingHeight,
@@ -142,7 +172,7 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var cancelButton = {
         let button = TypeButton()
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(cancelButtonText, for: .normal)
         button.setTitleColor(.ypRed, for: .normal)
         button.backgroundColor = .ypWhite
         button.layer.borderColor = UIColor.ypRed.cgColor
@@ -153,7 +183,7 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var createButton = {
         let button = TypeButton()
-        button.setTitle("Создать", for: .normal)
+        button.setTitle(createButtonText, for: .normal)
         button.setTitleColor(.ypLightGray, for: .disabled)
         button.addTarget(self, action: #selector(createButtonPressed), for: .touchUpInside)
         return button
@@ -321,21 +351,20 @@ final class ConfigTypeController: UIViewController {
     
     private func fetchSchedule(from schedule: [Bool]) {
         self.schedule = schedule
-        let days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
         let fullWeek = [true, true, true, true, true, true, true]
         let workDays = [true, true, true, true, true, false, false]
         let weekends = [false, false, false, false, false, true, true]
-        var finalSchadule: [String] = []
         switch schedule {
         case fullWeek:
-            scheduleButton.setSecondaryLable(text: "Каждый день")
+            scheduleButton.setSecondaryLable(text: fullWeekText)
         case workDays:
-            scheduleButton.setSecondaryLable(text: "Будни")
+            scheduleButton.setSecondaryLable(text: workDaysText)
         case weekends:
-            scheduleButton.setSecondaryLable(text: "Выходные")
+            scheduleButton.setSecondaryLable(text: weekendsText)
         default:
+            var finalSchadule: [String] = []
             for index in 0..<schedule.count where schedule[index] {
-                finalSchadule.append(days[index])
+                finalSchadule.append(shortWeekDays[index])
             }
             let finalSchaduleWithSeparation = finalSchadule.joined(separator: ", ")
             scheduleButton.setSecondaryLable(text: finalSchaduleWithSeparation)
@@ -458,9 +487,9 @@ extension ConfigTypeController: UICollectionViewDataSource {
         }
         switch collectionView.tag {
         case CollectionType.emoji:
-            view.config(header: "Emoji")
+            view.config(header: collectionTypeEmojiText)
         case CollectionType.color:
-            view.config(header: "Цвет")
+            view.config(header: collectionTypeColorText)
         default:
             break
         }
@@ -530,7 +559,6 @@ extension ConfigTypeController: UICollectionViewDelegateFlowLayout {
 
 private extension ConfigTypeController {
     // MARK: - SetupUI
-    // MARK: разобраться с порядком констрейнтов
     func setupUI() {
         setTitle()
         setupScrollView()
@@ -584,11 +612,16 @@ private extension ConfigTypeController {
     
     func setupTextField() {
         contentStackView.addArrangedSubview(textFieldStackView)
+        configRTLTextField()
         textFieldStackView.addArrangedSubview(titleTextField)
         textFieldStackView.addArrangedSubview(warningLabel)
         setTitleTextFieldConstraints()
         setWarningLabelConstraints()
         setTextFieldStackViewConstraints()
+    }
+    
+    func configRTLTextField() {
+        titleTextField.textAlignment = isRTL ? .right : .natural
     }
     
     func setTitleTextFieldConstraints() {

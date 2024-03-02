@@ -25,34 +25,34 @@ final class TrackerCell: UICollectionViewCell {
     }()
     
     private lazy var cardLabel: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 2
-        lable.textColor = .ypWhite
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        lable.translatesAutoresizingMaskIntoConstraints = false
-        return lable
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.textColor = .ypWhite
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private lazy var emojiLabel: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 1
-        lable.textAlignment = .center
-        lable.textColor = .ypWhite
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        lable.backgroundColor = .ypWhiteAlpha
-        lable.layer.cornerRadius = 12
-        lable.layer.masksToBounds = true
-        lable.translatesAutoresizingMaskIntoConstraints = false
-        return lable
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        label.textColor = .ypWhite
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        label.backgroundColor = .ypWhiteAlpha
+        label.layer.cornerRadius = 12
+        label.layer.masksToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private lazy var counterLabel: UILabel = {
-        let lable = UILabel()
-        lable.numberOfLines = 1
-        lable.textColor = .ypBlack
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        lable.translatesAutoresizingMaskIntoConstraints = false
-        return lable
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.textColor = .ypBlack
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private lazy var counterButton: UIButton = {
@@ -73,6 +73,7 @@ final class TrackerCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
     
     weak var delegate: TrackerCellDelegate?
     
@@ -101,14 +102,10 @@ final class TrackerCell: UICollectionViewCell {
     }
     
      func updateCounter(_ counter: Int){
-        switch counter {
-        case _ where (1 == counter % 10) && !(10...19 ~= counter % 100):
-            counterLabel.text = "\(counter) день"
-        case _ where (2...4 ~= counter % 10) && !(10...19 ~= counter % 100):
-            counterLabel.text = "\(counter) дня"
-        default:
-            counterLabel.text = "\(counter) дней"
-        }
+         counterLabel.text = String.localizedStringWithFormat(
+           NSLocalizedString("numberOfDays", comment: "Counter of total tracker's completed days"),
+           counter
+         )
     }
     
     @objc private func counterButtonTapped() {

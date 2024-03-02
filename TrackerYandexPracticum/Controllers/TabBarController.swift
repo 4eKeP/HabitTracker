@@ -9,6 +9,10 @@ import UIKit
 
 final class TabBarController: UITabBarController {
 
+    private let tabBarTrackerText = Resources.TabBarConstants.Labels.tabBarTrackerText
+    
+    private let tabBarStatsText = Resources.TabBarConstants.Labels.tabBarStatsText
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabs()
@@ -17,9 +21,9 @@ final class TabBarController: UITabBarController {
     // MARK: - Tab setup
     
     private func setupTabs() {
-        let tracker = self.createNavigation(with: "Трекер", and: UIImage(named: "tracker_icon"), vc: TrackerController())
+        let tracker = self.createNavigation(with: tabBarTrackerText, and: UIImage(named: "tracker_icon"), vc: TrackerController())
 
-        let stats = self.createNavigation(with: "Статистика", and: UIImage(named: "stats_icon"), vc: StatsController())
+        let stats = self.createNavigation(with: tabBarStatsText, and: UIImage(named: "stats_icon"), vc: StatsController())
         
         self.setViewControllers([tracker, stats], animated: true)
     }

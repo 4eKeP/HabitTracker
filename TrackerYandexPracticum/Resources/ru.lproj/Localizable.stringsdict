@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>StringKey</key>
+	<key>numberOfDays</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@days@</string>
@@ -16,7 +16,7 @@
 			<string>%d день</string>
 			<key>few</key>
 			<string>%d дня</string>
-			<key>many</key>
+			<key>other</key>
 			<string>%d дней</string>
 		</dict>
 	</dict>

@@ -14,14 +14,18 @@ protocol ScheduleControllerDelegate: AnyObject {
 
 final class ScheduleController: UIViewController {
     
-    private lazy var headerLable = {
-        let lable = UILabel()
-        lable.text = "Расписание"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        lable.textAlignment = .center
-        lable.translatesAutoresizingMaskIntoConstraints = false
-        lable.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
-        return lable
+    private let headerText = Resources.ScheduleConstants.Labels.headerText
+    
+    private let doneButtonText = Resources.ScheduleConstants.Labels.doneButtonText
+    
+    private lazy var headerLabel = {
+        let label = UILabel()
+        label.text = headerText
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 70)
+        return label
     }()
     
     private lazy var scheduleView = {
@@ -36,7 +40,7 @@ final class ScheduleController: UIViewController {
     
     private lazy var doneButton = {
         let button = TypeButton()
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(doneButtonText, for: .normal)
         button.setTitleColor(.ypLightGray, for: .disabled)
         button.addTarget(self, action: #selector(doneButtonClicked), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -71,16 +75,8 @@ final class ScheduleController: UIViewController {
     
     private let buttonHeight: CGFloat = Resources.ScheduleConstants.buttonHeight
     
-    private let numberOfDays = 7
-    private let daysName = [
-        "Понедельник",
-        "Вторник",
-        "Среда",
-        "Четверг",
-        "Пятница",
-        "Суббота",
-        "Воскресенье"
-    ]
+    private let numberOfDays = Calendar.autoupdatingCurrent.weekdaySymbols.count
+    private let daysName = Calendar.autoupdatingCurrent.weekdaySymbols.shift()
     
     private lazy var formIsFulfilled = false {
         didSet {
@@ -88,14 +84,14 @@ final class ScheduleController: UIViewController {
         }
     }
     
-    private let cellIdentifier = "cell"
+    private lazy var isRTL = UIView.userInterfaceLayoutDirection(for: headerLabel.semanticContentAttribute) == .rightToLeft
     
     private var schedule: [Bool]
     
     weak var delegate: ScheduleControllerDelegate?
     
-    init(with schadule: [Bool]) {
-        self.schedule = schadule
+    init(with schedule: [Bool]) {
+        self.schedule = schedule
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -140,15 +136,15 @@ private extension ScheduleController {
     
     //MARK: Header config
     func setupHeader() {
-        view.addSubview(headerLable)
+        view.addSubview(headerLabel)
         configHeaderConstraints()
     }
     
     func configHeaderConstraints() {
         NSLayoutConstraint.activate([
-            headerLable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: titleSpacing),
-            headerLable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            headerLable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: titleSpacing),
+            headerLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            headerLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
     
@@ -159,7 +155,7 @@ private extension ScheduleController {
         view.addSubview(scheduleView)
         configScheduleViewConstraints()
         for day in 0..<numberOfDays {
-            configSwitchLable(index: day)
+            configSwitchLabel(index: day)
             configSwitch(index: day)
         }
         let separator = Separators()
@@ -168,17 +164,17 @@ private extension ScheduleController {
                                 times: numberOfDays - 1)
     }
     
-    func configSwitchLable(index: Int) {
-        let lable = UILabel()
-        lable.textColor = .ypBlack
-        lable.text = daysName[index]
-        lable.textAlignment = .natural
+    func configSwitchLabel(index: Int) {
+        let label = UILabel()
+        label.textColor = .ypBlack
+        label.text = daysName[index]
+        label.textAlignment = .natural
         
-        lable.frame = CGRect(x: leadingSpacing,
+        label.frame = CGRect(x: isRTL ? -leadingSpacing : leadingSpacing,
                              y: switchFieldHeight * CGFloat(index),
                              width: scheduleViewWidth,
                              height: switchFieldHeight)
-        scheduleView.addSubview(lable)
+        scheduleView.addSubview(label)
     }
     
     func configSwitch(index: Int) {
@@ -188,7 +184,7 @@ private extension ScheduleController {
         daySwitch.thumbTintColor = .ypWhite
         daySwitch.onTintColor = .ypBlue
         daySwitch.addTarget(self, action: #selector(switchPressed(_:)), for: .touchUpInside)
-        daySwitch.frame = CGRect(x: scheduleViewWidth - spacing - switchWidth,
+        daySwitch.frame = CGRect(x: isRTL ? leadingSpacing : scheduleViewWidth - spacing - switchWidth,
                                  y: switchFieldHeight * CGFloat(index) + switchHeight,
                                  width: switchWidth,
                                  height: switchHeight)
@@ -197,7 +193,7 @@ private extension ScheduleController {
     
     func configScheduleViewConstraints() {
         NSLayoutConstraint.activate([
-            scheduleView.topAnchor.constraint(equalTo: headerLable.bottomAnchor, constant: bottomSpacing),
+            scheduleView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: bottomSpacing),
             scheduleView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: spacing),
             scheduleView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -spacing),
             scheduleView.heightAnchor.constraint(equalToConstant: scheduleViewHeight)

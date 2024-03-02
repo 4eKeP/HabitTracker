@@ -13,9 +13,15 @@ protocol TrackerTypeControllerDelegate: AnyObject {
 
 final class TrackerTypeController: UIViewController {
     
+    private let titleLabelText = Resources.TrackerTypeConstants.Labels.titleLabelText
+    
+    private let addHabitButtonText = Resources.TrackerTypeConstants.Labels.addHabitButtonText
+    
+    private let addEventButtonText = Resources.TrackerTypeConstants.Labels.addEventButtonText
+    
     private lazy var titleLabel = {
         let titleLable = UILabel()
-        titleLable.text = "Создание трекера"
+        titleLable.text = titleLabelText
         titleLable.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         titleLable.textAlignment = .center
         titleLable.translatesAutoresizingMaskIntoConstraints = false
@@ -93,14 +99,14 @@ private extension TrackerTypeController {
     
      func addHabitButton() {
         let HabitButton = TypeButton()
-        HabitButton.setTitle("Привычка", for: .normal)
+        HabitButton.setTitle(addHabitButtonText, for: .normal)
         HabitButton.addTarget(self, action: #selector(habitButtonPressed), for: .touchUpInside)
         stackView.addArrangedSubview(HabitButton)
     }
     
      func addEventButton() {
         let EventButton = TypeButton()
-        EventButton.setTitle("Нерегулярное событие", for: .normal)
+        EventButton.setTitle(addEventButtonText, for: .normal)
         EventButton.addTarget(self, action: #selector(eventButtonPressed), for: .touchUpInside)
          stackView.addArrangedSubview(EventButton)
     }

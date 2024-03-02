@@ -8,23 +8,10 @@
 import UIKit
 
 final class StatsController: UIViewController {
+    
+    private let emptyViewText = Resources.StatsConstants.Labels.emptyViewText
 
     private var isEmpty = true
-    
-    private lazy var placeholderImage: UIImageView = {
-        var view = UIImageView()
-        let image = UIImage(named: "stats_placeholder")
-        view = UIImageView(image: image)
-        return view
-    }()
-    
-    private lazy var placeholderLable: UILabel = {
-        var lable = UILabel()
-        lable.text = "Анализировать пока нечего"
-        lable.textColor = UIColor.black
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        return lable
-    }()
     
     private lazy var emptyView = EmptyView()
     
@@ -46,7 +33,7 @@ final class StatsController: UIViewController {
     
     private func showPlaceholder() {
         emptyView.translatesAutoresizingMaskIntoConstraints = false
-        emptyView.setEmptyView(title: "Анализировать пока нечего",
+        emptyView.setEmptyView(title: emptyViewText,
                                image: UIImage(named: "stats_placeholder"))
         view.addSubview(emptyView)
     }

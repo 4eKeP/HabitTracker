@@ -36,6 +36,8 @@ final class SettingsButton: UIButton {
       return imageView
     }()
     
+    private lazy var isRTL = UIView.userInterfaceLayoutDirection(for: primaryLabel.semanticContentAttribute) == .rightToLeft
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(primaryLabel)
@@ -67,7 +69,7 @@ final class SettingsButton: UIButton {
         let labelHeight: CGFloat = 24
 
         arrowImageView.frame = CGRect(
-          x: frame.size.width - iconSize - hSpacing,
+          x: isRTL ? iconSize : frame.size.width - iconSize - hSpacing,
           y: (frame.size.height - iconSize / 2 ) / 2,
           width: iconSize / 3,
           height: iconSize / 2
@@ -75,22 +77,22 @@ final class SettingsButton: UIButton {
 
         if secondaryLabel.text == nil {
           primaryLabel.frame = CGRect(
-            x: hSpacing,
+            x: isRTL ? -hSpacing : hSpacing,
             y: (frame.size.height - labelHeight ) / 2,
-            width: frame.size.width - iconSize - hSpacing * 2,
+            width: isRTL ? frame.size.width : frame.size.width - iconSize - hSpacing * 2,
             height: labelHeight
           )
         } else {
           primaryLabel.frame = CGRect(
-            x: hSpacing,
+            x: isRTL ? -hSpacing : hSpacing,
             y: labelHeight / 2,
-            width: frame.size.width - iconSize - hSpacing * 2,
+            width: isRTL ? frame.size.width : frame.size.width - iconSize - hSpacing * 2,
             height: labelHeight
           )
           secondaryLabel.frame = CGRect(
-            x: hSpacing,
+            x: isRTL ? -hSpacing : hSpacing,
             y: labelHeight + labelHeight / 2,
-            width: frame.size.width - iconSize - hSpacing * 2,
+            width: isRTL ? frame.size.width : frame.size.width - iconSize - hSpacing * 2,
             height: labelHeight
           )
         }

@@ -13,9 +13,15 @@ protocol AddCategoryViewControllerDelegate: AnyObject {
 
 final class AddCategoryViewController: UIViewController {
     
+    private let titleLabelText = Resources.AddCategoryViewControllerConstants.Labels.titleLabelText
+    
+    private let textFieldPlaceHolderText = Resources.AddCategoryViewControllerConstants.Labels.textFieldPlaceHolderText
+    
+    private let addButtonText = Resources.AddCategoryViewControllerConstants.Labels.addButtonText
+    
     private lazy var titleLabel = {
         let label = UILabel()
-        label.text = "Новая категория"
+        label.text = titleLabelText
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +36,7 @@ final class AddCategoryViewController: UIViewController {
         textField.backgroundColor = .ypBackground
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
-        textField.placeholder = "Введите название категории"
+        textField.placeholder = textFieldPlaceHolderText
         textField.clearButtonMode = .whileEditing
         textField.textColor = .ypBlack
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +45,7 @@ final class AddCategoryViewController: UIViewController {
     
     private lazy var addButton = {
        let button = TypeButton()
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(addButtonText, for: .normal)
         button.setTitleColor(.ypLightGray, for: .disabled)
         button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false

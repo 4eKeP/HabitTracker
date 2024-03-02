@@ -13,9 +13,15 @@ protocol CategoryViewControllerDelegate: AnyObject {
 
 final class CategoryViewController: UIViewController {
     
+    private let categoryText = Resources.CategoryViewControllerConstants.Labels.categoryText
+    
+    private let emptyViewText = Resources.CategoryViewControllerConstants.Labels.emptyViewText
+    
+    private let addButtonText = Resources.CategoryViewControllerConstants.Labels.addButtonText
+    
     private lazy var titleLabel = {
         let label = UILabel()
-        label.text = "Категория"
+        label.text = categoryText
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -25,14 +31,14 @@ final class CategoryViewController: UIViewController {
     private lazy var emptyView = {
         let view = EmptyView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setEmptyView(title: "Привычки и события можно \nобъединить по смыслу",
+        view.setEmptyView(title: emptyViewText,
                           image: UIImage(named: "tracker_placeholder"))
         return view
     }()
     
     private lazy var addButton = {
         let button = TypeButton()
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(addButtonText, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()

@@ -16,11 +16,11 @@ final class SectionHeader: UICollectionReusableView {
     private let leadingSection: CGFloat = 28
     
     let sectionTitle: UILabel = {
-        let lable = UILabel()
-        lable.translatesAutoresizingMaskIntoConstraints = false
-        lable.textColor = .ypBlack
-        lable.font = UIFont.systemFont(ofSize: 19, weight: .bold)
-        return lable
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .ypBlack
+        label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+        return label
     }()
     
     override init(frame: CGRect) {
