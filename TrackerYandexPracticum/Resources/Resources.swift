@@ -222,6 +222,9 @@ enum Resources {
     }
     
     enum TabBarConstants {
+        
+        static let borderHeight: CGFloat = 0.5
+        
         enum Labels {
             static let tabBarTrackerText = NSLocalizedString("labels.trackers", comment: "")
             

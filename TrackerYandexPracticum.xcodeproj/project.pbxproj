@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05785D64A5212FF5DEA749F7 /* Pods_TrackerYandexPracticum.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB36D5890F995F87A19ADD2F /* Pods_TrackerYandexPracticum.framework */; };
 		841D61732B502D3A00147736 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D61722B502D3A00147736 /* CategoryCell.swift */; };
 		841D61752B503A9400147736 /* CategoryCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D61742B503A9400147736 /* CategoryCellViewModel.swift */; };
 		841D61772B5040B900147736 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841D61762B5040B900147736 /* CategoryViewModel.swift */; };
@@ -20,6 +21,7 @@
 		843615162B10465F003D1B6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 843615152B10465F003D1B6F /* Assets.xcassets */; };
 		847242B42B1231DA002B5ADF /* StatsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847242B32B1231DA002B5ADF /* StatsController.swift */; };
 		847242B62B12322D002B5ADF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847242B52B12322D002B5ADF /* TabBarController.swift */; };
+		8476B9102B98D65C00513277 /* AnalyticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B90F2B98D65C00513277 /* AnalyticService.swift */; };
 		849C162C2B2F2AE6009D3E87 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C162B2B2F2AE6009D3E87 /* EmojiCell.swift */; };
 		849C162E2B2F2DE0009D3E87 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C162D2B2F2DE0009D3E87 /* ColorCell.swift */; };
 		849C16302B2F6054009D3E87 /* ConfigHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C162F2B2F6054009D3E87 /* ConfigHeader.swift */; };
@@ -50,6 +52,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E67DE1CB27D3D59119BB5EA /* Pods-TrackerYandexPracticum.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackerYandexPracticum.debug.xcconfig"; path = "Target Support Files/Pods-TrackerYandexPracticum/Pods-TrackerYandexPracticum.debug.xcconfig"; sourceTree = "<group>"; };
+		6496D71DCA8359FF2A39C3EE /* Pods-TrackerYandexPracticum.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackerYandexPracticum.release.xcconfig"; path = "Target Support Files/Pods-TrackerYandexPracticum/Pods-TrackerYandexPracticum.release.xcconfig"; sourceTree = "<group>"; };
 		841D61722B502D3A00147736 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		841D61742B503A9400147736 /* CategoryCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCellViewModel.swift; sourceTree = "<group>"; };
 		841D61762B5040B900147736 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
@@ -65,6 +69,7 @@
 		8436151A2B10465F003D1B6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		847242B32B1231DA002B5ADF /* StatsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsController.swift; sourceTree = "<group>"; };
 		847242B52B12322D002B5ADF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		8476B90F2B98D65C00513277 /* AnalyticService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticService.swift; sourceTree = "<group>"; };
 		849C162B2B2F2AE6009D3E87 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		849C162D2B2F2DE0009D3E87 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		849C162F2B2F6054009D3E87 /* ConfigHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigHeader.swift; sourceTree = "<group>"; };
@@ -101,6 +106,7 @@
 		84D5571E2B221C0F00EBAE8D /* Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		84D557202B23635900EBAE8D /* Controller+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Controller+Extension.swift"; sourceTree = "<group>"; };
 		84D557252B241F7000EBAE8D /* ScheduleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleController.swift; sourceTree = "<group>"; };
+		BB36D5890F995F87A19ADD2F /* Pods_TrackerYandexPracticum.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackerYandexPracticum.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,12 +114,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05785D64A5212FF5DEA749F7 /* Pods_TrackerYandexPracticum.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D9E9C669C8790FF5FF13F5B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BB36D5890F995F87A19ADD2F /* Pods_TrackerYandexPracticum.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2F38537255A6C0C978B21C60 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0E67DE1CB27D3D59119BB5EA /* Pods-TrackerYandexPracticum.debug.xcconfig */,
+				6496D71DCA8359FF2A39C3EE /* Pods-TrackerYandexPracticum.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		841D61712B502D1400147736 /* CategoryList */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +156,8 @@
 			children = (
 				8436150B2B10465E003D1B6F /* TrackerYandexPracticum */,
 				8436150A2B10465E003D1B6F /* Products */,
+				2F38537255A6C0C978B21C60 /* Pods */,
+				0D9E9C669C8790FF5FF13F5B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -219,6 +245,7 @@
 				849D20D82B3707B6005F4576 /* TrackerCategoryStore.swift */,
 				849D20DA2B3707C4005F4576 /* TrackerRecordStore.swift */,
 				849D20DC2B3707D1005F4576 /* TrackerStore.swift */,
+				8476B90F2B98D65C00513277 /* AnalyticService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -241,9 +268,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8436151D2B10465F003D1B6F /* Build configuration list for PBXNativeTarget "TrackerYandexPracticum" */;
 			buildPhases = (
+				79C7D58A51B3A116BCA99B5D /* [CP] Check Pods Manifest.lock */,
 				843615052B10465E003D1B6F /* Sources */,
 				843615062B10465E003D1B6F /* Frameworks */,
 				843615072B10465E003D1B6F /* Resources */,
+				FF8BAC3B8C9B7FF2A14C14D1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -304,6 +333,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		79C7D58A51B3A116BCA99B5D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TrackerYandexPracticum-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FF8BAC3B8C9B7FF2A14C14D1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TrackerYandexPracticum/Pods-TrackerYandexPracticum-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TrackerYandexPracticum/Pods-TrackerYandexPracticum-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TrackerYandexPracticum/Pods-TrackerYandexPracticum-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		843615052B10465E003D1B6F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -322,6 +393,7 @@
 				849C162C2B2F2AE6009D3E87 /* EmojiCell.swift in Sources */,
 				84D5571A2B2209D000EBAE8D /* EmptyView.swift in Sources */,
 				84D557212B23635900EBAE8D /* Controller+Extension.swift in Sources */,
+				8476B9102B98D65C00513277 /* AnalyticService.swift in Sources */,
 				843615112B10465F003D1B6F /* TrackerController.swift in Sources */,
 				8436150D2B10465F003D1B6F /* AppDelegate.swift in Sources */,
 				84D557072B1E36CE00EBAE8D /* TrackerCell.swift in Sources */,
@@ -424,7 +496,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -487,7 +559,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -508,6 +580,7 @@
 		};
 		8436151E2B10465F003D1B6F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0E67DE1CB27D3D59119BB5EA /* Pods-TrackerYandexPracticum.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -537,6 +610,7 @@
 		};
 		8436151F2B10465F003D1B6F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6496D71DCA8359FF2A39C3EE /* Pods-TrackerYandexPracticum.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -13,14 +13,37 @@ final class TabBarController: UITabBarController {
     
     private let tabBarStatsText = Resources.TabBarConstants.Labels.tabBarStatsText
     
+    private let borderHeight = Resources.TabBarConstants.borderHeight
+    
+    private lazy var borderView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabs()
+        setupBorder()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        switch view.window?.windowScene?.screen.traitCollection.userInterfaceStyle {
+        case .light:
+            borderView.backgroundColor = .ypGray
+        case .dark:
+            borderView.backgroundColor = .black
+        case .unspecified:
+            borderView.backgroundColor = .black
+        case .none:
+            borderView.backgroundColor = .black
+        @unknown default:
+            assertionFailure("Unknown interface style")
+        }
     }
     
     // MARK: - Tab setup
     
     private func setupTabs() {
+        tabBar.tintColor = .ypBlue
+        tabBar.backgroundColor = .ypWhite
+        
         let tracker = self.createNavigation(with: tabBarTrackerText, and: UIImage(named: "tracker_icon"), vc: TrackerController())
 
         let stats = self.createNavigation(with: tabBarStatsText, and: UIImage(named: "stats_icon"), vc: StatsController())
@@ -38,5 +61,18 @@ final class TabBarController: UITabBarController {
         nav.viewControllers.first?.navigationItem.title = title
         
         return nav
+    }
+    
+    private func setupBorder() {
+        borderView.translatesAutoresizingMaskIntoConstraints = false
+        
+        tabBar.addSubview(borderView)
+        
+        NSLayoutConstraint.activate([
+            borderView.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),
+            borderView.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor),
+            borderView.topAnchor.constraint(equalTo: tabBar.topAnchor),
+            borderView.heightAnchor.constraint(equalToConstant: borderHeight)
+        ])
     }
 }

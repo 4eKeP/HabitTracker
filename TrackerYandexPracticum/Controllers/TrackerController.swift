@@ -39,6 +39,8 @@ final class TrackerController: UIViewController {
         datePicker.preferredDatePickerStyle = .compact
         datePicker.backgroundColor = .ypBackground
         datePicker.tintColor = .ypBlue
+        datePicker.layer.cornerRadius = 8
+        datePicker.layer.masksToBounds = true
         datePicker.calendar.firstWeekday = 2
         datePicker.setDate(currentDate, animated: true)
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)

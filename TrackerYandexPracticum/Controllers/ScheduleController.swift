@@ -181,8 +181,9 @@ private extension ScheduleController {
         let daySwitch = UISwitch()
         daySwitch.isOn = schedule[index]
         daySwitch.tag = index
-        daySwitch.thumbTintColor = .ypWhite
+        daySwitch.thumbTintColor = .white
         daySwitch.onTintColor = .ypBlue
+        daySwitch.tintColor = .ypLightGray
         daySwitch.addTarget(self, action: #selector(switchPressed(_:)), for: .touchUpInside)
         daySwitch.frame = CGRect(x: isRTL ? leadingSpacing : scheduleViewWidth - spacing - switchWidth,
                                  y: switchFieldHeight * CGFloat(index) + switchHeight,
