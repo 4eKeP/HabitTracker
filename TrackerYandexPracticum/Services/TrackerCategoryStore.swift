@@ -43,9 +43,15 @@ final class TrackerCategoryStore: NSObject {
      //   return categories.filter { !$0.trackers.isEmpty }
     }
     
+    var pinnedCategoryId: UUID? {
+        UUID(uuidString: UserDefaults.standard.pinnedCategoryID)
+    }
+    
     var numberOfSections: Int {
         allCategories.count
     }
+    
+    private let pinCategoryName = Resources.pinCategoriesName
     
     convenience override init() {
         guard let application = UIApplication.shared.delegate as? AppDelegate else { fatalError("не удалось получить application в TrackerCategory") }
@@ -72,6 +78,8 @@ final class TrackerCategoryStore: NSObject {
         super.init()
         controller.delegate = self
         try? controller.performFetch()
+        
+        setupPinnedCategory()
     }
     
     //MARK: - public method
@@ -126,20 +134,20 @@ final class TrackerCategoryStore: NSObject {
         categoryInCD.id = category.id
         saveContext()
     }
+    
+    func renameCategoryBy(id: UUID, newCategoryName: String) {
+        guard let category = fetchCategory(by: id) else { return }
+        category.categoryName = newCategoryName
+        saveContext()
+    }
 }
 
 //MARK: - private methods
 
 private extension TrackerCategoryStore {
     func isCategoryCoreDataEmpty() -> Bool {
-        let request = TrackerCategoryCD.fetchRequest()
-        guard
-            let result = try? context.fetch(request),
-            result.isEmpty
-        else {
-            return false
-        }
-        return true
+        guard let categories = self.fetchedResultsController.fetchedObjects else { return true }
+        return categories.isEmpty
     }
     
     func trackerCategory(from trackerCategoryCD: TrackerCategoryCD) throws -> TrackerCategory {
@@ -189,8 +197,22 @@ private extension TrackerCategoryStore {
                         trackerFromCD.friday,
                         trackerFromCD.satuday,
                         trackerFromCD.sunday
-                       ]
+                       ], 
+                       isPinned: trackerFromCD.isPinned
         )
+    }
+    
+    func setupPinnedCategory() {
+        if isCategoryCoreDataEmpty() {
+            let pinnedCategoryID = UUID()
+            try? addNew(category: TrackerCategory(id: pinnedCategoryID, categoryName: pinCategoryName, trackers: []))
+            UserDefaults.standard.pinnedCategoryID = pinnedCategoryID.uuidString
+        }
+        if let pinnedCategoryId,
+           let pinnedCategory = fetchCategory(by: pinnedCategoryId),
+           pinnedCategory.categoryName != pinCategoryName {
+            renameCategoryBy(id: pinnedCategoryId, newCategoryName: pinCategoryName)
+        }
     }
 }
 

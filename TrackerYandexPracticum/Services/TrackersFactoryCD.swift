@@ -18,6 +18,9 @@ final class TrackersFactoryCD {
     static let shared = TrackersFactoryCD()
     
     var visibleCategoriesForWeekDay: [TrackerCategory] {
+        
+        
+        
         let currentCategories = trackerCategoryStore.allCategories
         var newCategories: [TrackerCategory] = []
         currentCategories.forEach { category in
@@ -32,6 +35,10 @@ final class TrackersFactoryCD {
     
     var visibleCategoriesForSearch: [TrackerCategory] {
         trackerCategoryStore.allCategories
+    }
+    
+    var pinnedTrackers: [Tracker] {
+        trackerStore.pinnedTrackers
     }
     
     private init() {

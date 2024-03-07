@@ -335,7 +335,8 @@ final class ConfigTypeController: UIViewController {
                                  name: userInput,
                                  color: colorIndex,
                                  emoji: emojiIndex,
-                                 schedule: schedule)
+                                 schedule: schedule,
+                                 isPinned: <#Bool#>)
         delegate?.configTypeControllerController(self, didFilledTracker: newTracker, for: selectedCategoryIndex)
     }
     

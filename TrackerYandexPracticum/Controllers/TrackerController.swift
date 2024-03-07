@@ -297,6 +297,14 @@ extension TrackerController: UICollectionViewDataSource {
     }
 }
 
+//MARK: - UICollectionViewDelegate
+
+//extension TrackerController: UICollectionViewDelegate {
+//    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+//        
+//    }
+//}
+
 // MARK: - TrackerCellDelegate
 
 extension TrackerController: TrackerCellDelegate {

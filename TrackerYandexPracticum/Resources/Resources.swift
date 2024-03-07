@@ -18,9 +18,7 @@ enum Resources {
         .ypHabitColor13, .ypHabitColor14, .ypHabitColor15, .ypHabitColor16, .ypHabitColor17, .ypHabitColor18
     ]
     
-    static let categories = [
-        "Важное"
-    ]
+    static let pinCategoriesName = NSLocalizedString("labels.pinCategoryName", comment: "Name for pinned Category")
     
     enum ConfigTypeConstants {
         
@@ -230,5 +228,11 @@ enum Resources {
             
             static let tabBarStatsText = NSLocalizedString("labels.statistic", comment: "")
         }
+    }
+    
+    enum Separators {
+        static let spacing: CGFloat = 16
+        static let fieldHeight: CGFloat = 75
+        static let separatorHeight: CGFloat = 0.5
     }
 }
