@@ -61,8 +61,8 @@ final class TrackerStore: NSObject {
     
     //MARK: - func
     
-    func addNew(tracker: Tracker, to category: TrackerCategoryCD) throws {
-        let trackerInCD = TrackerCD(context: context)
+    func addNewOrUpdate(tracker: Tracker, to category: TrackerCategoryCD) throws {
+        let trackerInCD = fetchTrackers(byID: tracker.id) ?? TrackerCD(context: context)
         trackerInCD.name = tracker.name
         trackerInCD.id = tracker.id
         trackerInCD.color = Int32(tracker.color)
@@ -86,10 +86,18 @@ final class TrackerStore: NSObject {
     }
     
     func fetchTrackers(byID id: UUID) -> TrackerCD? {
-        let request = TrackerCD.fetchRequest()
-        request.returnsObjectsAsFaults = false
-        guard let trackers = try? context.fetch(request) else { return nil }
-        return trackers.first { $0.id == id }
+        self.fetchedResultsController.fetchedObjects?.first { $0.id == id }
+    }
+    
+    func fetchCategoryByTracker(id: UUID) -> TrackerCategoryCD? {
+        self.fetchedResultsController.fetchedObjects?.first { $0.id == id }?.category
+    }
+    
+    func delete(tracker: TrackerCD) {
+        self.fetchedResultsController.fetchedObjects?.filter{ $0 == tracker }.forEach {
+            context.delete($0)
+        }
+        saveContext()
     }
     
     func deleteTrackersFromCD() {

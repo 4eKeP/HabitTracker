@@ -28,3 +28,9 @@ struct TrackerRecord: Hashable {
     let dates: [Date]
     let days: Int
 }
+
+struct TrackerForEdit: Hashable {
+    let tracker: Tracker
+    let counter: Int
+    let category: TrackerCategory
+}

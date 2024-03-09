@@ -140,15 +140,6 @@ final class TrackerCategoryStore: NSObject {
         category.categoryName = newCategoryName
         saveContext()
     }
-}
-
-//MARK: - private methods
-
-private extension TrackerCategoryStore {
-    func isCategoryCoreDataEmpty() -> Bool {
-        guard let categories = self.fetchedResultsController.fetchedObjects else { return true }
-        return categories.isEmpty
-    }
     
     func trackerCategory(from trackerCategoryCD: TrackerCategoryCD) throws -> TrackerCategory {
         
@@ -176,6 +167,15 @@ private extension TrackerCategoryStore {
                                trackers: trackers.sorted { $0.name < $1.name } )
         
         
+    }
+}
+
+//MARK: - private methods
+
+private extension TrackerCategoryStore {
+    func isCategoryCoreDataEmpty() -> Bool {
+        guard let categories = self.fetchedResultsController.fetchedObjects else { return true }
+        return categories.isEmpty
     }
     
     func tracker(from trackerFromCD: TrackerCD) throws -> Tracker {

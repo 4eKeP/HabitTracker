@@ -20,6 +20,22 @@ enum Resources {
     
     static let pinCategoriesName = NSLocalizedString("labels.pinCategoryName", comment: "Name for pinned Category")
     
+    enum ContextMenuList {
+        
+        static let pin = NSLocalizedString("labels.context.pin", comment: "label for context menu - pin")
+        static let edit = NSLocalizedString("labels.context.edit", comment: "label for context menu - edit")
+        static let delete = NSLocalizedString("labels.context.delete", comment: "label for context menu - delete")
+        static let unpin = NSLocalizedString("labels.context.unpin", comment: "label for context menu - unpin")
+        static let confirmTrackerDelete = NSLocalizedString("labels.confirmTrackerDelete", comment: "")
+        static let cancel = NSLocalizedString("labels.cancel", comment: "label for cancel")
+        
+        static let unpinImage = UIImage(systemName: "pin.slash")
+        static let pinImage = UIImage(systemName: "pin")
+        static let editImage = UIImage(systemName: "rectangle.and.pencil.and.ellipsis")
+        static let deleteImage = UIImage(systemName: "trash")
+        
+    }
+    
     enum ConfigTypeConstants {
         
         static let leadingButton: CGFloat = 20

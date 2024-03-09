@@ -59,10 +59,20 @@ final class TrackerController: UIViewController {
     
     private var searchBarUserInput = ""
     
-    private var currentDate = Date() {
+    private var currentDate: Date {
+        factory.selectedDate
+    }
+//    () {
+//        didSet {
+//            weekday = currentDate.weekdayFromMonday() - 1
+//         //   factory.setCurrentWeekDay(to: currentDate)
+//            factory.selectedDate
+//        }
+//    }
+    
+    private var selectedFilterIndex = 0 {
         didSet {
-            weekday = currentDate.weekdayFromMonday() - 1
-            factory.setCurrentWeekDay(to: currentDate)
+            factory.selectedFilterIndex = selectedFilterIndex
         }
     }
     
@@ -80,7 +90,7 @@ final class TrackerController: UIViewController {
     
     private let trackerCategoryStore = TrackerCategoryStore.shared
     
-    private let trackerStore = TrackerStore()
+  //  private let trackerStore = TrackerStore()
     
     private var visibleCategories: [TrackerCategory] = []
     
@@ -94,10 +104,9 @@ final class TrackerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
-        view.backgroundColor = .ypWhite
         searchBar.searchBar.delegate = self
-        trackerStore.delegate = self
-        currentDate = Date()
+     //   trackerStore.delegate = self
+      //  currentDate = Date()
         setupUI()
         fetchVisibleCategoriesFromFactory()
     }
@@ -118,7 +127,7 @@ private extension TrackerController {
     }
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        currentDate = sender.date
+        factory.selectedDate = sender.date
         fetchVisibleCategoriesfromFactory()
         dismiss(animated: true)
     }
@@ -138,7 +147,7 @@ private extension TrackerController {
     }
     
     func fetchTracker(from tracker: Tracker, forIndex Index: UUID) {
-        factory.saveNew(tracker: tracker, toCategory: Index)
+        factory.saveNewOrUpdate(tracker: tracker, toCategory: Index)
         setDayForTracker()
         fetchVisibleCategoriesfromFactory()
     }
@@ -299,11 +308,42 @@ extension TrackerController: UICollectionViewDataSource {
 
 //MARK: - UICollectionViewDelegate
 
-//extension TrackerController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
-//        
+extension TrackerController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        guard !indexPaths.isEmpty else { return nil }
+        
+        let indexPath = indexPaths[0]
+        
+        let currentTracker = visibleCategories[indexPath.section].trackers[indexPath.row]
+        let isPinned = currentTracker.isPinned
+        
+        return UIContextMenuConfiguration(actionProvider:  { _ in
+            let pinAction = UIAction(title: isPinned ? Resources.ContextMenuList.unpin : Resources.ContextMenuList.pin,
+                                     image: isPinned ? Resources.ContextMenuList.unpinImage : Resources.ContextMenuList.pinImage
+            ) { [weak self] _ in
+                self?.pinCell(indexPath: indexPath)
+            }
+            
+            let editAction = UIAction(title: Resources.ContextMenuList.edit,
+                                      image: Resources.ContextMenuList.editImage
+            ) { [weak self] _ in
+                self?.editCell(indexPath: indexPath)
+            }
+            let deleteAction = UIAction(title: Resources.ContextMenuList.delete,
+                                        image: Resources.ContextMenuList.deleteImage
+            ) { [weak self] _ in
+                self?.deleteCell(indexPath: indexPath)
+            }
+            return UIMenu(children: [pinAction, editAction, deleteAction])
+        })
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, contextMenuConfiguration configuration: UIContextMenuConfiguration, highlightPreviewForItemAt indexPath: IndexPath) -> UITargetedPreview? {
+//        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCell else { return nil }
+//        return UITargetedPreview(view: cell.mainView)
 //    }
-//}
+}
 
 // MARK: - TrackerCellDelegate
 
@@ -323,6 +363,7 @@ extension TrackerController: TrackerCellDelegate {
 
 private extension TrackerController {
     func setupUI() {
+        view.backgroundColor = .ypWhite
         makeNavBar()
         makeEmptyView()
         addCollectionView()
@@ -392,5 +433,44 @@ private extension TrackerController {
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
+    }
+    
+    //MARK: - ContextMenuCells
+    
+    func pinCell(indexPath: IndexPath) {
+        factory.setPinFor(tracker: visibleCategories[indexPath.section].trackers[indexPath.row])
+        fetchVisibleCategoriesfromFactory()
+    }
+    
+    func editCell(indexPath: IndexPath) {
+        let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
+        let counter = factory.getRecordsCounter(with: tracker.id)
+        if let category = factory.fetchCategoryByTracker(id: tracker.id) {
+            let trackerToEdit = TrackerForEdit(tracker: tracker,
+                                               counter: counter,
+                                               category: category)
+//            let nextController = EditTrackerController(tracker: trackerToEdit)
+//            nextController.delegate = self
+//            present(nextController, animation: true)
+//
+        }
+    }
+    
+    func deleteCell(indexPath: IndexPath) {
+        let actionSheet = UIAlertController(title: nil,
+                                            message: Resources.ContextMenuList.confirmTrackerDelete,
+                                            preferredStyle: .actionSheet)
+        
+        let deleteAction = UIAlertAction(title: Resources.ContextMenuList.delete, style: .destructive) { _ in
+            self.factory.delete(tracker: self.visibleCategories[indexPath.section].trackers[indexPath.row])
+            self.fetchVisibleCategoriesfromFactory()
+        }
+        let cancelAction = UIAlertAction(title: Resources.ContextMenuList.cancel, style: .cancel) { _ in
+            self.dismiss(animated: true)
+        }
+        
+        actionSheet.addAction(deleteAction)
+        actionSheet.addAction(cancelAction)
+        present(actionSheet, animated: true)
     }
 }

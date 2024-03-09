@@ -51,12 +51,21 @@ final class TrackerRecordStore {
         return records.filter { $0.tracker == tracker }.compactMap { $0.date }
     }
     
-    func deleteTrackerRecordFromCD() {
+    func deleteRecordFromCD(for tracker: TrackerCD) {
+        let request = TrackerRecordCD.fetchRequest()
+        guard let records = try? context.fetch(request) else { return }
+        records.filter { $0.tracker == tracker }.forEach { context.delete($0) }
+        saveContext()
+    }
+    
+    func deleteTrackerRecordsFromCD() {
         let request = TrackerRecordCD.fetchRequest()
         let records = try? context.fetch(request)
         records?.forEach { context.delete($0) }
         saveContext()
     }
+    
+    
 }
 
 //MARK: - Save Context

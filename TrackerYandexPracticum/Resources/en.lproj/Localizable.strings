@@ -48,10 +48,10 @@
 "labels.confirmCategoryDelete" = "Are you sure this category is not needed?";
 "labels.cancelCategoryDelete" = "Impossible to delete - this category with trackers";
 
-"labels.context.0" = "Pin";
-"labels.context.1" = "Edit";
-"labels.context.2" = "Delete";
-"labels.context.3" = "Unpin";
+"labels.context.pin" = "Pin";
+"labels.context.edit" = "Edit";
+"labels.context.delete" = "Delete";
+"labels.context.unpin" = "Unpin";
 
 "labels.filter.0" = "All trackers";
 "labels.filter.1" = "Trackers for today";

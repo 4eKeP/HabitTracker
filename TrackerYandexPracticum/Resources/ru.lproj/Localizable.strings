@@ -48,10 +48,10 @@
 "labels.confirmCategoryDelete" = "Эта категория точно не нужна?";
 "labels.cancelCategoryDelete" = "Не могу удалить категорию с трекерами";
 
-"labels.context.0" = "Закрепить";
-"labels.context.1" = "Редактировать";
-"labels.context.2" = "Удалить";
-"labels.context.3" = "Открепить";
+"labels.context.pin" = "Закрепить";
+"labels.context.edit" = "Редактировать";
+"labels.context.delete" = "Удалить";
+"labels.context.unpin" = "Открепить";
 
 "labels.filter.0" = "Все трекеры";
 "labels.filter.1" = "Трекеры на сегодня";

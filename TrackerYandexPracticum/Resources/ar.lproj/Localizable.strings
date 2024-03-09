@@ -48,10 +48,10 @@
 "labels.confirmCategoryDelete" = "هل أنت متأكد من أن هذه الفئة ليست هناك حاجة؟";
 "labels.cancelCategoryDelete" = "من المستحيل حذف - هذه الفئة مع أجهزة التتبع";
 
-"labels.context.0" = "دبوس";
-"labels.context.1" = "يحرر";
-"labels.context.2" = "يمسح";
-"labels.context.3" = "نزع الدبوس";
+"labels.context.pin" = "دبوس";
+"labels.context.edit" = "يحرر";
+"labels.context.delete" = "يمسح";
+"labels.context.unpin" = "نزع الدبوس";
 
 "labels.filter.0" = "جميع أجهزة التتبع";
 "labels.filter.1" = "متابعون لهذا اليوم";
