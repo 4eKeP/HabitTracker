@@ -36,6 +36,7 @@ final class TrackersFactoryCD {
                                                  trackers: filteredTrackers(from: category.trackers.filter{ !pinnedTrackers.contains($0) })
                                                  ))
         }
+        print(newCategories.filter { !$0.trackers.isEmpty })
         return newCategories.filter { !$0.trackers.isEmpty }
     }
     
@@ -114,7 +115,7 @@ extension TrackersFactoryCD {
             case FilterType.unComplitedTrackers:
                 $0.schedule[currentWeekDayIndex] && (isTrackerDone(with: $0.id, on: selectedDate) == false)
             default:
-                $0.schedule[selectedFilterIndex]
+                $0.schedule[currentWeekDayIndex]
             }
         }
     }

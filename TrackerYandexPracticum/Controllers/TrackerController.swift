@@ -146,9 +146,9 @@ private extension TrackerController {
         emptyView.isHidden = !collectionView.isHidden
     }
     
-    func fetchTracker(from tracker: Tracker, forIndex Index: UUID) {
-        factory.saveNewOrUpdate(tracker: tracker, toCategory: Index)
-        setDayForTracker()
+    func fetchTracker(from tracker: Tracker, forIndex index: UUID) {
+        factory.saveNewOrUpdate(tracker: tracker, toCategory: index)
+       // setDayForTracker()
         fetchVisibleCategoriesfromFactory()
     }
     
@@ -283,10 +283,8 @@ extension TrackerController: UICollectionViewDataSource {
         
         let currentTracker = visibleCategories[indexPath.section].trackers[indexPath.row]
         cell.delegate = self
-        cell.configCell(backgroundColor: Resources.colors[currentTracker.color],
-                        emoji: Resources.emojis[currentTracker.emoji],
-                        cardText: currentTracker.name,
-                        counter: factory.getRecordsCounter(with: currentTracker.id))
+        cell.setTrackerCell = currentTracker
+        cell.counter = factory.getRecordsCounter(with: currentTracker.id)
         cell.isDone(factory.isTrackerDone(with: currentTracker.id, on: currentDate))
         return cell
     }
@@ -339,21 +337,20 @@ extension TrackerController: UICollectionViewDelegate {
         })
     }
     
-//    func collectionView(_ collectionView: UICollectionView, contextMenuConfiguration configuration: UIContextMenuConfiguration, highlightPreviewForItemAt indexPath: IndexPath) -> UITargetedPreview? {
-//        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCell else { return nil }
-//        return UITargetedPreview(view: cell.mainView)
-//    }
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfiguration configuration: UIContextMenuConfiguration, highlightPreviewForItemAt indexPath: IndexPath) -> UITargetedPreview? {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCell else { return nil }
+        return UITargetedPreview(view: cell.contextView)
+    }
 }
 
 // MARK: - TrackerCellDelegate
 
 extension TrackerController: TrackerCellDelegate {
     func counterButtonTapped(for cell: TrackerCell) {
-        
         guard currentDate.sameDay(Date()) || currentDate.beforeDay(Date()) else { return }
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
-        guard tracker.schedule[weekday] else { return }
+       // guard tracker.schedule[weekday] else { return }
         cell.isDone(factory.setTrackerDone(with: tracker.id, on: currentDate))
         cell.updateCounter(factory.getRecordsCounter(with: tracker.id))
     }

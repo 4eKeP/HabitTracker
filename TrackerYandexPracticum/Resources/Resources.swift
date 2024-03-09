@@ -31,9 +31,19 @@ enum Resources {
         
         static let unpinImage = UIImage(systemName: "pin.slash")
         static let pinImage = UIImage(systemName: "pin")
+        static let pinFillImage = UIImage(systemName: "pin.fill")
         static let editImage = UIImage(systemName: "rectangle.and.pencil.and.ellipsis")
         static let deleteImage = UIImage(systemName: "trash")
         
+    }
+    
+    enum TrackerCellConstants {
+       static let height: CGFloat = 90
+       static let spacing: CGFloat = 12
+       static let smallSpacing: CGFloat = 8
+       static let bigSpacing: CGFloat = 16
+       static let cornerRadius: CGFloat = 32
+       static let emojiHeight: CGFloat = 24
     }
     
     enum ConfigTypeConstants {
