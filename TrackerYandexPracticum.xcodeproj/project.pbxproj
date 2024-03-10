@@ -24,6 +24,9 @@
 		8476B9102B98D65C00513277 /* AnalyticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B90F2B98D65C00513277 /* AnalyticService.swift */; };
 		8476B9122B9CBB5300513277 /* ContextTrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B9112B9CBB5300513277 /* ContextTrackerCell.swift */; };
 		8476B9142B9DA6C600513277 /* FilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B9132B9DA6C600513277 /* FilterController.swift */; };
+		8476B9182B9DC04700513277 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B9172B9DC04700513277 /* StatisticsViewModel.swift */; };
+		8476B91A2B9DC07500513277 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B9192B9DC07500513277 /* StatisticsView.swift */; };
+		8476B91C2B9DCE5A00513277 /* UIView+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B91B2B9DCE5A00513277 /* UIView+Extention.swift */; };
 		849C162C2B2F2AE6009D3E87 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C162B2B2F2AE6009D3E87 /* EmojiCell.swift */; };
 		849C162E2B2F2DE0009D3E87 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C162D2B2F2DE0009D3E87 /* ColorCell.swift */; };
 		849C16302B2F6054009D3E87 /* ConfigHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849C162F2B2F6054009D3E87 /* ConfigHeader.swift */; };
@@ -74,6 +77,9 @@
 		8476B90F2B98D65C00513277 /* AnalyticService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticService.swift; sourceTree = "<group>"; };
 		8476B9112B9CBB5300513277 /* ContextTrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextTrackerCell.swift; sourceTree = "<group>"; };
 		8476B9132B9DA6C600513277 /* FilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterController.swift; sourceTree = "<group>"; };
+		8476B9172B9DC04700513277 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
+		8476B9192B9DC07500513277 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		8476B91B2B9DCE5A00513277 /* UIView+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extention.swift"; sourceTree = "<group>"; };
 		849C162B2B2F2AE6009D3E87 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		849C162D2B2F2DE0009D3E87 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		849C162F2B2F6054009D3E87 /* ConfigHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigHeader.swift; sourceTree = "<group>"; };
@@ -190,18 +196,36 @@
 			path = TrackerYandexPracticum;
 			sourceTree = "<group>";
 		};
-		84A2401E2B18D06C00E6C059 /* Controllers */ = {
+		8476B9152B9DBFC000513277 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
 				841D61712B502D1400147736 /* CategoryList */,
 				843615102B10465F003D1B6F /* TrackerController.swift */,
 				8476B9132B9DA6C600513277 /* FilterController.swift */,
-				847242B32B1231DA002B5ADF /* StatsController.swift */,
-				847242B52B12322D002B5ADF /* TabBarController.swift */,
 				84D5570E2B1F632C00EBAE8D /* TrackerTypeController.swift */,
 				84D557132B1F8C0E00EBAE8D /* ConfigTypeController.swift */,
 				84D557252B241F7000EBAE8D /* ScheduleController.swift */,
 				841D617C2B52FC4E00147736 /* OnBoardingViewController.swift */,
+				847242B52B12322D002B5ADF /* TabBarController.swift */,
+			);
+			path = Tracker;
+			sourceTree = "<group>";
+		};
+		8476B9162B9DBFEF00513277 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				847242B32B1231DA002B5ADF /* StatsController.swift */,
+				8476B9192B9DC07500513277 /* StatisticsView.swift */,
+				8476B9172B9DC04700513277 /* StatisticsViewModel.swift */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		84A2401E2B18D06C00E6C059 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8476B9162B9DBFEF00513277 /* Statistics */,
+				8476B9152B9DBFC000513277 /* Tracker */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -261,6 +285,7 @@
 			children = (
 				84D5571C2B22189500EBAE8D /* Date+Extensions.swift */,
 				84D557202B23635900EBAE8D /* Controller+Extension.swift */,
+				8476B91B2B9DCE5A00513277 /* UIView+Extention.swift */,
 				841D617E2B52FD2200147736 /* UserDefaults+Extension.swift */,
 				84D366722B8721BB00BA186C /* Array+Extension.swift */,
 			);
@@ -389,6 +414,7 @@
 				841D617B2B5043EA00147736 /* AddCategoryViewController.swift in Sources */,
 				84A240212B18D0CB00E6C059 /* Tracker.swift in Sources */,
 				84D5571F2B221C0F00EBAE8D /* Resources.swift in Sources */,
+				8476B9182B9DC04700513277 /* StatisticsViewModel.swift in Sources */,
 				84D366732B8721BB00BA186C /* Array+Extension.swift in Sources */,
 				849D20B12B36AD07005F4576 /* TrackerCoreData.xcdatamodeld in Sources */,
 				841D617F2B52FD2200147736 /* UserDefaults+Extension.swift in Sources */,
@@ -398,9 +424,11 @@
 				84C35ABB2B5416FD0071B4B2 /* AddCategoryViewModel.swift in Sources */,
 				849C162C2B2F2AE6009D3E87 /* EmojiCell.swift in Sources */,
 				84D5571A2B2209D000EBAE8D /* EmptyView.swift in Sources */,
+				8476B91A2B9DC07500513277 /* StatisticsView.swift in Sources */,
 				8476B9122B9CBB5300513277 /* ContextTrackerCell.swift in Sources */,
 				84D557212B23635900EBAE8D /* Controller+Extension.swift in Sources */,
 				8476B9102B98D65C00513277 /* AnalyticService.swift in Sources */,
+				8476B91C2B9DCE5A00513277 /* UIView+Extention.swift in Sources */,
 				8476B9142B9DA6C600513277 /* FilterController.swift in Sources */,
 				843615112B10465F003D1B6F /* TrackerController.swift in Sources */,
 				8436150D2B10465F003D1B6F /* AppDelegate.swift in Sources */,

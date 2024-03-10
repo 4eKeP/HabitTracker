@@ -44,6 +44,10 @@ final class TrackersFactoryCD {
         trackerCategoryStore.allCategories
     }
     
+    var totalRecords: Int {
+        trackerRecordStore.totalRecords
+    }
+    
     var visibleCategoriesForSearch: [TrackerCategory] {
         trackerCategoryStore.allCategories
     }

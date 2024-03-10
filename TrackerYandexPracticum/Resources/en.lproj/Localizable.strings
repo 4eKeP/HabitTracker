@@ -58,7 +58,7 @@
 "labels.filter.completed" = "Completed";
 "labels.filter.uncompleted" = "Unfinished";
 
-"labels.stat.0" = "Best Period";
-"labels.stat.1" = "Ideal Days";
-"labels.stat.2" = "Trackers Completed";
-"labels.stat.3" = "Average";
+"labels.stat.bestPeriod" = "Best Period";
+"labels.stat.idealDays" = "Ideal Days";
+"labels.stat.completed" = "Trackers Completed";
+"labels.stat.average" = "Average";

@@ -162,8 +162,25 @@ enum Resources {
     enum StatsConstants {
         static let spacingFromTitle: CGFloat = 56
         
+        static let spacing: CGFloat = 12
+        
+        static let counterHeight: CGFloat = 42
+        
+        static let descriptionHeight: CGFloat = 18
+        
+        static let statSectionSpacing: CGFloat = 16
+        
+        static let statHeight: CGFloat = 90
+        
         enum Labels {
-            static let emptyViewText = NSLocalizedString("labels.emptyTracker", comment: "")
+            static let emptyViewText = NSLocalizedString("labels.emptyStatistic", comment: "")
+            
+            static let statisticsList = [
+              NSLocalizedString("labels.stat.bestPeriod", comment: "label for stat - Best Period"),
+              NSLocalizedString("labels.stat.idealDays", comment: "label for stat - Ideal Days"),
+              NSLocalizedString("labels.stat.completed", comment: "label for stat - Trackers Completed"),
+              NSLocalizedString("labels.stat.average", comment: "label for stat - Average")
+            ]
         }
     }
     

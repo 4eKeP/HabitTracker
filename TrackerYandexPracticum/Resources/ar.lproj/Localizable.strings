@@ -58,7 +58,7 @@
 "labels.filter.completed" = "مكتمل";
 "labels.filter.uncompleted" = "غير مكتمل";
 
-"labels.stat.0" = "أفضل فترة";
-"labels.stat.1" = "الأيام المثالية";
-"labels.stat.2" = "اكتملت أجهزة التتبع";
-"labels.stat.3" = "متوسط";
+"labels.stat.bestPeriod" = "أفضل فترة";
+"labels.stat.idealDays" = "الأيام المثالية";
+"labels.stat.completed" = "اكتملت أجهزة التتبع";
+"labels.stat.average" = "متوسط";

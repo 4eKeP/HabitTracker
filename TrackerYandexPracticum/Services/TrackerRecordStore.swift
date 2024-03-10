@@ -12,6 +12,13 @@ final class TrackerRecordStore {
     
     private let context: NSManagedObjectContext
     
+    var totalRecords: Int {
+        let request = TrackerRecordCD.fetchRequest()
+        request.returnsObjectsAsFaults = false
+        guard let records = try? context.fetch(request) else { return 0 }
+        return records.count
+    }
+    
     convenience init() {
         guard let application = UIApplication.shared.delegate as? AppDelegate else {
             fatalError("не удалось получить application в TrackerRecord")

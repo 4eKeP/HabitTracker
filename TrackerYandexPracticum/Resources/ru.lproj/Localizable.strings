@@ -58,7 +58,7 @@
 "labels.filter.completed" = "Завершенные";
 "labels.filter.uncompleted" = "Незавершенные";
 
-"labels.stat.0" = "Лучший период";
-"labels.stat.1" = "Идеальные дни";
-"labels.stat.2" = "Трекеров завершено";
-"labels.stat.3" = "Среднее значение";
+"labels.stat.bestPeriod" = "Лучший период";
+"labels.stat.idealDays" = "Идеальные дни";
+"labels.stat.completed" = "Трекеров завершено";
+"labels.stat.average" = "Среднее значение";
