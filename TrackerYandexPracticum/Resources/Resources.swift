@@ -105,6 +105,8 @@ enum Resources {
             
             static let createButtonText = NSLocalizedString("labels.create", comment: "")
             
+            static let saveButtonText = NSLocalizedString("labels.save", comment: "")
+            
             static let fullWeekText = NSLocalizedString("labels.everyDays", comment: "")
             
             static let workDaysText = NSLocalizedString("labels.weekDays", comment: "")
@@ -115,8 +117,12 @@ enum Resources {
             static let collectionTypeColorText = NSLocalizedString("labels.color", comment: "")
             
             static let shortWeekDays = Calendar.autoupdatingCurrent.shortWeekdaySymbols.shift()
+            
+            static let editHabit = NSLocalizedString("labels.editHabit", comment: "label to edit Habit")
         }
     }
+    
+    
     
     enum ScheduleConstants {
         

@@ -238,6 +238,15 @@ extension TrackerController: TrackerStoreDelegate {
 //    }
 //}
 
+extension TrackerController: EditTrackerControllerDelegate {
+    func editTrackerControllerController(_ viewController: EditTrackerController, didChangedTracker tracker: Tracker, for categoryIndex: UUID) {
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self else { return }
+            fetchTracker(from: tracker, forIndex: categoryIndex)
+        }
+    }
+}
 
 // MARK: - UISearchBarDelegate
 
@@ -487,10 +496,9 @@ private extension TrackerController {
             let trackerToEdit = TrackerForEdit(tracker: tracker,
                                                counter: counter,
                                                category: category)
-//            let nextController = EditTrackerController(tracker: trackerToEdit)
-//            nextController.delegate = self
-//            present(nextController, animation: true)
-//
+            let nextController = EditTrackerController(trackerForEdit: trackerToEdit)
+            nextController.delegate = self
+            present(nextController, animated: true)
         }
     }
     
