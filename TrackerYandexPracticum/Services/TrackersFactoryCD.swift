@@ -29,14 +29,13 @@ final class TrackersFactoryCD {
                                                  trackers: filteredTrackers(from: pinnedTrackers)))
         }
         
-        let currentCategories = trackerCategoryStore.allCategories
-        currentCategories.forEach { category in
-            newCategories.append(TrackerCategory(id: category.id,
-                                                 categoryName: category.categoryName,
-                                                 trackers: filteredTrackers(from: category.trackers.filter{ !pinnedTrackers.contains($0) })
+        
+        trackerCategoryStore.allCategories.forEach {
+            newCategories.append(TrackerCategory(id: $0.id,
+                                                 categoryName: $0.categoryName,
+                                                 trackers: filteredTrackers(from: $0.trackers.filter { !pinnedTrackers.contains($0) })
                                                  ))
         }
-        print(newCategories.filter { !$0.trackers.isEmpty })
         return newCategories.filter { !$0.trackers.isEmpty }
     }
     

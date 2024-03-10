@@ -46,7 +46,7 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     }
     
     func fetchCategoriesFromCD() {
-        categories = trackerCategoryStore.allCategories
+        categories = trackerCategoryStore.allCategories.filter { $0.categoryName != Resources.pinCategoriesName }
     }
     
     func addCategory(_ category: TrackerCategory) {
