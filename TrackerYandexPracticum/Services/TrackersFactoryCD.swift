@@ -65,7 +65,7 @@ final class TrackersFactoryCD {
 
 extension TrackersFactoryCD {
     
-    private enum FilterType {
+    enum FilterType {
         static let complitedTrackers = 2
         static let unComplitedTrackers = 3
     }
@@ -149,6 +149,13 @@ extension TrackersFactoryCD {
         return category
     }
     
+    func NoTrackersInCD() -> Bool {
+        if trackerStore.countTrackers() == 0 {
+            return true
+        } else {
+            return false
+        }
+      }
 }
 
 private extension TrackersFactoryCD {

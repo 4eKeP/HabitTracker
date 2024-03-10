@@ -46,6 +46,23 @@ enum Resources {
        static let emojiHeight: CGFloat = 24
     }
     
+    enum FilterControllerConstants {
+        static let filtersTitleLabel = NSLocalizedString("labels.filters", comment: "label for filters")
+        
+        static let settingHeight: CGFloat = 75
+        static let spacing: CGFloat = 24
+        static let titleSpacing: CGFloat = 28
+        static let titleHeight: CGFloat = 42
+        
+        static let filterMenuLabels = [
+            NSLocalizedString("labels.filter.all", comment: "label for filter - All Trackers"),
+            NSLocalizedString("labels.filter.today", comment: "label for filter - Trackers for today"),
+            NSLocalizedString("labels.filter.completed", comment: "label for filter - Completed"),
+            NSLocalizedString("labels.filter.uncompleted", comment: "label for filter - Uncompleted")
+        ]
+        
+    }
+    
     enum ConfigTypeConstants {
         
         static let leadingButton: CGFloat = 20
@@ -161,6 +178,10 @@ enum Resources {
         
         static let sectionHeight: CGFloat = 46
         
+        static let filterWidth: CGFloat = 114
+        
+        static let filterHeight: CGFloat = 50
+        
         enum Labels {
             static let searchBarPlaceHolderText = NSLocalizedString("labels.searchBar", comment: "")
             
@@ -169,6 +190,8 @@ enum Resources {
             static let emptyViewText = NSLocalizedString("labels.emptyTracker", comment: "")
             
             static let emptyViewSearchText = NSLocalizedString("labels.emptySearch", comment: "")
+            
+            static let filtersTitel = NSLocalizedString("labels.filters", comment: "label for filters")
         }
     }
     

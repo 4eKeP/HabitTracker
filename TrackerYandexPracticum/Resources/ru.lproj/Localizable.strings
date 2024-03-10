@@ -53,10 +53,10 @@
 "labels.context.delete" = "Удалить";
 "labels.context.unpin" = "Открепить";
 
-"labels.filter.0" = "Все трекеры";
-"labels.filter.1" = "Трекеры на сегодня";
-"labels.filter.2" = "Завершенные";
-"labels.filter.3" = "Незавершенные";
+"labels.filter.all" = "Все трекеры";
+"labels.filter.today" = "Трекеры на сегодня";
+"labels.filter.completed" = "Завершенные";
+"labels.filter.uncompleted" = "Незавершенные";
 
 "labels.stat.0" = "Лучший период";
 "labels.stat.1" = "Идеальные дни";

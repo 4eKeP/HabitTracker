@@ -53,10 +53,10 @@
 "labels.context.delete" = "Löschen";
 "labels.context.unpin" = "Unpin";
 
-"labels.filter.0" = "Alle Tracker";
-"labels.filter.1" = "Tracker für heute";
-"labels.filter.2" = "Abgeschlossen";
-"labels.filter.3" = "Unvollendet";
+"labels.filter.all" = "Alle Tracker";
+"labels.filter.today" = "Tracker für heute";
+"labels.filter.completed" = "Abgeschlossen";
+"labels.filter.uncompleted" = "Unvollendet";
 
 "labels.stat.0" = "Bester Zeitraum";
 "labels.stat.1" = "Ideale Tage";

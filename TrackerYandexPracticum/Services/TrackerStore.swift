@@ -129,6 +129,18 @@ final class TrackerStore: NSObject {
                        ],
                        isPinned: trackerFromCD.isPinned)
     }
+    
+    func countTrackers() -> Int {
+      let request = TrackerCD.fetchRequest()
+      request.resultType = .countResultType
+      guard
+        let objects = try? context.execute(request) as? NSAsynchronousFetchResult<NSFetchRequestResult>,
+        let counter = objects.finalResult?[0] as? Int32
+      else {
+        return .zero
+      }
+      return Int(counter)
+    }
 }
 
 //MARK: - NSFetchedResultsControllerDelegate

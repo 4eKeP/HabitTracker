@@ -53,10 +53,10 @@
 "labels.context.delete" = "يمسح";
 "labels.context.unpin" = "نزع الدبوس";
 
-"labels.filter.0" = "جميع أجهزة التتبع";
-"labels.filter.1" = "متابعون لهذا اليوم";
-"labels.filter.2" = "مكتمل";
-"labels.filter.3" = "غير مكتمل";
+"labels.filter.all" = "جميع أجهزة التتبع";
+"labels.filter.today" = "متابعون لهذا اليوم";
+"labels.filter.completed" = "مكتمل";
+"labels.filter.uncompleted" = "غير مكتمل";
 
 "labels.stat.0" = "أفضل فترة";
 "labels.stat.1" = "الأيام المثالية";
