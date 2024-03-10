@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddCategoryViewControllerDelegate: AnyObject {
-    func addCategoryViewController(_ viewController: AddCategoryViewController, didAddCategory category: TrackerCategory)
+    func addCategoryViewController(_ viewController: AddCategoryViewController, categoryName: String, id: UUID?)
 }
 
 final class AddCategoryViewController: UIViewController {
@@ -18,6 +18,8 @@ final class AddCategoryViewController: UIViewController {
     private let textFieldPlaceHolderText = Resources.AddCategoryViewControllerConstants.Labels.textFieldPlaceHolderText
     
     private let addButtonText = Resources.AddCategoryViewControllerConstants.Labels.addButtonText
+    
+    private let analyticService = AnalyticService()
     
     private lazy var titleLabel = {
         let label = UILabel()
@@ -44,7 +46,7 @@ final class AddCategoryViewController: UIViewController {
     }()
     
     private lazy var addButton = {
-       let button = TypeButton()
+        let button = TypeButton()
         button.setTitle(addButtonText, for: .normal)
         button.setTitleColor(.ypLightGray, for: .disabled)
         button.isEnabled = false
@@ -52,25 +54,27 @@ final class AddCategoryViewController: UIViewController {
         return button
     }()
     
-    private var categoryNameIsFullfilled = false {
-        didSet {
-            if categoryNameIsFullfilled {
-                updateAddButtonState()
-            }
-        }
+    private var category: TrackerCategory?
+    
+    private var categoryNameIsFullfilled: Bool {
+        !userInput.isEmpty
     }
     
-    private var userInput = "" {
+    private var userInput: String {
         didSet {
-            categoryNameIsFullfilled = !userInput.isEmpty
+            updateAddButtonState()
         }
     }
     
     private let viewModel: AddCategoryViewModelProtocol
     
+    private var isEdit = false
     
-    init(viewModel: AddCategoryViewModelProtocol) {
+    
+    init(viewModel: AddCategoryViewModelProtocol, category: TrackerCategory?) {
         self.viewModel = viewModel
+        self.category = category
+        self.userInput = category?.categoryName ?? ""
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -99,7 +103,12 @@ final class AddCategoryViewController: UIViewController {
 private extension AddCategoryViewController {
     
     @objc func addButtonPressed() {
-        viewModel.addNewCategoryButtonPressed(withName: userInput, with: self)
+        analyticService.report(name: "click", parameters: ["screen": "category", "item": "create"])
+        if let category {
+            viewModel.addNewCategoryButtonPressed(withName: userInput, id: category.id, with: self)
+        } else {
+            viewModel.addNewCategoryButtonPressed(withName: userInput, id: nil, with: self)
+        }
     }
     
     func updateAddButtonState() {
@@ -144,22 +153,22 @@ private extension AddCategoryViewController {
         let offSet = Resources.AddCategoryViewControllerConstants.addcategoryOffset
         
         NSLayoutConstraint.activate([
-        
+            
             titleLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Resources.AddCategoryViewControllerConstants.titleSpacing),
             titleLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: Resources.AddCategoryViewControllerConstants.titleHeight),
-
+            
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: offSet),
             textField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: offSet),
             textField.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -offSet),
             textField.heightAnchor.constraint(equalToConstant: Resources.AddCategoryViewControllerConstants.addCategoryFieldHeight),
-
+            
             addButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: offSet),
             addButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -offSet),
             addButton.heightAnchor.constraint(equalToConstant: Resources.AddCategoryViewControllerConstants.buttonHeight),
             addButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -offSet)
-        
+            
         ])
     }
 }

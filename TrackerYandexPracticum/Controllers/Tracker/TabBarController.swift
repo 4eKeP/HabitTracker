@@ -8,7 +8,7 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-
+    
     private let tabBarTrackerText = Resources.TabBarConstants.Labels.tabBarTrackerText
     
     private let tabBarStatsText = Resources.TabBarConstants.Labels.tabBarStatsText
@@ -45,7 +45,7 @@ final class TabBarController: UITabBarController {
         tabBar.backgroundColor = .ypWhite
         
         let tracker = self.createNavigation(with: tabBarTrackerText, and: UIImage(named: "tracker_icon"), vc: TrackerController())
-
+        
         let stats = self.createNavigation(with: tabBarStatsText, and: UIImage(named: "stats_icon"), vc: StatsController())
         
         self.setViewControllers([tracker, stats], animated: true)

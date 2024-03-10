@@ -64,17 +64,17 @@ extension CategoryCell {
         updateCellAppearance(for: category)
         updateSeparatorInset(for: category)
     }
-
+    
     private func updateCellAppearance(for category: CategoryCellViewModel) {
         categoryLabel.text = category.categoryName
         doneMarkImageView.isHidden = !category.isSelected
-
+        
         let isFirstCell = category.isFirst
         let isLastCell = category.isLast
-
+        
         cellView.layer.maskedCorners = maskedCorners(for: isFirstCell, isLastCell)
     }
-
+    
     private func maskedCorners(for isFirstCell: Bool, _ isLastCell: Bool) -> CACornerMask {
         if isFirstCell && isLastCell {
             return [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -86,20 +86,20 @@ extension CategoryCell {
             return []
         }
     }
-
+    
     private func updateSeparatorInset(for category: CategoryCellViewModel) {
-        self.separatorInset = category.isLast 
+        self.separatorInset = category.isLast
         ?
         UIEdgeInsets(top: 0, left: UIScreen.main.bounds.width, bottom: 0, right: 0)
         :
         UIEdgeInsets(
-          top: .zero,
-          left: Resources.CategoryCellConstants.categoryButtonLeading,
-          bottom: .zero,
-          right: Resources.CategoryCellConstants.categoryButtonLeading
+            top: .zero,
+            left: Resources.CategoryCellConstants.categoryButtonLeading,
+            bottom: .zero,
+            right: Resources.CategoryCellConstants.categoryButtonLeading
         )
     }
-
+    
 }
 
 //MARK: - setup UI

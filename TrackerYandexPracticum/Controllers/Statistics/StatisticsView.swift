@@ -55,7 +55,7 @@ final class StatisticsView: UIView {
     private let counterHeight = Resources.StatsConstants.counterHeight
     
     private let descriptionHeight = Resources.StatsConstants.descriptionHeight
-   
+    
     //MARK: - init
     
     override init(frame: CGRect) {
@@ -76,7 +76,7 @@ extension StatisticsView {
         containerView.addSubview(descriptionLabel)
         
         NSLayoutConstraint.activate([
-        
+            
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             containerView.topAnchor.constraint(equalTo: topAnchor),

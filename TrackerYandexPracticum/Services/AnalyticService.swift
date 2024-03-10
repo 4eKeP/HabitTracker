@@ -11,7 +11,7 @@ import AppMetricaCore
 
 final class AnalyticService {
     
-    static private let apiMetricaKey: String = ""
+    static private let apiMetricaKey: String = "ab780a68-5970-459e-b592-9ce14172344b"
     
     static func activate() {
         let configuration = AppMetricaConfiguration(apiKey: self.apiMetricaKey)

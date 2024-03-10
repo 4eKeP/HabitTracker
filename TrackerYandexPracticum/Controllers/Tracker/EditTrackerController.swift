@@ -92,8 +92,8 @@ final class EditTrackerController: UIViewController {
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = String.localizedStringWithFormat(
-          NSLocalizedString("numberOfDays", comment: "Counter of total tracker's completed days"),
-          self.editModel.counter
+            NSLocalizedString("numberOfDays", comment: "Counter of total tracker's completed days"),
+            self.editModel.counter
         )
         return label
     }()
@@ -200,7 +200,7 @@ final class EditTrackerController: UIViewController {
         button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         return button
     }()
-   
+    
     private lazy var emojiCollection = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collection.register(EmojiCell.self, forCellWithReuseIdentifier: EmojiCell.Identifer)
@@ -236,12 +236,8 @@ final class EditTrackerController: UIViewController {
     private let textFieldLimit = 38
     
     private var trackerNameIsFulfilled: Bool {
-            !userInput.isEmpty
+        !userInput.isEmpty
     }
-    
-    
-    //MARK: На будущее сделать из isHabit энум что бы легче добавлять новые типы привычек
-  //  private var isHabit: Bool
     
     private var selectedCategoryIndex: UUID
     
@@ -262,13 +258,13 @@ final class EditTrackerController: UIViewController {
     weak var delegate: EditTrackerControllerDelegate?
     
     init(trackerForEdit editModel: TrackerForEdit) {
-      self.editModel = editModel
-      self.colorIndex = editModel.tracker.color
-      self.emojiIndex = editModel.tracker.emoji
-      self.schedule = editModel.tracker.schedule
+        self.editModel = editModel
+        self.colorIndex = editModel.tracker.color
+        self.emojiIndex = editModel.tracker.emoji
+        self.schedule = editModel.tracker.schedule
         self.userInput = editModel.tracker.name
-      self.selectedCategoryIndex = editModel.category.id
-      super.init(nibName: nil, bundle: nil)
+        self.selectedCategoryIndex = editModel.category.id
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -286,17 +282,17 @@ final class EditTrackerController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-      super.viewDidAppear(animated)
-      DispatchQueue.main.async {
-        let emojiIndexPath = IndexPath(item: self.editModel.tracker.emoji, section: 0)
-        self.emojiCollection.selectItem(at: emojiIndexPath, animated: true, scrollPosition: .left)
-        self.emojiCollection.cellForItem(at: emojiIndexPath)?.backgroundColor = .ypLightGray
-
-        let colorIndexPath = IndexPath(item: self.editModel.tracker.color, section: 0)
-        self.colorCollection.selectItem(at: colorIndexPath, animated: true, scrollPosition: .left)
-        self.colorCollection.cellForItem(at: colorIndexPath)?
-          .backgroundColor = Resources.colors[self.editModel.tracker.color].withAlphaComponent(0.3)
-      }
+        super.viewDidAppear(animated)
+        DispatchQueue.main.async {
+            let emojiIndexPath = IndexPath(item: self.editModel.tracker.emoji, section: 0)
+            self.emojiCollection.selectItem(at: emojiIndexPath, animated: true, scrollPosition: .left)
+            self.emojiCollection.cellForItem(at: emojiIndexPath)?.backgroundColor = .ypLightGray
+            
+            let colorIndexPath = IndexPath(item: self.editModel.tracker.color, section: 0)
+            self.colorCollection.selectItem(at: colorIndexPath, animated: true, scrollPosition: .left)
+            self.colorCollection.cellForItem(at: colorIndexPath)?
+                .backgroundColor = Resources.colors[self.editModel.tracker.color].withAlphaComponent(0.3)
+        }
     }
     
     @objc private func categoryButtonPressed() {
@@ -318,10 +314,10 @@ final class EditTrackerController: UIViewController {
     
     @objc private func saveButtonPressed() {
         let updatedTracker = Tracker(id: editModel.tracker.id,
-                                 name: userInput,
-                                 color: colorIndex,
-                                 emoji: emojiIndex,
-                                 schedule: schedule,
+                                     name: userInput,
+                                     color: colorIndex,
+                                     emoji: emojiIndex,
+                                     schedule: schedule,
                                      isPinned: editModel.tracker.isPinned)
         delegate?.editTrackerControllerController(self, didChangedTracker: updatedTracker, for: selectedCategoryIndex)
     }
@@ -330,11 +326,6 @@ final class EditTrackerController: UIViewController {
         saveButton.backgroundColor = trackerNameIsFulfilled ? .ypBlack : .ypGray
         saveButton.isEnabled = trackerNameIsFulfilled ? true : false
     }
-    
-//    private func chekConfigState() {
-//        formIsFulfilled = trackerNameIsFulfilled && categoryIsSelected && scheduleIsFulfilled
-//        && emojiIsSelected && colorIsSelected
-//    }
     
     private func fetchSchedule(from schedule: [Bool]) {
         self.schedule = schedule
@@ -359,14 +350,14 @@ final class EditTrackerController: UIViewController {
     }
     
     func fetchCategory(from category: TrackerCategory) {
-      selectedCategoryIndex = category.id
+        selectedCategoryIndex = category.id
         categoryButton.setSecondaryLable(text: category.categoryName)
     }
     
     func setupState() {
-      titleTextField.text = editModel.tracker.name
+        titleTextField.text = editModel.tracker.name
         fetchSchedule(from: editModel.tracker.schedule)
-      fetchCategory(from: editModel.category)
+        fetchCategory(from: editModel.category)
     }
 }
 
@@ -378,8 +369,6 @@ extension EditTrackerController: CategoryViewControllerDelegate {
             [weak self] in
             guard let self = self else { return }
             self.fetchCategory(from: category)
-//            self.selectedCategoryIndex = category.id
-//            self.categoryButton.setSecondaryLable(text: category.categoryName)
         }
     }
 }
@@ -663,9 +652,9 @@ private extension EditTrackerController {
         contentStackView.addArrangedSubview(settingsView)
         configSettingsConstraints()
         settingsView.addSubview(categoryButton)
-            let separator = Separators()
-            separator.addSeparators(for: settingsView, width: settingsViewWidth - leadingSpacing * 2, times: 1)
-            settingsView.addSubview(scheduleButton)
+        let separator = Separators()
+        separator.addSeparators(for: settingsView, width: settingsViewWidth - leadingSpacing * 2, times: 1)
+        settingsView.addSubview(scheduleButton)
     }
     
     func configSettingsConstraints() {

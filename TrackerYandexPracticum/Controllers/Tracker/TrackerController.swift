@@ -73,13 +73,6 @@ final class TrackerController: UIViewController {
     private var currentDate: Date {
         factory.selectedDate
     }
-//    () {
-//        didSet {
-//            weekday = currentDate.weekdayFromMonday() - 1
-//         //   factory.setCurrentWeekDay(to: currentDate)
-//            factory.selectedDate
-//        }
-//    }
     
     private var selectedFilterIndex = 0 {
         didSet {
@@ -101,7 +94,7 @@ final class TrackerController: UIViewController {
     
     private let trackerCategoryStore = TrackerCategoryStore.shared
     
-  //  private let trackerStore = TrackerStore()
+    private let analyticService = AnalyticService()
     
     private var visibleCategories: [TrackerCategory] = []
     
@@ -116,7 +109,6 @@ final class TrackerController: UIViewController {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
         searchBar.searchBar.delegate = self
-     //   trackerStore.delegate = self
         factory.selectedDate = Date()
         setupUI()
         fetchVisibleCategoriesFromFactory()
@@ -125,12 +117,19 @@ final class TrackerController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateCollectionView()
+        analyticService.report(name: "open", parameters: ["screen": "Main"])
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        analyticService.report(name: "close", parameters: ["screen": "Main"])
     }
 }
 // MARK: - private func
 private extension TrackerController {
     
     @objc func addButtonClicked() {
+        analyticService.report(name: "click", parameters: ["screen": "Main", "item": "add_track"])
         let nextController = TrackerTypeController()
         nextController.modalPresentationStyle = .popover
         nextController.delegate = self
@@ -138,16 +137,18 @@ private extension TrackerController {
     }
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+        analyticService.report(name: "click", parameters: ["screen": "Main", "item": "date"])
         factory.selectedDate = sender.date
         fetchVisibleCategoriesFromFactory()
         dismiss(animated: true)
     }
     
     @objc func filtersButtonClicked() {
-      let nextController = FilterController(selectedFilterIndex: selectedFilterIndex)
-      nextController.modalPresentationStyle = .popover
-      nextController.delegate = self
-      navigationController?.present(nextController, animated: true)
+        analyticService.report(name: "click", parameters: ["screen": "Main", "item": "filter"])
+        let nextController = FilterController(selectedFilterIndex: selectedFilterIndex)
+        nextController.modalPresentationStyle = .popover
+        nextController.delegate = self
+        navigationController?.present(nextController, animated: true)
     }
     
     func fetchVisibleCategoriesFromFactory() {
@@ -167,20 +168,12 @@ private extension TrackerController {
     
     func fetchTracker(from tracker: Tracker, forIndex index: UUID) {
         factory.saveNewOrUpdate(tracker: tracker, toCategory: index)
-       // setDayForTracker()
         fetchVisibleCategoriesFromFactory()
     }
     
     func setDayForTracker() {
         datePicker.setDate(currentDate, animated: true)
     }
-    
-//    func fetchVisibleCategoriesfromFactory() {
-//        clearVisibleCategories()
-//        visibleCategories = factory.visibleCategoriesForWeekDay
-//        updateCollectionView()
-//    }
-    
     func clearVisibleCategories() {
         visibleCategories = []
     }
@@ -224,19 +217,6 @@ extension TrackerController: TrackerStoreDelegate {
         }
     }
 }
-
-// MARK: - TrackerCategoryStoreDelegate
-
-//extension TrackerController: TrackerCategoryStoreDelegate {
-//    func trackerCategoryStore(didUpdate update: TrackerCategoryStoreUpdate) {
-//        visibleCategories = factory.visibleCategoriesForWeekDay
-//        collectionView.performBatchUpdates {
-//            collectionView.reloadSections(update.updatedSectionIndexes)
-//            collectionView.insertSections(update.insertedSectionIndexes)
-//            collectionView.deleteSections(update.deletedSectionIndexes)
-//        }
-//    }
-//}
 
 extension TrackerController: EditTrackerControllerDelegate {
     func editTrackerControllerController(_ viewController: EditTrackerController, didChangedTracker tracker: Tracker, for categoryIndex: UUID) {
@@ -399,7 +379,7 @@ extension TrackerController: TrackerCellDelegate {
         guard currentDate.sameDay(Date()) || currentDate.beforeDay(Date()) else { return }
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
-       // guard tracker.schedule[weekday] else { return }
+        // guard tracker.schedule[weekday] else { return }
         cell.isDone(factory.setTrackerDone(with: tracker.id, on: currentDate))
         cell.updateCounter(factory.getRecordsCounter(with: tracker.id))
     }
@@ -485,11 +465,13 @@ private extension TrackerController {
     //MARK: - ContextMenuCells
     
     func pinCell(indexPath: IndexPath) {
+        analyticService.report(name: "click", parameters: ["screen": "Main", "item": "pin"])
         factory.setPinFor(tracker: visibleCategories[indexPath.section].trackers[indexPath.row])
         fetchVisibleCategoriesFromFactory()
     }
     
     func editCell(indexPath: IndexPath) {
+        analyticService.report(name: "click", parameters: ["screen": "Main", "item": "edit"])
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
         let counter = factory.getRecordsCounter(with: tracker.id)
         if let category = factory.fetchCategoryByTracker(id: tracker.id) {
@@ -508,6 +490,7 @@ private extension TrackerController {
                                             preferredStyle: .actionSheet)
         
         let deleteAction = UIAlertAction(title: Resources.ContextMenuList.delete, style: .destructive) { _ in
+            self.analyticService.report(name: "click", parameters: ["screen": "Main", "item": "delete"])
             self.factory.delete(tracker: self.visibleCategories[indexPath.section].trackers[indexPath.row])
             self.fetchVisibleCategoriesFromFactory()
         }

@@ -40,7 +40,6 @@ final class TrackerCategoryStore: NSObject {
         guard let objects = self.fetchedResultsController.fetchedObjects,
               let categories = try? objects.map({try self.trackerCategory(from: $0)}) else { return [] }
         return categories
-     //   return categories.filter { !$0.trackers.isEmpty }
     }
     
     var pinnedCategoryId: UUID? {
@@ -92,6 +91,11 @@ final class TrackerCategoryStore: NSObject {
         let request = TrackerCategoryCD.fetchRequest()
         let categories = try? context.fetch(request)
         categories?.forEach { context.delete($0) }
+        saveContext()
+    }
+    
+    func deleteCategoryBy(id: UUID) {
+        self.fetchedResultsController.fetchedObjects?.filter {$0.id == id }.forEach { context.delete($0) }
         saveContext()
     }
     
@@ -197,7 +201,7 @@ private extension TrackerCategoryStore {
                         trackerFromCD.friday,
                         trackerFromCD.satuday,
                         trackerFromCD.sunday
-                       ], 
+                       ],
                        isPinned: trackerFromCD.isPinned
         )
     }
@@ -221,7 +225,7 @@ private extension TrackerCategoryStore {
 extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-            delegate?.trackerCategoryStore(didUpdate: self)
+        delegate?.trackerCategoryStore(didUpdate: self)
     }
 }
 

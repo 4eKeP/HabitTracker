@@ -28,6 +28,14 @@ enum Resources {
         static let unpin = NSLocalizedString("labels.context.unpin", comment: "label for context menu - unpin")
         static let confirmTrackerDelete = NSLocalizedString("labels.confirmTrackerDelete", comment: "")
         static let cancel = NSLocalizedString("labels.cancel", comment: "label for cancel")
+        static let confirmCategoryDelete = NSLocalizedString(
+          "labels.confirmCategoryDelete",
+          comment: "label to confirm Category Delete"
+        )
+        static let cancelCategoryDelete = NSLocalizedString(
+          "labels.cancelCategoryDelete",
+          comment: "label to asking Category Deleting"
+        )
         
         static let unpinImage = UIImage(systemName: "pin.slash")
         static let pinImage = UIImage(systemName: "pin")

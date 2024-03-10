@@ -34,7 +34,7 @@ final class TrackersFactoryCD {
             newCategories.append(TrackerCategory(id: $0.id,
                                                  categoryName: $0.categoryName,
                                                  trackers: filteredTrackers(from: $0.trackers.filter { !pinnedTrackers.contains($0) })
-                                                 ))
+                                                ))
         }
         return newCategories.filter { !$0.trackers.isEmpty }
     }
@@ -106,9 +106,6 @@ extension TrackersFactoryCD {
         trackerRecordStore.countRecords(for: fetchTracker(byID: id))
     }
     
-//    func setCurrentWeekDay(to date: Date) {
-//        currentWeekDayIndex = date.weekdayFromMonday() - 1
-//    }
     
     func filteredTrackers(from trackers: [Tracker]) -> [Tracker] {
         trackers.filter {
@@ -158,16 +155,10 @@ extension TrackersFactoryCD {
         } else {
             return false
         }
-      }
+    }
 }
 
 private extension TrackersFactoryCD {
-//    func clearDataInCD() {
-//        trackerRecordStore.deleteTrackerRecordFromCD()
-//        trackerStore.deleteTrackersFromCD()
-//        trackerCategoryStore.deleteCategoriesFromCD()
-//        UserDefaults.standard.isOnBoarded = false
-//    }
     
     func fetchTracker(byID id: UUID) -> TrackerCD {
         guard let tracker = trackerStore.fetchTrackers(byID: id) else {

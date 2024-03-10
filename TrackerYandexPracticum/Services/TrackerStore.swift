@@ -131,15 +131,15 @@ final class TrackerStore: NSObject {
     }
     
     func countTrackers() -> Int {
-      let request = TrackerCD.fetchRequest()
-      request.resultType = .countResultType
-      guard
-        let objects = try? context.execute(request) as? NSAsynchronousFetchResult<NSFetchRequestResult>,
-        let counter = objects.finalResult?[0] as? Int32
-      else {
-        return .zero
-      }
-      return Int(counter)
+        let request = TrackerCD.fetchRequest()
+        request.resultType = .countResultType
+        guard
+            let objects = try? context.execute(request) as? NSAsynchronousFetchResult<NSFetchRequestResult>,
+            let counter = objects.finalResult?[0] as? Int32
+        else {
+            return .zero
+        }
+        return Int(counter)
     }
 }
 
@@ -176,7 +176,7 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
             let deletedFinalIndexes = deletedIndexes,
             let updatedFinalIndexes = updatedIndexes
         else { return }
-        delegate?.trackerStore(didUpdate: 
+        delegate?.trackerStore(didUpdate:
                                 TrackerStoreUpdate(
                                     insertedIndexes: insertedFinalIndexes,
                                     deletedIndexes: deletedFinalIndexes,

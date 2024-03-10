@@ -8,7 +8,7 @@
 import UIKit
 
 protocol TrackerTypeControllerDelegate: AnyObject {
-      func trackerTypeController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: UUID)
+    func trackerTypeController(_ viewController: TrackerTypeController, didFillTracker tracker: Tracker, for categoryIndex: UUID)
 }
 
 final class TrackerTypeController: UIViewController {
@@ -18,6 +18,8 @@ final class TrackerTypeController: UIViewController {
     private let addHabitButtonText = Resources.TrackerTypeConstants.Labels.addHabitButtonText
     
     private let addEventButtonText = Resources.TrackerTypeConstants.Labels.addEventButtonText
+    
+    private let analyticService = AnalyticService()
     
     private lazy var titleLabel = {
         let titleLable = UILabel()
@@ -53,12 +55,14 @@ final class TrackerTypeController: UIViewController {
     }
     
     @objc func habitButtonPressed() {
+        analyticService.report(name: "click", parameters: ["screen": "new", "item": "habit"])
         let nextController = ConfigTypeController(isHabit: true)
         nextController.delegate = self
         present(nextController, animated: true)
     }
     
     @objc func eventButtonPressed() {
+        analyticService.report(name: "click", parameters: ["screen": "new", "item": "event"])
         let nextController = ConfigTypeController(isHabit: false)
         nextController.delegate = self
         present(nextController, animated: true)
@@ -70,18 +74,18 @@ extension TrackerTypeController: ConfigTypeControllerDelegate {
         delegate?.trackerTypeController(self, didFillTracker: tracker, for: categoryIndex)
     }
 }
-    
+
 
 // MARK: - View configuration
 
 private extension TrackerTypeController {
     //MARK: Title configuration
-     func setupTitle() {
+    func setupTitle() {
         view.addSubview(titleLabel)
         setTitleConstraints()
     }
     
-     func setTitleConstraints() {
+    func setTitleConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 28),
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -90,33 +94,33 @@ private extension TrackerTypeController {
     }
     //MARK: stackView configuration
     
-     func setupStackView() {
+    func setupStackView() {
         view.addSubview(stackView)
-         addStackViewConstarints()
-         addHabitButton()
+        addStackViewConstarints()
+        addHabitButton()
         addEventButton()
     }
     
-     func addHabitButton() {
+    func addHabitButton() {
         let HabitButton = TypeButton()
         HabitButton.setTitle(addHabitButtonText, for: .normal)
         HabitButton.addTarget(self, action: #selector(habitButtonPressed), for: .touchUpInside)
         stackView.addArrangedSubview(HabitButton)
     }
     
-     func addEventButton() {
+    func addEventButton() {
         let EventButton = TypeButton()
         EventButton.setTitle(addEventButtonText, for: .normal)
         EventButton.addTarget(self, action: #selector(eventButtonPressed), for: .touchUpInside)
-         stackView.addArrangedSubview(EventButton)
+        stackView.addArrangedSubview(EventButton)
     }
     
-     func addStackViewConstarints() {
+    func addStackViewConstarints() {
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-          stackView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             stackView.widthAnchor.constraint(equalToConstant: view.frame.width - 2 * leadingButton),
-          stackView.heightAnchor.constraint(equalToConstant: 2 * buttonHeight + buttonSpacing)
+            stackView.heightAnchor.constraint(equalToConstant: 2 * buttonHeight + buttonSpacing)
         ])
     }
     

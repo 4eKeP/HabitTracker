@@ -94,14 +94,6 @@ final class TrackerCell: UICollectionViewCell {
       super.prepareForReuse()
     }
     // MARK: - Private methods
-    
-//     func configCell(backgroundColor: UIColor, emoji: String, cardText: String, counter: Int) {
-//        cardView.backgroundColor = backgroundColor
-//        counterButton.backgroundColor = backgroundColor
-//        cardLabel.text = cardText
-//        emojiLabel.text = emoji
-//        updateCounter(counter)
-//    }
     @objc private func counterButtonTapped() {
         delegate?.counterButtonTapped(for: self)
     }

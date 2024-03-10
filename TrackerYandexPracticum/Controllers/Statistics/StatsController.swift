@@ -101,13 +101,13 @@ private extension StatsController {
         ])
     }
     
-     func setupEmptyView() {
-             emptyView.translatesAutoresizingMaskIntoConstraints = false
-             emptyView.setEmptyView(title: emptyViewText,
-                                    image: UIImage(named: "stats_placeholder"))
-             view.addSubview(emptyView)
-         
-         
+    func setupEmptyView() {
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        emptyView.setEmptyView(title: emptyViewText,
+                               image: UIImage(named: "stats_placeholder"))
+        view.addSubview(emptyView)
+        
+        
         NSLayoutConstraint.activate([
             emptyView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: spacingFromTitle),
             emptyView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -115,5 +115,5 @@ private extension StatsController {
             emptyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
+    
 }
