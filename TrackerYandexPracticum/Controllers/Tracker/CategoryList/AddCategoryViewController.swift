@@ -19,7 +19,7 @@ final class AddCategoryViewController: UIViewController {
     
     private let addButtonText = Resources.AddCategoryViewControllerConstants.Labels.addButtonText
     
-    private let analyticService = AnalyticService()
+    private let analyticService = AnalyticService.shared
     
     private lazy var titleLabel = {
         let label = UILabel()
@@ -54,7 +54,7 @@ final class AddCategoryViewController: UIViewController {
         return button
     }()
     
-    private var category: TrackerCategory?
+    //private var category: TrackerCategory?
     
     private var categoryNameIsFullfilled: Bool {
         !userInput.isEmpty
@@ -71,10 +71,9 @@ final class AddCategoryViewController: UIViewController {
     private var isEdit = false
     
     
-    init(viewModel: AddCategoryViewModelProtocol, category: TrackerCategory?) {
+    init(viewModel: AddCategoryViewModelProtocol) {
         self.viewModel = viewModel
-        self.category = category
-        self.userInput = category?.categoryName ?? ""
+        self.userInput = viewModel.category?.categoryName ?? ""
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -104,7 +103,7 @@ private extension AddCategoryViewController {
     
     @objc func addButtonPressed() {
         analyticService.report(name: "click", parameters: ["screen": "category", "item": "create"])
-        if let category {
+        if let category = viewModel.category {
             viewModel.addNewCategoryButtonPressed(withName: userInput, id: category.id, with: self)
         } else {
             viewModel.addNewCategoryButtonPressed(withName: userInput, id: nil, with: self)

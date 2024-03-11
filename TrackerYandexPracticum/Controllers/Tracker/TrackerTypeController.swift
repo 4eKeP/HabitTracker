@@ -19,7 +19,7 @@ final class TrackerTypeController: UIViewController {
     
     private let addEventButtonText = Resources.TrackerTypeConstants.Labels.addEventButtonText
     
-    private let analyticService = AnalyticService()
+    private let analyticService = AnalyticService.shared
     
     private lazy var titleLabel = {
         let titleLable = UILabel()

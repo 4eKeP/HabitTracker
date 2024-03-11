@@ -13,6 +13,8 @@ final class AnalyticService {
     
     static private let apiMetricaKey: String = "ab780a68-5970-459e-b592-9ce14172344b"
     
+    static let shared = AnalyticService()
+    
     static func activate() {
         let configuration = AppMetricaConfiguration(apiKey: self.apiMetricaKey)
             AppMetrica.activate(with: configuration!)

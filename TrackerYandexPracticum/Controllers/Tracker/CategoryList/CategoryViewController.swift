@@ -94,15 +94,15 @@ private extension CategoryViewController {
     }
     
     @objc func addButtonPressed() {
-        let viewModel = AddCategoryViewModel()
-        let nextController = AddCategoryViewController(viewModel: viewModel, category: nil)
+        let viewModel = AddCategoryViewModel(category: nil)
+        let nextController = AddCategoryViewController(viewModel: viewModel)
         viewModel.delegate = self
         present(nextController, animated: true)
     }
     
     func editCategory(indexPath: IndexPath) {
-        let viewModel = AddCategoryViewModel()
-        let nextController = AddCategoryViewController(viewModel: viewModel, category: self.viewModel.categories[indexPath.row])
+        let viewModel = AddCategoryViewModel(category: self.viewModel.categories[indexPath.row])
+        let nextController = AddCategoryViewController(viewModel: viewModel)
         viewModel.delegate = self
         present(nextController, animated: true)
     }

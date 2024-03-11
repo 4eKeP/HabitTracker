@@ -30,6 +30,7 @@ final class TrackerController: UIViewController {
         collectionView.register(SectionHeader.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: SectionHeader.Identifer)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Resources.TrackerControllerConstants.filterHeight, right: 0)
         return collectionView
     }()
     
@@ -94,7 +95,7 @@ final class TrackerController: UIViewController {
     
     private let trackerCategoryStore = TrackerCategoryStore.shared
     
-    private let analyticService = AnalyticService()
+    private let analyticService = AnalyticService.shared
     
     private var visibleCategories: [TrackerCategory] = []
     
@@ -358,10 +359,12 @@ extension TrackerController: UICollectionViewDelegate {
                 self?.editCell(indexPath: indexPath)
             }
             let deleteAction = UIAction(title: Resources.ContextMenuList.delete,
-                                        image: Resources.ContextMenuList.deleteImage
+                                        image: Resources.ContextMenuList.deleteImage,
+                                        attributes: .destructive
             ) { [weak self] _ in
                 self?.deleteCell(indexPath: indexPath)
             }
+            
             return UIMenu(children: [pinAction, editAction, deleteAction])
         })
     }
@@ -450,7 +453,6 @@ private extension TrackerController {
         collectionView.delegate = self
         collectionView.backgroundColor = .ypWhite
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
     }
     
     func configCollectionViewConstraints() {
