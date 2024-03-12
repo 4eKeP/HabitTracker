@@ -18,6 +18,10 @@ protocol CategoryViewModelProtocol {
     
     func addCategory(_ category: TrackerCategory)
     
+    func rename(id: UUID, newName: String)
+    
+    func deleteCategoryBy(id: UUID)
+    
     func categorySelected(at indexPath: IndexPath, with controller: CategoryViewController)
     
     func makeViewModel(ForRowAt indexPath: IndexPath) -> CategoryCellViewModel
@@ -46,11 +50,19 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     }
     
     func fetchCategoriesFromCD() {
-        categories = trackerCategoryStore.allCategories
+        categories = trackerCategoryStore.allCategories.filter { $0.categoryName != Resources.pinCategoriesName }
     }
     
     func addCategory(_ category: TrackerCategory) {
         try? trackerCategoryStore.addNew(category: category)
+    }
+    
+    func rename(id: UUID, newName: String) {
+        trackerCategoryStore.renameCategoryBy(id: id, newCategoryName: newName)
+    }
+    
+    func deleteCategoryBy(id: UUID) {
+        trackerCategoryStore.deleteCategoryBy(id: id)
     }
     
     func categorySelected(at indexPath: IndexPath, with controller: CategoryViewController) {
@@ -62,9 +74,9 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         
         let currentCategory = categories[indexPath.row]
         let currentViewModel = CategoryCellViewModel(categoryName: currentCategory.categoryName,
-                                                      isFirst: indexPath.row == 0,
-                                                      isLast: indexPath.row == categories.count - 1,
-                                                      isSelected: currentCategory.id == selectedCategoryID)
+                                                     isFirst: indexPath.row == 0,
+                                                     isLast: indexPath.row == categories.count - 1,
+                                                     isSelected: currentCategory.id == selectedCategoryID)
         return currentViewModel
     }
 }

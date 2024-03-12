@@ -24,6 +24,14 @@ final class TrackerStore: NSObject {
     
     weak var delegate: TrackerStoreDelegate?
     
+    var pinnedTrackers: [Tracker] {
+        guard
+            let objects = self.fetchedResultsController.fetchedObjects,
+            let trackers = try? objects.map({ try self.tracker(from: $0) })
+        else { return [] }
+        return trackers.filter({ $0.isPinned })
+    }
+    
     //MARK: - Init
     
     convenience override init() {
@@ -51,13 +59,16 @@ final class TrackerStore: NSObject {
         try? controller.performFetch()
     }
     
-    func addNew(tracker: Tracker, to category: TrackerCategoryCD) throws {
-        let trackerInCD = TrackerCD(context: context)
+    //MARK: - func
+    
+    func addNewOrUpdate(tracker: Tracker, to category: TrackerCategoryCD) throws {
+        let trackerInCD = fetchTrackers(byID: tracker.id) ?? TrackerCD(context: context)
         trackerInCD.name = tracker.name
         trackerInCD.id = tracker.id
         trackerInCD.color = Int32(tracker.color)
         trackerInCD.emoji = Int32(tracker.emoji)
         trackerInCD.category = category
+        trackerInCD.isPinned = tracker.isPinned
         trackerInCD.monday = tracker.schedule[0]
         trackerInCD.tuesday = tracker.schedule[1]
         trackerInCD.wednesday = tracker.schedule[2]
@@ -68,11 +79,25 @@ final class TrackerStore: NSObject {
         saveContext()
     }
     
+    func setPinFor(tracker: Tracker) throws {
+        guard let trackerInCD = fetchTrackers(byID: tracker.id) else { return }
+        trackerInCD.isPinned = tracker.isPinned
+        saveContext()
+    }
+    
     func fetchTrackers(byID id: UUID) -> TrackerCD? {
-        let request = TrackerCD.fetchRequest()
-        request.returnsObjectsAsFaults = false
-        guard let trackers = try? context.fetch(request) else { return nil }
-        return trackers.first { $0.id == id }
+        self.fetchedResultsController.fetchedObjects?.first { $0.id == id }
+    }
+    
+    func fetchCategoryByTracker(id: UUID) -> TrackerCategoryCD? {
+        self.fetchedResultsController.fetchedObjects?.first { $0.id == id }?.category
+    }
+    
+    func delete(tracker: TrackerCD) {
+        self.fetchedResultsController.fetchedObjects?.filter{ $0 == tracker }.forEach {
+            context.delete($0)
+        }
+        saveContext()
     }
     
     func deleteTrackersFromCD() {
@@ -81,7 +106,44 @@ final class TrackerStore: NSObject {
         trackers?.forEach { context.delete($0) }
         saveContext()
     }
+    
+    func tracker(from trackerFromCD: TrackerCD) throws -> Tracker {
+        guard let id = trackerFromCD.id else {
+            throw TrackerCategoryStoreError.decodingErrorInvalidId
+        }
+        guard let name = trackerFromCD.name else {
+            throw TrackerCategoryStoreError.decodingErrorInvalidName
+        }
+        return Tracker(id: id,
+                       name: name,
+                       color: Int(trackerFromCD.color),
+                       emoji: Int(trackerFromCD.emoji),
+                       schedule: [
+                        trackerFromCD.monday,
+                        trackerFromCD.tuesday,
+                        trackerFromCD.wednesday,
+                        trackerFromCD.thursday,
+                        trackerFromCD.friday,
+                        trackerFromCD.satuday,
+                        trackerFromCD.sunday
+                       ],
+                       isPinned: trackerFromCD.isPinned)
+    }
+    
+    func countTrackers() -> Int {
+        let request = TrackerCD.fetchRequest()
+        request.resultType = .countResultType
+        guard
+            let objects = try? context.execute(request) as? NSAsynchronousFetchResult<NSFetchRequestResult>,
+            let counter = objects.finalResult?[0] as? Int32
+        else {
+            return .zero
+        }
+        return Int(counter)
+    }
 }
+
+//MARK: - NSFetchedResultsControllerDelegate
 
 extension TrackerStore: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -114,9 +176,12 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
             let deletedFinalIndexes = deletedIndexes,
             let updatedFinalIndexes = updatedIndexes
         else { return }
-        delegate?.trackerStore(didUpdate: TrackerStoreUpdate(insertedIndexes: insertedFinalIndexes,
-                                                             deletedIndexes: deletedFinalIndexes,
-                                                             updatedIndexes: updatedFinalIndexes))
+        delegate?.trackerStore(didUpdate:
+                                TrackerStoreUpdate(
+                                    insertedIndexes: insertedFinalIndexes,
+                                    deletedIndexes: deletedFinalIndexes,
+                                    updatedIndexes: updatedFinalIndexes)
+        )
         
         insertedIndexes = nil
         deletedIndexes = nil

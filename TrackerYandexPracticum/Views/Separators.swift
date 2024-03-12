@@ -9,9 +9,9 @@ import UIKit
 
 final class Separators {
     
-    private let spacing: CGFloat = 16
-    private let fieldHeight: CGFloat = 75
-    private let separatorHeight: CGFloat = 2
+    private let spacing = Resources.Separators.spacing
+    private let fieldHeight = Resources.Separators.fieldHeight
+    private let separatorHeight = Resources.Separators.separatorHeight
     
     func addSeparators(for view: UIView, width: CGFloat, times: Int) {
         for time in 1...times {
@@ -20,7 +20,7 @@ final class Separators {
                                          y: fieldHeight * CGFloat(time),
                                          width: width,
                                          height: separatorHeight)
-            separatorView.backgroundColor = .ypLightGray
+            separatorView.backgroundColor = .ypGray
             view.addSubview(separatorView)
         }
     }

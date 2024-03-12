@@ -13,29 +13,64 @@ final class TrackersFactoryCD {
     private let trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore.shared
     private let trackerRecordStore = TrackerRecordStore()
-    private var currentWeekDay = 0
+    private var currentWeekDayIndex = 0
+    var selectedFilterIndex = 0
     
     static let shared = TrackersFactoryCD()
     
     var visibleCategoriesForWeekDay: [TrackerCategory] {
-        let currentCategories = trackerCategoryStore.allCategories
         var newCategories: [TrackerCategory] = []
-        currentCategories.forEach { category in
-            newCategories.append(TrackerCategory(id: category.id,
-                                                 categoryName: category.categoryName,
-                                                 trackers: category.trackers.filter {$0.schedule[currentWeekDay]}
-                                                )
-            )
+        if
+            !pinnedTrackers.isEmpty,
+            let pinnedCategoryId = trackerCategoryStore.pinnedCategoryId,
+            let pinnedCategory = allCategories.first(where: { $0.id == pinnedCategoryId }) {
+            newCategories.append(TrackerCategory(id: pinnedCategory.id,
+                                                 categoryName: pinnedCategory.categoryName,
+                                                 trackers: filteredTrackers(from: pinnedTrackers)))
+        }
+        
+        
+        trackerCategoryStore.allCategories.forEach {
+            newCategories.append(TrackerCategory(id: $0.id,
+                                                 categoryName: $0.categoryName,
+                                                 trackers: filteredTrackers(from: $0.trackers.filter { !pinnedTrackers.contains($0) })
+                                                ))
         }
         return newCategories.filter { !$0.trackers.isEmpty }
+    }
+    
+    var allCategories: [TrackerCategory] {
+        trackerCategoryStore.allCategories
+    }
+    
+    var totalRecords: Int {
+        trackerRecordStore.totalRecords
     }
     
     var visibleCategoriesForSearch: [TrackerCategory] {
         trackerCategoryStore.allCategories
     }
     
+    var pinnedTrackers: [Tracker] {
+        trackerStore.pinnedTrackers
+    }
+    
+    var selectedDate = Date() {
+        didSet {
+            currentWeekDayIndex = selectedDate.weekdayFromMonday() - 1
+        }
+    }
+    
     private init() {
         // clearDataInCD() //раскомментировать для стирания данных в приложении
+    }
+}
+
+extension TrackersFactoryCD {
+    
+    enum FilterType {
+        static let complitedTrackers = 2
+        static let unComplitedTrackers = 3
     }
     
     func countCategories() -> Int {
@@ -46,9 +81,9 @@ final class TrackersFactoryCD {
         trackerCategoryStore.fetchCategoryName(by: thisIndex)
     }
     
-    func saveNew(tracker: Tracker, toCategory categoryIndex: UUID) {
+    func saveNewOrUpdate(tracker: Tracker, toCategory categoryIndex: UUID) {
         if let category = trackerCategoryStore.fetchCategory(by: categoryIndex) {
-            try? trackerStore.addNew(tracker: tracker, to: category)
+            try? trackerStore.addNewOrUpdate(tracker: tracker, to: category)
         }
     }
     
@@ -71,19 +106,59 @@ final class TrackersFactoryCD {
         trackerRecordStore.countRecords(for: fetchTracker(byID: id))
     }
     
-    func setCurrentWeekDay(to date: Date) {
-        currentWeekDay = date.weekdayFromMonday() - 1
+    
+    func filteredTrackers(from trackers: [Tracker]) -> [Tracker] {
+        trackers.filter {
+            switch selectedFilterIndex {
+            case FilterType.complitedTrackers:
+                $0.schedule[currentWeekDayIndex] && (isTrackerDone(with: $0.id, on: selectedDate) == true)
+            case FilterType.unComplitedTrackers:
+                $0.schedule[currentWeekDayIndex] && (isTrackerDone(with: $0.id, on: selectedDate) == false)
+            default:
+                $0.schedule[currentWeekDayIndex]
+            }
+        }
     }
     
+    func setPinFor(tracker: Tracker) {
+        let newPinValue = !tracker.isPinned
+        let newTracker = Tracker(id: tracker.id,
+                                 name: tracker.name,
+                                 color: tracker.color,
+                                 emoji: tracker.emoji,
+                                 schedule: tracker.schedule,
+                                 isPinned: newPinValue)
+        try? trackerStore.setPinFor(tracker: newTracker)
+    }
     
+    func delete(tracker: Tracker) {
+        if let trackerInCD = trackerStore.fetchTrackers(byID: tracker.id) {
+            trackerRecordStore.deleteRecordFromCD(for: trackerInCD)
+            trackerStore.delete(tracker: trackerInCD)
+        }
+    }
+    
+    func addNew(category: TrackerCategory) {
+        try? trackerCategoryStore.addNew(category: category)
+    }
+    
+    func fetchCategoryByTracker(id: UUID) -> TrackerCategory? {
+        guard
+            let categoryInCD = trackerStore.fetchCategoryByTracker(id: id),
+            let category = try? trackerCategoryStore.trackerCategory(from: categoryInCD) else { return nil }
+        return category
+    }
+    
+    func NoTrackersInCD() -> Bool {
+        if trackerStore.countTrackers() == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
 }
+
 private extension TrackersFactoryCD {
-    func clearDataInCD() {
-        trackerRecordStore.deleteTrackerRecordFromCD()
-        trackerStore.deleteTrackersFromCD()
-        trackerCategoryStore.deleteCategoriesFromCD()
-        UserDefaults.standard.isOnBoarded = false
-    }
     
     func fetchTracker(byID id: UUID) -> TrackerCD {
         guard let tracker = trackerStore.fetchTrackers(byID: id) else {

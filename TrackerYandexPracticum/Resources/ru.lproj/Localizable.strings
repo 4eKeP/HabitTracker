@@ -1,0 +1,64 @@
+/* 
+  Localizable.strings
+  TrackerYandexPracticum
+
+  Created by admin on 22.02.2024.
+  
+*/
+
+"labels.newTracker" = "Создание трекера";
+"labels.newEvent" = "Новое нерегулярное событие";
+"labels.newHabit" = "Новая привычка";
+"labels.editHabit" = "Редактирование привычки";
+"labels.newCategory" = "Новая категория";
+"labels.addCategory" = "Добавить категорию";
+"labels.editCategory" = "Редактирование категории";
+"labels.habit" = "Привычка";
+"labels.event" = "Нерегулярное событие";
+"labels.category" = "Категория";
+"labels.schedule" = "Расписание";
+"labels.statistic" = "Статистика";
+"labels.trackers" = "Трекеры";
+"labels.searchBar" = "Поиск";
+"labels.cancel" = "Отменить";
+"labels.create" = "Создать";
+"labels.save" = "Сохранить";
+"labels.textFieldPlaceholder" = "Введите название трекера";
+"labels.categoryNamePlaceholder" = "Введите название категории";
+"labels.textFieldRestriction" = "Ограничение 38 символов";
+"labels.done" = "Готово";
+"labels.emoji" = "Emoji";
+"labels.color" = "Цвет";
+"labels.filters" = "Фильтры";
+"labels.emptyStatistic" = "Анализировать пока нечего";
+"labels.emptyTracker" = "Что будем отслеживать?";
+"labels.emptySearch" = "Ничего не найдено";
+"labels.emptyCategory" = "Привычки и события можно \nобъединить по смыслу";
+"labels.oneDay" = "день";
+"labels.fewDays" = "дня";
+"labels.manyDays" = "дней";
+"labels.everyDays" = "Каждый день";
+"labels.weekDays" = "Будни";
+"labels.weekEnds" = "Выходные";
+"labels.onboardingPage1" = "Отслеживайте только то, что хотите";
+"labels.onboardingPage2" = "Даже если это \nне литры воды и йога";
+"labels.onboardingButton" = "Вот это технологии!";
+"labels.pinCategoryName" = "Закрепленные";
+"labels.confirmTrackerDelete" = "Уверены что хотите удалить трекер?";
+"labels.confirmCategoryDelete" = "Эта категория точно не нужна?";
+"labels.cancelCategoryDelete" = "Не могу удалить категорию с трекерами";
+
+"labels.context.pin" = "Закрепить";
+"labels.context.edit" = "Редактировать";
+"labels.context.delete" = "Удалить";
+"labels.context.unpin" = "Открепить";
+
+"labels.filter.all" = "Все трекеры";
+"labels.filter.today" = "Трекеры на сегодня";
+"labels.filter.completed" = "Завершенные";
+"labels.filter.uncompleted" = "Незавершенные";
+
+"labels.stat.bestPeriod" = "Лучший период";
+"labels.stat.idealDays" = "Идеальные дни";
+"labels.stat.completed" = "Трекеров завершено";
+"labels.stat.average" = "Среднее значение";

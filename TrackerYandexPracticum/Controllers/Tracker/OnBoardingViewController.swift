@@ -9,10 +9,16 @@ import UIKit
 
 final class OnBoardingController: UIPageViewController {
     
-    private let leadingOnBoardingPage = Constants.OnBoardingControllerConstants.leadingOnBoardingPage
-    private let centerOffsetOrButtonHeight = Constants.OnBoardingControllerConstants.centerOffsetOrButtonHeight
-    private let bottomSpacing = Constants.OnBoardingControllerConstants.bottomSpacing
-    private let bottomPageControllOffset = Constants.OnBoardingControllerConstants.bottomPageControllOffset
+    private let leadingOnBoardingPage = Resources.OnBoardingControllerConstants.leadingOnBoardingPage
+    private let centerOffsetOrButtonHeight = Resources.OnBoardingControllerConstants.centerOffsetOrButtonHeight
+    private let bottomSpacing = Resources.OnBoardingControllerConstants.bottomSpacing
+    private let bottomPageControllOffset = Resources.OnBoardingControllerConstants.bottomPageControllOffset
+    
+    private let blueControllerText = Resources.OnBoardingControllerConstants.Labels.blueControllerText
+    
+    private let redControllerText = Resources.OnBoardingControllerConstants.Labels.redControllerText
+    
+    private let buttonTitleText = Resources.OnBoardingControllerConstants.Labels.buttonTitleText
     
     private let bluePageController = UIViewController()
     private let redPageController = UIViewController()
@@ -51,7 +57,6 @@ final class OnBoardingController: UIPageViewController {
         if let first = pages.first {
             setViewControllers([first], direction: .forward, animated: true)
         }
-        
         setupPageControl()
     }
     
@@ -77,7 +82,6 @@ extension OnBoardingController: UIPageViewControllerDataSource {
         guard previousIndex >= 0 else {
             return pages.last
         }
-        
         return pages[previousIndex]
     }
     
@@ -89,11 +93,8 @@ extension OnBoardingController: UIPageViewControllerDataSource {
         guard nextIndex < pages.count else {
             return pages.first
         }
-        
         return pages[nextIndex]
     }
-    
-    
 }
 
 //MARK: - UIPageViewControllerDelegate
@@ -113,11 +114,11 @@ private extension OnBoardingController {
     
     func setupControllers() {
         addBackgroundImage(UIImage(named: "OnboardingPage1"), to: bluePageController.view)
-        addTitle("Отслеживайте только то, что хотите", to: bluePageController.view)
+        addTitle(blueControllerText, to: bluePageController.view)
         addButton(to: bluePageController.view)
         
         addBackgroundImage(UIImage(named: "OnboardingPage2"), to: redPageController.view)
-        addTitle("Даже если это \nне литры воды и йога", to: redPageController.view)
+        addTitle(redControllerText, to: redPageController.view)
         addButton(to: redPageController.view)
     }
     
@@ -137,27 +138,27 @@ private extension OnBoardingController {
     }
     
     func addTitle(_ title: String, to view: UIView) {
-        let lable = UILabel()
-        lable.numberOfLines = 2
-        lable.textAlignment = .center
-        lable.textColor = .ypBlack
-        lable.text = title
-        lable.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        lable.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(lable)
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.textColor = .ypBlack
+        label.text = title
+        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label)
         
         NSLayoutConstraint.activate([
-            lable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingOnBoardingPage),
-            lable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingOnBoardingPage),
-            lable.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: centerOffsetOrButtonHeight),
-            lable.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingOnBoardingPage),
+            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingOnBoardingPage),
+            label.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: centerOffsetOrButtonHeight),
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
     
     func addButton(to view: UIView) {
         let button = TypeButton()
         
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(buttonTitleText, for: .normal)
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)

@@ -8,14 +8,22 @@
 import UIKit
 
 protocol AddCategoryViewControllerDelegate: AnyObject {
-    func addCategoryViewController(_ viewController: AddCategoryViewController, didAddCategory category: TrackerCategory)
+    func addCategoryViewController(_ viewController: AddCategoryViewController, categoryName: String, id: UUID?)
 }
 
 final class AddCategoryViewController: UIViewController {
     
+    private let titleLabelText = Resources.AddCategoryViewControllerConstants.Labels.titleLabelText
+    
+    private let textFieldPlaceHolderText = Resources.AddCategoryViewControllerConstants.Labels.textFieldPlaceHolderText
+    
+    private let addButtonText = Resources.AddCategoryViewControllerConstants.Labels.addButtonText
+    
+    private let analyticService = AnalyticService.shared
+    
     private lazy var titleLabel = {
         let label = UILabel()
-        label.text = "Новая категория"
+        label.text = titleLabelText
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +38,7 @@ final class AddCategoryViewController: UIViewController {
         textField.backgroundColor = .ypBackground
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
-        textField.placeholder = "Введите название категории"
+        textField.placeholder = textFieldPlaceHolderText
         textField.clearButtonMode = .whileEditing
         textField.textColor = .ypBlack
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -38,33 +46,34 @@ final class AddCategoryViewController: UIViewController {
     }()
     
     private lazy var addButton = {
-       let button = TypeButton()
-        button.setTitle("Добавить категорию", for: .normal)
+        let button = TypeButton()
+        button.setTitle(addButtonText, for: .normal)
         button.setTitleColor(.ypLightGray, for: .disabled)
         button.isEnabled = false
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private var categoryNameIsFullfilled = false {
-        didSet {
-            if categoryNameIsFullfilled {
-                updateAddButtonState()
-            }
-        }
+    //private var category: TrackerCategory?
+    
+    private var categoryNameIsFullfilled: Bool {
+        !userInput.isEmpty
     }
     
-    private var userInput = "" {
+    private var userInput: String {
         didSet {
-            categoryNameIsFullfilled = !userInput.isEmpty
+            updateAddButtonState()
         }
     }
     
     private let viewModel: AddCategoryViewModelProtocol
     
+    private var isEdit = false
+    
     
     init(viewModel: AddCategoryViewModelProtocol) {
         self.viewModel = viewModel
+        self.userInput = viewModel.category?.categoryName ?? ""
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -93,7 +102,12 @@ final class AddCategoryViewController: UIViewController {
 private extension AddCategoryViewController {
     
     @objc func addButtonPressed() {
-        viewModel.addNewCategoryButtonPressed(withName: userInput, with: self)
+        analyticService.report(name: "click", parameters: ["screen": "category", "item": "create"])
+        if let category = viewModel.category {
+            viewModel.addNewCategoryButtonPressed(withName: userInput, id: category.id, with: self)
+        } else {
+            viewModel.addNewCategoryButtonPressed(withName: userInput, id: nil, with: self)
+        }
     }
     
     func updateAddButtonState() {
@@ -135,25 +149,25 @@ private extension AddCategoryViewController {
     func setupConstraints() {
         
         let safeArea = view.safeAreaLayoutGuide
-        let offSet = Constants.AddCategoryViewControllerConstants.addcategoryOffset
+        let offSet = Resources.AddCategoryViewControllerConstants.addcategoryOffset
         
         NSLayoutConstraint.activate([
-        
-            titleLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Constants.AddCategoryViewControllerConstants.titleSpacing),
+            
+            titleLabel.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Resources.AddCategoryViewControllerConstants.titleSpacing),
             titleLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: Constants.AddCategoryViewControllerConstants.titleHeight),
-
+            titleLabel.heightAnchor.constraint(equalToConstant: Resources.AddCategoryViewControllerConstants.titleHeight),
+            
             textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: offSet),
             textField.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: offSet),
             textField.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -offSet),
-            textField.heightAnchor.constraint(equalToConstant: Constants.AddCategoryViewControllerConstants.addCategoryFieldHeight),
-
+            textField.heightAnchor.constraint(equalToConstant: Resources.AddCategoryViewControllerConstants.addCategoryFieldHeight),
+            
             addButton.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: offSet),
             addButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -offSet),
-            addButton.heightAnchor.constraint(equalToConstant: Constants.AddCategoryViewControllerConstants.buttonHeight),
+            addButton.heightAnchor.constraint(equalToConstant: Resources.AddCategoryViewControllerConstants.buttonHeight),
             addButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -offSet)
-        
+            
         ])
     }
 }

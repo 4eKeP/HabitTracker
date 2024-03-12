@@ -1,59 +1,101 @@
 //
-//  ConfigTypeController.swift
+//  EditTrackerController.swift
 //  TrackerYandexPracticum
 //
-//  Created by admin on 05.12.2023.
+//  Created by admin on 10.03.2024.
 //
 
 import UIKit
 
-protocol ConfigTypeControllerDelegate: AnyObject {
-    func configTypeControllerController(_ viewController: ConfigTypeController, didFilledTracker tracker: Tracker, for categoryIndex: UUID)
+protocol EditTrackerControllerDelegate: AnyObject {
+    func editTrackerControllerController(_ viewController: EditTrackerController, didChangedTracker tracker: Tracker, for categoryIndex: UUID)
 }
 
-final class ConfigTypeController: UIViewController {
+final class EditTrackerController: UIViewController {
+    
+    private let titleLabelTextNewHabit = Resources.ConfigTypeConstants.Labels.titleLabelTextNewHabit
+    
+    private let titleLabelTextNewEvent = Resources.ConfigTypeConstants.Labels.titleLabelTextNewEvent
+    
+    private let titleTextFieldPlaceholder = Resources.ConfigTypeConstants.Labels.titleTextFieldPlaceholder
+    
+    private let warningLabelText = Resources.ConfigTypeConstants.Labels.warningLabelText
+    
+    private let categoryButtonText = Resources.ConfigTypeConstants.Labels.categoryButtonText
+    
+    private let scheduleButtonText = Resources.ConfigTypeConstants.Labels.scheduleButtonText
+    
+    private let cancelButtonText = Resources.ConfigTypeConstants.Labels.cancelButtonText
+    
+    private let saveButtonText = Resources.ConfigTypeConstants.Labels.saveButtonText
+    
+    private let fullWeekText = Resources.ConfigTypeConstants.Labels.fullWeekText
+    
+    private let workDaysText = Resources.ConfigTypeConstants.Labels.workDaysText
+    
+    private let weekendsText = Resources.ConfigTypeConstants.Labels.weekendsText
+    
+    private let collectionTypeEmojiText = Resources.ConfigTypeConstants.Labels.collectionTypeEmojiText
+    
+    private let collectionTypeColorText = Resources.ConfigTypeConstants.Labels.collectionTypeColorText
+    
+    private let shortWeekDays = Resources.ConfigTypeConstants.Labels.shortWeekDays
     
     private lazy var settingsViewWidth: CGFloat = {
         view.frame.width - 2 * leadingSpacing
     }()
     
     private lazy var settingsViewHeight: CGFloat = {
-        return isHabit ? settingHeight * 2 : settingHeight
+        settingHeight * 2
     }()
     
     private lazy var buttonViewWidth: CGFloat = {
         view.frame.width - 2 * leadingButton
     }()
     
-    private let leadingButton: CGFloat = Constants.ConfigTypeConstants.leadingButton
+    private let leadingButton: CGFloat = Resources.ConfigTypeConstants.leadingButton
     
-    private let leadingSpacing: CGFloat = Constants.ConfigTypeConstants.leadingSpacing
+    private let leadingSpacing: CGFloat = Resources.ConfigTypeConstants.leadingSpacing
     
-    private let settingHeight: CGFloat = Constants.ConfigTypeConstants.settingHeight
+    private let settingHeight: CGFloat = Resources.ConfigTypeConstants.settingHeight
     
-    private let titleSpacing: CGFloat = Constants.ConfigTypeConstants.titleSpacing
+    private let titleSpacing: CGFloat = Resources.ConfigTypeConstants.titleSpacing
     
-    private let bottomSpacing: CGFloat = Constants.ConfigTypeConstants.bottomSpacing
+    private let bottomSpacing: CGFloat = Resources.ConfigTypeConstants.bottomSpacing
     
-    private let buttonHeight: CGFloat = Constants.ConfigTypeConstants.buttonHeight
+    private let buttonHeight: CGFloat = Resources.ConfigTypeConstants.buttonHeight
     
-    private let settingsSectionHeight: CGFloat = Constants.ConfigTypeConstants.settingsSectionHeight
+    private let settingsSectionHeight: CGFloat = Resources.ConfigTypeConstants.settingsSectionHeight
     
-    private let configCollectionCellHeight: CGFloat = Constants.ConfigTypeConstants.configCollectionCellHeight
+    private let configCollectionCellHeight: CGFloat = Resources.ConfigTypeConstants.configCollectionCellHeight
     
-    private let configCellsPerLine: CGFloat = Constants.ConfigTypeConstants.configCellsPerLine
+    private let configCellsPerLine: CGFloat = Resources.ConfigTypeConstants.configCellsPerLine
     
-    private let configHeight: CGFloat = Constants.ConfigTypeConstants.configHeight
+    private let configHeight: CGFloat = Resources.ConfigTypeConstants.configHeight
     
-    private lazy var scrollViewHeight: CGFloat = Constants.ConfigTypeConstants.scrollViewHeight
+    private lazy var scrollViewHeight: CGFloat = Resources.ConfigTypeConstants.scrollViewHeight
+    
+    private lazy var isRTL = UIView.userInterfaceLayoutDirection(for: titleLabel.semanticContentAttribute) == .rightToLeft
     
     private lazy var titleLabel = {
-        let titleLable = UILabel()
-        titleLable.text = isHabit ? "Новая привычка" : "Новое нерегулярное событие"
-        titleLable.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        titleLable.textAlignment = .center
-        titleLable.translatesAutoresizingMaskIntoConstraints = false
-        return titleLable
+        let titleLabel = UILabel()
+        titleLabel.text = Resources.ConfigTypeConstants.Labels.editHabit
+        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        return titleLabel
+    }()
+    
+    private lazy var counterLabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = String.localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "Counter of total tracker's completed days"),
+            self.editModel.counter
+        )
+        return label
     }()
     
     private lazy var titleTextField = {
@@ -64,7 +106,7 @@ final class ConfigTypeController: UIViewController {
         textField.backgroundColor = .ypBackground
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = titleTextFieldPlaceholder
         textField.clearButtonMode = .whileEditing
         textField.textColor = .ypBlack
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +116,7 @@ final class ConfigTypeController: UIViewController {
     private lazy var warningLabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Ограничение 38 символов"
+        label.text = warningLabelText
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         label.textAlignment = .center
         label.textColor = .ypRed
@@ -108,7 +150,7 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var categoryButton = {
         let button = SettingsButton()
-        button.setPrimaryLable(text: "Категория")
+        button.setPrimaryLable(text: categoryButtonText)
         button.addTarget(self, action: #selector(categoryButtonPressed), for: .touchUpInside)
         button.frame = CGRect(x: 0,
                               y: 0,
@@ -120,7 +162,7 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var scheduleButton = {
         let button = SettingsButton()
-        button.setPrimaryLable(text: "Расписание")
+        button.setPrimaryLable(text: scheduleButtonText)
         button.addTarget(self, action: #selector(scheduleButtonPressed), for: .touchUpInside)
         button.frame = CGRect(x: 0,
                               y: settingHeight,
@@ -142,7 +184,7 @@ final class ConfigTypeController: UIViewController {
     
     private lazy var cancelButton = {
         let button = TypeButton()
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(cancelButtonText, for: .normal)
         button.setTitleColor(.ypRed, for: .normal)
         button.backgroundColor = .ypWhite
         button.layer.borderColor = UIColor.ypRed.cgColor
@@ -151,14 +193,14 @@ final class ConfigTypeController: UIViewController {
         return button
     }()
     
-    private lazy var createButton = {
+    private lazy var saveButton = {
         let button = TypeButton()
-        button.setTitle("Создать", for: .normal)
+        button.setTitle(saveButtonText, for: .normal)
         button.setTitleColor(.ypLightGray, for: .disabled)
-        button.addTarget(self, action: #selector(createButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         return button
     }()
-    //MARK: переделать секции
+    
     private lazy var emojiCollection = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collection.register(EmojiCell.self, forCellWithReuseIdentifier: EmojiCell.Identifer)
@@ -189,80 +231,39 @@ final class ConfigTypeController: UIViewController {
         return stackView
     }()
     
-    private var schedule = [Bool](repeating: false, count: 7)
+    private var schedule: [Bool]
     
     private let textFieldLimit = 38
     
-    private var formIsFulfilled = false {
-        didSet {
-            if formIsFulfilled {
-                updateCreateButtonState()
-            }
-        }
+    private var trackerNameIsFulfilled: Bool {
+        !userInput.isEmpty
     }
     
-    private var trackerNameIsFulfilled = false {
-        didSet {
-            chekConfigState()
-        }
-    }
+    private var selectedCategoryIndex: UUID
     
-    private var categoryIsSelected = false {
-        didSet {
-            chekConfigState()
-        }
-    }
+    private var emojiIndex: Int
     
-    private var scheduleIsFulfilled = false {
-        didSet {
-            chekConfigState()
-        }
-    }
-    // выбераеться рандомно для проверки
-    private var emojiIsSelected = false {
-        didSet {
-            chekConfigState()
-        }
-    }
-    private var colorIsSelected = false {
-        didSet {
-            chekConfigState()
-        }
-    }
+    private var colorIndex: Int
     
-    //MARK: На будущее сделать из isHabit энум что бы легче добавлять новые типы привычек
-    private var isHabit: Bool
-    
-    private var selectedCategoryIndex = UUID() {
+    private var userInput: String {
         didSet {
-            categoryIsSelected = true
-        }
-    }
-    
-    private var emojiIndex = 0 {
-        didSet {
-            emojiIsSelected = true
-        }
-    }
-    
-    private var colorIndex = 0 {
-        didSet {
-            colorIsSelected = true
-        }
-    }
-    
-    private var userInput = "" {
-        didSet {
-            trackerNameIsFulfilled = true
+            updateSaveButtonState()
         }
     }
     
     private let factory = TrackersFactoryCD.shared
     
-    weak var delegate: ConfigTypeControllerDelegate?
+    private var editModel: TrackerForEdit
     
-    init(isHabit: Bool) {
-        self.isHabit = isHabit
+    weak var delegate: EditTrackerControllerDelegate?
+    
+    init(trackerForEdit editModel: TrackerForEdit) {
+        self.editModel = editModel
+        self.colorIndex = editModel.tracker.color
+        self.emojiIndex = editModel.tracker.emoji
+        self.schedule = editModel.tracker.schedule
+        self.userInput = editModel.tracker.name
+        self.selectedCategoryIndex = editModel.category.id
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -274,15 +275,26 @@ final class ConfigTypeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
-        if !isHabit {
-            schedule = schedule.map { $0 || true }
-            scheduleIsFulfilled = true
-        }
-        view.backgroundColor = .ypWhite
         setupUI()
+        setupState()
         titleTextField.delegate = self
         titleTextField.becomeFirstResponder()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        DispatchQueue.main.async {
+            let emojiIndexPath = IndexPath(item: self.editModel.tracker.emoji, section: 0)
+            self.emojiCollection.selectItem(at: emojiIndexPath, animated: true, scrollPosition: .left)
+            self.emojiCollection.cellForItem(at: emojiIndexPath)?.backgroundColor = .ypLightGray
+            
+            let colorIndexPath = IndexPath(item: self.editModel.tracker.color, section: 0)
+            self.colorCollection.selectItem(at: colorIndexPath, animated: true, scrollPosition: .left)
+            self.colorCollection.cellForItem(at: colorIndexPath)?
+                .backgroundColor = Resources.colors[self.editModel.tracker.color].withAlphaComponent(0.3)
+        }
+    }
+    
     @objc private func categoryButtonPressed() {
         let viewModel = CategoryViewModel(selectedCategoryID: selectedCategoryIndex)
         let nextController = CategoryViewController(viewModel: viewModel)
@@ -300,66 +312,70 @@ final class ConfigTypeController: UIViewController {
         dismiss(animated: true)
     }
     
-    @objc private func createButtonPressed() {
-        let newTracker = Tracker(id: UUID(),
-                                 name: userInput,
-                                 color: colorIndex,
-                                 emoji: emojiIndex,
-                                 schedule: schedule)
-        delegate?.configTypeControllerController(self, didFilledTracker: newTracker, for: selectedCategoryIndex)
+    @objc private func saveButtonPressed() {
+        let updatedTracker = Tracker(id: editModel.tracker.id,
+                                     name: userInput,
+                                     color: colorIndex,
+                                     emoji: emojiIndex,
+                                     schedule: schedule,
+                                     isPinned: editModel.tracker.isPinned)
+        delegate?.editTrackerControllerController(self, didChangedTracker: updatedTracker, for: selectedCategoryIndex)
     }
     
-    private func updateCreateButtonState() {
-        createButton.backgroundColor = formIsFulfilled ? .ypBlack : .ypGray
-        createButton.isEnabled = formIsFulfilled ? true : false
-    }
-    
-    private func chekConfigState() {
-        formIsFulfilled = trackerNameIsFulfilled && categoryIsSelected && scheduleIsFulfilled
-        && emojiIsSelected && colorIsSelected
+    private func updateSaveButtonState() {
+        saveButton.backgroundColor = trackerNameIsFulfilled ? .ypBlack : .ypGray
+        saveButton.isEnabled = trackerNameIsFulfilled ? true : false
     }
     
     private func fetchSchedule(from schedule: [Bool]) {
         self.schedule = schedule
-        let days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
         let fullWeek = [true, true, true, true, true, true, true]
         let workDays = [true, true, true, true, true, false, false]
         let weekends = [false, false, false, false, false, true, true]
-        var finalSchadule: [String] = []
         switch schedule {
         case fullWeek:
-            scheduleButton.setSecondaryLable(text: "Каждый день")
+            scheduleButton.setSecondaryLable(text: fullWeekText)
         case workDays:
-            scheduleButton.setSecondaryLable(text: "Будни")
+            scheduleButton.setSecondaryLable(text: workDaysText)
         case weekends:
-            scheduleButton.setSecondaryLable(text: "Выходные")
+            scheduleButton.setSecondaryLable(text: weekendsText)
         default:
+            var finalSchadule: [String] = []
             for index in 0..<schedule.count where schedule[index] {
-                finalSchadule.append(days[index])
+                finalSchadule.append(shortWeekDays[index])
             }
             let finalSchaduleWithSeparation = finalSchadule.joined(separator: ", ")
             scheduleButton.setSecondaryLable(text: finalSchaduleWithSeparation)
         }
-        scheduleIsFulfilled = true
+    }
+    
+    func fetchCategory(from category: TrackerCategory) {
+        selectedCategoryIndex = category.id
+        categoryButton.setSecondaryLable(text: category.categoryName)
+    }
+    
+    func setupState() {
+        titleTextField.text = editModel.tracker.name
+        fetchSchedule(from: editModel.tracker.schedule)
+        fetchCategory(from: editModel.category)
     }
 }
 
 //MARK: - CategoryViewControllerDelegate
 
-extension ConfigTypeController: CategoryViewControllerDelegate {
+extension EditTrackerController: CategoryViewControllerDelegate {
     func categoryViewController(_ viewController: CategoryViewController, select category: TrackerCategory) {
         dismiss(animated: true) {
             [weak self] in
             guard let self = self else { return }
-            self.selectedCategoryIndex = category.id
-            self.categoryButton.setSecondaryLable(text: category.categoryName)
+            self.fetchCategory(from: category)
         }
     }
 }
 
 // MARK: - UITextFieldDelegate
 
-extension ConfigTypeController: UITextFieldDelegate {
+extension EditTrackerController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         userInput = textField.text ?? ""
         let currentCharacterCount = textField.text?.count ?? 0
@@ -382,13 +398,14 @@ extension ConfigTypeController: UITextFieldDelegate {
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        true
+        userInput = textField.text ?? ""
+        return true
     }
 }
 
 //MARK: - ScheduleControllerDelegate
 
-extension ConfigTypeController: ScheduleControllerDelegate {
+extension EditTrackerController: ScheduleControllerDelegate {
     func scheduleController(_ viewController: ScheduleController, didSelectSchedule schedule: [Bool]) {
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
@@ -398,7 +415,7 @@ extension ConfigTypeController: ScheduleControllerDelegate {
 }
 
 // MARK: - UICollection Data Source
-extension ConfigTypeController: UICollectionViewDataSource {
+extension EditTrackerController: UICollectionViewDataSource {
     
     private enum CollectionType {
         static let emoji = 0
@@ -408,9 +425,9 @@ extension ConfigTypeController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView.tag {
         case CollectionType.emoji:
-            return Constants.emojis.count
+            return Resources.emojis.count
         case CollectionType.color:
-            return Constants.colors.count
+            return Resources.colors.count
         default:
             return .zero
         }
@@ -426,7 +443,7 @@ extension ConfigTypeController: UICollectionViewDataSource {
             cell.backgroundColor = .ypWhite
             cell.layer.cornerRadius = 16
             cell.layer.masksToBounds = true
-            cell.configEmojiCell(emoji: Constants.emojis[indexPath.row])
+            cell.configEmojiCell(emoji: Resources.emojis[indexPath.item])
             return cell
         case CollectionType.color:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.Identifer, for: indexPath) as? ColorCell else {
@@ -436,7 +453,7 @@ extension ConfigTypeController: UICollectionViewDataSource {
             cell.backgroundColor = .ypWhite
             cell.layer.cornerRadius = 8
             cell.layer.masksToBounds = true
-            cell.configColorCell(color: Constants.colors[indexPath.row])
+            cell.configColorCell(color: Resources.colors[indexPath.row])
             return cell
         default:
             assertionFailure("не удалось получить tag ячейки")
@@ -458,9 +475,9 @@ extension ConfigTypeController: UICollectionViewDataSource {
         }
         switch collectionView.tag {
         case CollectionType.emoji:
-            view.config(header: "Emoji")
+            view.config(header: collectionTypeEmojiText)
         case CollectionType.color:
-            view.config(header: "Цвет")
+            view.config(header: collectionTypeColorText)
         default:
             break
         }
@@ -470,7 +487,7 @@ extension ConfigTypeController: UICollectionViewDataSource {
 
 // MARK: - UICollection Delegate
 
-extension ConfigTypeController: UICollectionViewDelegate {
+extension EditTrackerController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch collectionView.tag {
         case CollectionType.emoji:
@@ -478,7 +495,7 @@ extension ConfigTypeController: UICollectionViewDelegate {
             collectionView.cellForItem(at: indexPath)?.backgroundColor = .ypLightGray
         case CollectionType.color:
             colorIndex = indexPath.row
-            collectionView.cellForItem(at: indexPath)?.backgroundColor = Constants.colors[colorIndex].withAlphaComponent(0.3)
+            collectionView.cellForItem(at: indexPath)?.backgroundColor = Resources.colors[colorIndex].withAlphaComponent(0.3)
         default:
             break
         }
@@ -491,7 +508,7 @@ extension ConfigTypeController: UICollectionViewDelegate {
 
 // MARK: - UICollection FlowLayout
 
-extension ConfigTypeController: UICollectionViewDelegateFlowLayout {
+extension EditTrackerController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: configCollectionCellHeight,
@@ -528,10 +545,10 @@ extension ConfigTypeController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - UI Configuration
 
-private extension ConfigTypeController {
+private extension EditTrackerController {
     // MARK: - SetupUI
-    // MARK: разобраться с порядком констрейнтов
     func setupUI() {
+        view.backgroundColor = .ypWhite
         setTitle()
         setupScrollView()
         setupTextField()
@@ -544,13 +561,18 @@ private extension ConfigTypeController {
     // MARK: - Title Lable config
     func setTitle() {
         view.addSubview(titleLabel)
+        view.addSubview(counterLabel)
         setTitleConstraits()
     }
     func setTitleConstraits() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: titleSpacing),
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            
+            counterLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: bottomSpacing),
+            counterLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            counterLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
     
@@ -564,7 +586,7 @@ private extension ConfigTypeController {
     
     func configScrollViewConstraints() {
         NSLayoutConstraint.activate([
-            contentScrollView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            contentScrollView.topAnchor.constraint(equalTo: counterLabel.bottomAnchor),
             contentScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             contentScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             contentScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
@@ -584,11 +606,16 @@ private extension ConfigTypeController {
     
     func setupTextField() {
         contentStackView.addArrangedSubview(textFieldStackView)
+        configRTLTextField()
         textFieldStackView.addArrangedSubview(titleTextField)
         textFieldStackView.addArrangedSubview(warningLabel)
         setTitleTextFieldConstraints()
         setWarningLabelConstraints()
         setTextFieldStackViewConstraints()
+    }
+    
+    func configRTLTextField() {
+        titleTextField.textAlignment = isRTL ? .right : .natural
     }
     
     func setTitleTextFieldConstraints() {
@@ -625,11 +652,9 @@ private extension ConfigTypeController {
         contentStackView.addArrangedSubview(settingsView)
         configSettingsConstraints()
         settingsView.addSubview(categoryButton)
-        if isHabit {
-            let separator = Separators()
-            separator.addSeparators(for: settingsView, width: settingsViewWidth - leadingSpacing * 2, times: 1)
-            settingsView.addSubview(scheduleButton)
-        }
+        let separator = Separators()
+        separator.addSeparators(for: settingsView, width: settingsViewWidth - leadingSpacing * 2, times: 1)
+        settingsView.addSubview(scheduleButton)
     }
     
     func configSettingsConstraints() {
@@ -693,9 +718,9 @@ private extension ConfigTypeController {
     
     func setupButtons() {
         contentStackView.addArrangedSubview(buttonsStackView)
-        updateCreateButtonState()
+        updateSaveButtonState()
         buttonsStackView.addArrangedSubview(cancelButton)
-        buttonsStackView.addArrangedSubview(createButton)
+        buttonsStackView.addArrangedSubview(saveButton)
         configButtonsConstraints()
     }
     

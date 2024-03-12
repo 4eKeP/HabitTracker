@@ -64,17 +64,17 @@ extension CategoryCell {
         updateCellAppearance(for: category)
         updateSeparatorInset(for: category)
     }
-
+    
     private func updateCellAppearance(for category: CategoryCellViewModel) {
         categoryLabel.text = category.categoryName
         doneMarkImageView.isHidden = !category.isSelected
-
+        
         let isFirstCell = category.isFirst
         let isLastCell = category.isLast
-
+        
         cellView.layer.maskedCorners = maskedCorners(for: isFirstCell, isLastCell)
     }
-
+    
     private func maskedCorners(for isFirstCell: Bool, _ isLastCell: Bool) -> CACornerMask {
         if isFirstCell && isLastCell {
             return [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -86,20 +86,20 @@ extension CategoryCell {
             return []
         }
     }
-
+    
     private func updateSeparatorInset(for category: CategoryCellViewModel) {
-        self.separatorInset = category.isLast 
+        self.separatorInset = category.isLast
         ?
         UIEdgeInsets(top: 0, left: UIScreen.main.bounds.width, bottom: 0, right: 0)
         :
         UIEdgeInsets(
-          top: .zero,
-          left: Constants.CategoryCellConstants.categoryButtonLeading,
-          bottom: .zero,
-          right: Constants.CategoryCellConstants.categoryButtonLeading
+            top: .zero,
+            left: Resources.CategoryCellConstants.categoryButtonLeading,
+            bottom: .zero,
+            right: Resources.CategoryCellConstants.categoryButtonLeading
         )
     }
-
+    
 }
 
 //MARK: - setup UI
@@ -121,14 +121,14 @@ private extension CategoryCell {
             cellView.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             categoryLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            categoryLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.CategoryCellConstants.leadingOffset),
+            categoryLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Resources.CategoryCellConstants.leadingOffset),
             categoryLabel.trailingAnchor.constraint(lessThanOrEqualTo: doneMarkImageView.leadingAnchor),
-            categoryLabel.heightAnchor.constraint(equalToConstant: Constants.CategoryCellConstants.categoryLabelHeight),
+            categoryLabel.heightAnchor.constraint(equalToConstant: Resources.CategoryCellConstants.categoryLabelHeight),
             
             doneMarkImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            doneMarkImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.CategoryCellConstants.leadingOffset),
-            doneMarkImageView.widthAnchor.constraint(equalToConstant: Constants.CategoryCellConstants.doneButtonSize),
-            doneMarkImageView.heightAnchor.constraint(equalToConstant: Constants.CategoryCellConstants.doneButtonSize)
+            doneMarkImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Resources.CategoryCellConstants.leadingOffset),
+            doneMarkImageView.widthAnchor.constraint(equalToConstant: Resources.CategoryCellConstants.doneButtonSize),
+            doneMarkImageView.heightAnchor.constraint(equalToConstant: Resources.CategoryCellConstants.doneButtonSize)
         ])
     }
 }

@@ -1,0 +1,64 @@
+/* 
+  Localizable.strings
+  TrackerYandexPracticum
+
+  Created by admin on 22.02.2024.
+  
+*/
+
+"labels.newTracker" = "إنشاء جهاز تعقب";
+"labels.newEvent" = "حدث جديد";
+"labels.newHabit" = "عادة جديدة";
+"labels.editHabit" = "تحرير العادة";
+"labels.newCategory" = "فئة جديدة";
+"labels.addCategory" = "إضافة فئة";
+"labels.editCategory" = "تحرير الفئة";
+"labels.habit" = "عادة";
+"labels.event" = "حدث";
+"labels.category" = "فئة";
+"labels.schedule" = "جدول";
+"labels.statistic" = "إحصائيات";
+"labels.trackers" = "بتتبع";
+"labels.searchBar" = "يبحث";
+"labels.cancel" = "يلغي";
+"labels.create" = "يخلق";
+"labels.save" = "يحفظ";
+"labels.textFieldPlaceholder" = "أدخل اسم المتتبع هنا";
+"labels.categoryNamePlaceholder" = "أدخل اسم الفئة هنا";
+"labels.textFieldRestriction" = "لا يزيد عن ٣٨ حرفا";
+"labels.done" = "منتهي";
+"labels.emoji" = "الرموز التعبيرية";
+"labels.color" = "لون";
+"labels.filters" = "المرشحات";
+"labels.emptyStatistic" = "لا يوجد شيء لتحليله بعد";
+"labels.emptyTracker" = "ماذا سنتتبع؟";
+"labels.emptySearch" = "لم يتم العثور على شيء";
+"labels.emptyCategory" = "العادات والأحداث\nيمكن الجمع بينها بالمعنى";
+"labels.oneDay" = "يوم";
+"labels.fewDays" = "يوم";
+"labels.manyDays" = "أيام";
+"labels.everyDays" = "كل يوم";
+"labels.weekDays" = "أيام الأسبوع";
+"labels.weekEnds" = "عطلة نهاية الاسبوع";
+"labels.onboardingPage1" = "تتبع فقط ما تريد";
+"labels.onboardingPage2" = "حتى لو لم يكن الأمر يتعلق باليوغا \n ولتر من الماء";
+"labels.onboardingButton" = "تلك هي التقنيات!";
+"labels.pinCategoryName" = "مثبت";
+"labels.confirmTrackerDelete" = "هل أنت متأكد أنك تريد حذف المتتبع؟";
+"labels.confirmCategoryDelete" = "هل أنت متأكد من أن هذه الفئة ليست هناك حاجة؟";
+"labels.cancelCategoryDelete" = "من المستحيل حذف - هذه الفئة مع أجهزة التتبع";
+
+"labels.context.pin" = "دبوس";
+"labels.context.edit" = "يحرر";
+"labels.context.delete" = "يمسح";
+"labels.context.unpin" = "نزع الدبوس";
+
+"labels.filter.all" = "جميع أجهزة التتبع";
+"labels.filter.today" = "متابعون لهذا اليوم";
+"labels.filter.completed" = "مكتمل";
+"labels.filter.uncompleted" = "غير مكتمل";
+
+"labels.stat.bestPeriod" = "أفضل فترة";
+"labels.stat.idealDays" = "الأيام المثالية";
+"labels.stat.completed" = "اكتملت أجهزة التتبع";
+"labels.stat.average" = "متوسط";
